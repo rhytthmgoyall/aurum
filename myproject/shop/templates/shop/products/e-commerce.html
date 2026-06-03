@@ -1,0 +1,432 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>AURUM — Luxury Goods</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="{% static 'shop/css/e-commerce.css' %}">
+</head>
+<body>
+
+<!-- ══ PRODUCT DETAIL MODAL ══ -->
+<div class="modal-backdrop" id="modalBackdrop"></div>
+<div class="modal" id="productModal" role="dialog" aria-label="Product details">
+  <button class="modal-close" id="modalCloseBtn" aria-label="Close">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M18 6 6 18M6 6l12 12"/></svg>
+  </button>
+  <div class="modal-inner" id="modalInner"></div>
+</div>
+
+<!-- ══ SEARCH ══ -->
+<div class="search-backdrop" id="searchBackdrop"></div>
+<div class="search-overlay" id="searchOverlay" role="search">
+  <div class="search-inner">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.35-4.35"/></svg>
+    <form method="GET" action="/search/" id="searchForm">
+  <input type="text" name="q" id="searchInput" placeholder="Search jewellery, bags, timepieces…" autocomplete="off"/>
+</form>
+    <button class="search-close-btn" id="searchCloseBtn">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      Esc
+    </button>
+  </div>
+  <div class="search-results" id="searchResults">
+    <div class="search-results-inner">
+      <p class="search-results-label">Results</p>
+      <div id="searchResultsList"></div>
+    </div>
+  </div>
+  <div class="search-popular" id="searchPopular">
+    <p class="search-popular-label">Popular searches</p>
+    <div class="search-popular-tags">
+      <button class="search-tag" data-search="Diamond">Diamond</button>
+      <button class="search-tag" data-search="Tote">Tote</button>
+      <button class="search-tag" data-search="Watch">Watch</button>
+      <button class="search-tag" data-search="Ring">Ring</button>
+      <button class="search-tag" data-search="Earrings">Earrings</button>
+      <button class="search-tag" data-search="Accessories">Accessories</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ CART ══ -->
+<div class="cart-overlay" id="cartOverlay"></div>
+<aside class="cart-drawer" id="cartDrawer" aria-label="Shopping cart">
+  <div class="cart-header">
+    <h2>Your Cart</h2>
+    <button class="cart-close" id="cartCloseBtn" aria-label="Close cart">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+  <div class="cart-items" id="cartItems"></div>
+  <div class="cart-footer" id="cartFooter" style="display:none;">
+    <div class="cart-subtotal">
+      <span>Subtotal</span>
+      <strong id="cartTotal">$0</strong>
+    </div>
+    <button class="checkout-btn">Proceed to Checkout</button>
+  </div>
+</aside>
+
+<!-- ══ NAV ══ -->
+<nav>
+  <span class="nav-logo" id="navLogo">AURUM</span>
+  <ul class="nav-links">
+    <li><button class="nav-tab-link" data-page="home">Home</button></li>
+    <li><button class="nav-tab-link" data-page="all" data-filter="Jewellery">Jewellery</button></li>
+    <li><button class="nav-tab-link" data-page="all" data-filter="Handbags">Handbags</button></li>
+    <li><button class="nav-tab-link" data-page="all" data-filter="Timepieces">Timepieces</button></li>
+    <li><button class="nav-tab-link active" id="allTab" data-page="all" data-filter="All">All Products</button></li>
+  </ul>
+  <div class="nav-actions">
+    <button class="nav-icon-btn" id="searchOpenBtn" aria-label="Search">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.35-4.35"/></svg>
+    </button>
+    <div class="cart-btn-wrap">
+      <button class="nav-icon-btn" id="cartOpenBtn" aria-label="Cart">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+      </button>
+      <span class="cart-badge" id="cartCount">0</span>
+    </div>
+  </div>
+</nav>
+
+<!-- ══════════ HOME PAGE ══════════ -->
+<div class="page active" id="page-home">
+
+  <section class="hero">
+    <div class="hero-left">
+      <p class="hero-eyebrow">New Collection 2026</p>
+      <h1 class="hero-headline">Crafted for<br>the <em>Discerning</em><br>Few.</h1>
+      <p class="hero-sub">Each piece in our collection is a testament to centuries-old artisanship — where material excellence meets timeless elegance.</p>
+      <div class="hero-cta">
+        <button class="btn-primary" data-page="all" data-filter="All">
+          Shop Collection
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><path d="M5 12h14m-7-7 7 7-7 7"/></svg>
+        </button>
+        <button class="btn-outline">Our Story</button>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-img-wrap">
+        <img src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=900&q=80" alt="Luxury jewellery campaign"/>
+        <div class="hero-img-overlay"></div>
+      </div>
+      <div class="hero-badge">
+        <p class="hero-badge-label">Est.</p>
+        <p class="hero-badge-val">1892</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="marquee-strip" aria-hidden="true">
+    <div class="marquee-inner">
+      <span class="marquee-item">Free shipping over $250<span class="marquee-dot"></span></span>
+      <span class="marquee-item">Handcrafted in Italy<span class="marquee-dot"></span></span>
+      <span class="marquee-item">Lifetime warranty<span class="marquee-dot"></span></span>
+      <span class="marquee-item">30-day returns<span class="marquee-dot"></span></span>
+      <span class="marquee-item">New: Spring Atelier 2026<span class="marquee-dot"></span></span>
+      <span class="marquee-item">Free shipping over $250<span class="marquee-dot"></span></span>
+      <span class="marquee-item">Handcrafted in Italy<span class="marquee-dot"></span></span>
+      <span class="marquee-item">Lifetime warranty<span class="marquee-dot"></span></span>
+      <span class="marquee-item">30-day returns<span class="marquee-dot"></span></span>
+      <span class="marquee-item">New: Spring Atelier 2026<span class="marquee-dot"></span></span>
+    </div>
+  </div>
+
+  <!-- CATEGORIES — Django rendered -->
+  <section class="section section-alt">
+    <div class="section-header reveal">
+      <div><p class="section-tag">Browse</p><h2 class="section-title">Our <em>Categories</em></h2></div>
+      <button class="view-all" data-page="all" data-filter="All">View all <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></button>
+    </div>
+    <div class="cat-grid reveal">
+      {% if categories %}
+        {% for category in categories %}
+        <div class="cat-card" data-page="all" data-filter="{{ category.name }}">
+          <div class="cat-bg">
+            {% if category.image %}
+            <img src="{{ category.image.url }}" alt="{{ category.name }}"/>
+            {% else %}
+            <img src="https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?w=600&q=80" alt="{{ category.name }}"/>
+            {% endif %}
+          </div>
+          <div class="cat-overlay">
+            <h3 class="cat-name">{{ category.name }}</h3>
+            <p class="cat-count">{{ category.product_count }} piece{{ category.product_count|pluralize }}</p>
+          </div>
+        </div>
+        {% endfor %}
+      {% else %}
+        <p style="color:var(--ink-muted);font-size:0.9rem;">No categories yet.</p>
+      {% endif %}
+    </div>
+  </section>
+
+  <!-- FEATURED PRODUCTS — Django rendered, no JS needed -->
+  <section class="section" id="featured">
+    <div class="section-header reveal">
+      <div><p class="section-tag">Curated Selection</p><h2 class="section-title"><em>Featured</em> Pieces</h2></div>
+      <button class="view-all" data-page="all" data-filter="All">View all <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></button>
+    </div>
+    <div class="product-grid reveal">
+      {# Show featured products, fall back to first 6 if none marked featured #}
+      {% with featured_products=products|dictsort:"is_featured" %}
+      {% for product in products %}
+        {% if product.is_featured or forloop.counter <= 6 %}
+        <div class="prod-card" data-product-id="{{ product.id }}">
+          <a class="prod-click-zone" href="{% url 'product_detail' product.id %}">
+            <div class="prod-img">
+              {% if product.image %}
+              <img src="{{ product.image.url }}" alt="{{ product.name }}" loading="lazy"/>
+              {% else %}
+              <img src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=600&q=80" alt="{{ product.name }}" loading="lazy"/>
+              {% endif %}
+              {% if product.badge %}
+              <div class="prod-badge">{{ product.badge }}</div>
+              {% endif %}
+            </div>
+            <div class="prod-info">
+              <p class="prod-brand">{{ product.brand|default:"Aurum Collection" }}</p>
+              <h3 class="prod-name">{{ product.name }}</h3>
+              <div class="prod-price">
+                <span class="prod-price-main">${{ product.price }}</span>
+                {% if product.old_price %}
+                <span class="prod-price-old">${{ product.old_price }}</span>
+                {% endif %}
+              </div>
+            </div>
+          </a>
+          <div class="prod-actions">
+            <button class="prod-add" data-action="add-to-cart" data-id="{{ product.id }}">Add to Cart</button>
+            <button class="prod-view" data-action="open-modal" data-id="{{ product.id }}">View Details</button>
+          </div>
+        </div>
+        {% endif %}
+      {% endfor %}
+      {% endwith %}
+      {% if not products %}
+      <p style="color:var(--ink-muted);font-size:0.9rem;grid-column:1/-1;">No products available yet.</p>
+      {% endif %}
+    </div>
+  </section>
+
+  <!-- SLIDER — Django rendered, duplicated for infinite scroll -->
+  <section class="slider-section section-alt">
+    <div class="slider-header reveal">
+      <div>
+        <p class="section-tag">New Arrivals</p>
+        <h2 class="section-title">Just <em>Landed</em></h2>
+      </div>
+      <button class="view-all" data-page="all" data-filter="All">
+        View all
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14m-7-7 7 7-7 7"/></svg>
+      </button>
+    </div>
+    <div class="slider-track-wrap">
+      <div class="slider-track">
+        {# First pass #}
+        {% for product in products %}
+        <a href="{% url 'product_detail' product.id %}" class="slider-card">
+          {% if product.image %}
+          <img class="slider-img" src="{{ product.image.url }}" alt="{{ product.name }}">
+          {% else %}
+          <img class="slider-img" src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=600&q=80" alt="{{ product.name }}">
+          {% endif %}
+          <div class="slider-info">
+            <p class="slider-brand">{{ product.brand|default:"Aurum Collection" }}</p>
+            <p class="slider-name">{{ product.name }}</p>
+            <p class="slider-price">${{ product.price }}</p>
+          </div>
+        </a>
+        {% empty %}
+        <p style="padding:2rem;color:var(--ink-muted);">No products yet.</p>
+        {% endfor %}
+        {# Duplicate for seamless loop #}
+        {% for product in products %}
+        <a href="{% url 'product_detail' product.id %}" class="slider-card" aria-hidden="true" tabindex="-1">
+          {% if product.image %}
+          <img class="slider-img" src="{{ product.image.url }}" alt="">
+          {% else %}
+          <img class="slider-img" src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=600&q=80" alt="">
+          {% endif %}
+          <div class="slider-info">
+            <p class="slider-brand">{{ product.brand|default:"Aurum Collection" }}</p>
+            <p class="slider-name">{{ product.name }}</p>
+            <p class="slider-price">${{ product.price }}</p>
+          </div>
+        </a>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <!-- PROMO -->
+  <div class="promo">
+    <div class="promo-text reveal">
+      <p class="promo-eyebrow">Limited Offer · Ends June 30</p>
+      <h2 class="promo-title">Spring <em>Atelier</em><br>Collection.</h2>
+      <p class="promo-sub">Discover pieces born of seasonal inspiration — flowing silhouettes and botanical motifs rendered in 18-carat gold and ethically sourced gemstones.</p>
+      <div class="promo-stats">
+        <div><p class="stat-val">18K</p><p class="stat-label">Gold purity</p></div>
+        <div><p class="stat-val">30+</p><p class="stat-label">New designs</p></div>
+        <div><p class="stat-val">100%</p><p class="stat-label">Ethically sourced</p></div>
+      </div>
+    </div>
+    <img class="promo-img reveal" src="https://images.unsplash.com/photo-1599643477877-530eb83abc8e?w=800&q=80" alt="Spring Atelier Collection"/>
+  </div>
+
+  <!-- TESTIMONIALS -->
+  <section class="section section-alt">
+    <div class="section-header reveal">
+      <div><p class="section-tag">Client Stories</p><h2 class="section-title">What They <em>Say</em></h2></div>
+    </div>
+    <div class="test-grid">
+      <div class="test-card reveal">
+        <div class="stars"><span class="star"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span><span class="star"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span><span class="star"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span><span class="star"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span><span class="star"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span></div>
+        <p class="test-quote">"The craftsmanship is unlike anything I have encountered. Each detail speaks to the devotion of the artisans behind the piece."</p>
+        <div class="test-author"><div class="test-avatar">SC</div><div><p class="test-name">Sophia Chen</p><p class="test-loc">Hong Kong</p></div></div>
+      </div>
+      <div class="test-card reveal">
+        <div class="stars"><span class="star"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span><span class="star"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span><span class="star"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span><span class="star"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span><span class="star"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span></div>
+        <p class="test-quote">"A gift I purchased for my wife left her speechless. The presentation alone is worth every penny — an experience from start to finish."</p>
+        <div class="test-author"><div class="test-avatar">JL</div><div><p class="test-name">James Laurent</p><p class="test-loc">Paris, France</p></div></div>
+      </div>
+      <div class="test-card reveal">
+        <div class="stars"><span class="star"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span><span class="star"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span><span class="star"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span><span class="star"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span><span class="star"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span></div>
+        <p class="test-quote">"I have worn luxury goods my entire life. Aurum is the rare maison that genuinely honors its heritage while feeling entirely contemporary."</p>
+        <div class="test-author"><div class="test-avatar">NA</div><div><p class="test-name">Nadia Al-Rashid</p><p class="test-loc">Dubai, UAE</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-top">
+      <div>
+        <p class="footer-brand">AURUM</p>
+        <p class="footer-about">Crafting luxury since 1892. Each piece is an heirloom in the making — a blend of ancestral technique and contemporary vision.</p>
+      </div>
+      <div class="footer-col"><h4>Shop</h4><ul><li><a href="#">New In</a></li><li><a href="#">Jewellery</a></li><li><a href="#">Handbags</a></li><li><a href="#">Timepieces</a></li><li><a href="#">Accessories</a></li></ul></div>
+      <div class="footer-col"><h4>Company</h4><ul><li><a href="#">Our Story</a></li><li><a href="#">Atelier</a></li><li><a href="#">Sustainability</a></li><li><a href="#">Press</a></li><li><a href="#">Careers</a></li></ul></div>
+      <div class="footer-col"><h4>Support</h4><ul><li><a href="#">Client Care</a></li><li><a href="#">Shipping & Returns</a></li><li><a href="#">Authenticity</a></li><li><a href="#">Warranty</a></li><li><a href="#">Contact</a></li></ul></div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Aurum Maison. All rights reserved.</span>
+      <div class="footer-socials">
+        <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+        <a href="#" aria-label="Pinterest"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M12 2C6.48 2 2 6.48 2 12c0 4.24 2.65 7.86 6.39 9.29-.09-.78-.17-1.98.04-2.83.19-.77 1.27-5.38 1.27-5.38s-.32-.65-.32-1.61c0-1.51.88-2.64 1.97-2.64.93 0 1.38.7 1.38 1.54 0 .94-.6 2.34-.91 3.64-.26 1.09.54 1.97 1.6 1.97 1.92 0 3.4-2.02 3.4-4.95 0-2.58-1.86-4.39-4.52-4.39-3.08 0-4.89 2.31-4.89 4.7 0 .93.36 1.93.8 2.47.09.11.1.2.07.31-.08.34-.27 1.09-.3 1.24-.05.2-.16.24-.37.14-1.39-.65-2.26-2.68-2.26-4.32 0-3.51 2.55-6.74 7.35-6.74 3.86 0 6.86 2.75 6.86 6.42 0 3.83-2.41 6.91-5.76 6.91-1.13 0-2.19-.59-2.55-1.28l-.69 2.59c-.25.97-.93 2.18-1.39 2.92C17.52 22 22 17.52 22 12S17.52 2 12 2z"/></svg></a>
+        <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+      </div>
+    </div>
+  </footer>
+</div><!-- end #page-home -->
+
+
+<!-- ══════════ ALL PRODUCTS PAGE ══════════ -->
+<div class="page" id="page-all">
+  <div class="all-products-header">
+    <h1>All <em style="font-style:italic;color:var(--gold);">Products</em></h1>
+    {# Total count shown by JS after filter applied #}
+    <p id="allProductsCount">Showing all {{ products|length }} piece{{ products|length|pluralize }}</p>
+  </div>
+
+  <!-- Filter bar — category names must match data-cat on cards below -->
+  <div class="filter-bar" id="filterBar">
+    <button class="filter-btn active" data-filter="All">All</button>
+    {% if categories %}
+      {% for category in categories %}
+      <button class="filter-btn" data-filter="{{ category.name }}">{{ category.name }}</button>
+      {% endfor %}
+    {% else %}
+      <button class="filter-btn" data-filter="Jewellery">Jewellery</button>
+      <button class="filter-btn" data-filter="Handbags">Handbags</button>
+      <button class="filter-btn" data-filter="Timepieces">Timepieces</button>
+      <button class="filter-btn" data-filter="Accessories">Accessories</button>
+    {% endif %}
+  </div>
+
+  <!--
+    KEY CHANGE: Cards are rendered by Django. Each card carries data-cat so JS can
+    show/hide them for filtering — no innerHTML re-rendering needed.
+  -->
+  <div class="all-products-grid" id="allProductsGrid">
+    {% for product in products %}
+    <div class="prod-card visible"
+         data-cat="{{ product.category.name|default:'All' }}"
+         data-product-id="{{ product.id }}">
+      <a class="prod-click-zone" href="{% url 'product_detail' product.id %}">
+        <div class="prod-img">
+          {% if product.image %}
+          <img src="{{ product.image.url }}" alt="{{ product.name }}" loading="lazy"/>
+          {% else %}
+          <img src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=600&q=80" alt="{{ product.name }}" loading="lazy"/>
+          {% endif %}
+          {% if product.badge %}
+          <div class="prod-badge">{{ product.badge }}</div>
+          {% endif %}
+        </div>
+        <div class="prod-info">
+          <p class="prod-brand">{{ product.brand|default:"Aurum Collection" }}</p>
+          <h3 class="prod-name">{{ product.name }}</h3>
+          <div class="prod-price">
+            <span class="prod-price-main">${{ product.price }}</span>
+            {% if product.old_price %}
+            <span class="prod-price-old">${{ product.old_price }}</span>
+            {% endif %}
+          </div>
+        </div>
+      </a>
+      <div class="prod-actions">
+        <button class="prod-add" data-action="add-to-cart" data-id="{{ product.id }}">Add to Cart</button>
+        <button class="prod-view" data-action="open-modal" data-id="{{ product.id }}">View Details</button>
+      </div>
+    </div>
+    {% empty %}
+    <p style="color:var(--ink-muted);font-size:0.9rem;grid-column:1/-1;padding:2rem 0;">No products available.</p>
+    {% endfor %}
+  </div>
+
+  <footer>
+    <div class="footer-top">
+      <div><p class="footer-brand">AURUM</p><p class="footer-about">Crafting luxury since 1892. Each piece is an heirloom in the making.</p></div>
+      <div class="footer-col"><h4>Shop</h4><ul><li><a href="#">New In</a></li><li><a href="#">Jewellery</a></li><li><a href="#">Handbags</a></li></ul></div>
+      <div class="footer-col"><h4>Company</h4><ul><li><a href="#">Our Story</a></li><li><a href="#">Sustainability</a></li><li><a href="#">Careers</a></li></ul></div>
+      <div class="footer-col"><h4>Support</h4><ul><li><a href="#">Client Care</a></li><li><a href="#">Returns</a></li><li><a href="#">Contact</a></li></ul></div>
+    </div>
+    <div class="footer-bottom"><span>© 2026 Aurum Maison. All rights reserved.</span></div>
+  </footer>
+</div><!-- end #page-all -->
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── MINIMAL JS PRODUCT DATA
+// Only kept for: search overlay results + modal detail overlay.
+// All grids/sliders are now rendered by Django.
+const PRODUCTS = [
+  {% for product in products %}{
+    id: {{ product.id }},
+    name: "{{ product.name|escapejs }}",
+    brand: "{{ product.brand|default:'Aurum Collection'|escapejs }}",
+    cat: "{{ product.category.name|default:'All'|escapejs }}",
+    price: {{ product.price }},
+    old: {% if product.old_price %}{{ product.old_price }}{% else %}null{% endif %},
+    badge: {% if product.badge %}"{{ product.badge|escapejs }}"{% else %}null{% endif %},
+    sku: "{{ product.sku|default:''|escapejs }}",
+    description: "{{ product.description|default:''|escapejs }}",
+    material: "{{ product.material|default:''|escapejs }}",
+    origin: "{{ product.origin|default:''|escapejs }}",
+    warranty: "{{ product.warranty|default:''|escapejs }}",
+    img: "{% if product.image %}{{ product.image.url }}{% else %}https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=600&q=80{% endif %}",
+    images: [{% for image in product.images.all %}"{{ image.image.url }}"{% if not forloop.last %},{% endif %}{% endfor %}]
+  }{% if not forloop.last %},{% endif %}
+  {% endfor %}
+];
+</script>
+<script src="{% static 'shop/js/e-commerce.js' %}"></script>
+</body>
+</html>

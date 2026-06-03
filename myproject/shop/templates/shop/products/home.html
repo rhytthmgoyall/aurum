@@ -1,0 +1,1227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AURUM — Luxury Goods</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --gold: #b8975a;
+    --gold-light: #d4b47a;
+    --gold-pale: #f5efe4;
+    --ink: #1a1714;
+    --ink-mid: #4a433b;
+    --ink-muted: #8a7f72;
+    --cream: #faf7f2;
+    --white: #ffffff;
+    --serif: 'Cormorant Garamond', Georgia, serif;
+    --sans: 'Jost', sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--cream);
+    color: var(--ink);
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.5rem 4rem;
+    background: rgba(250, 247, 242, 0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(184, 151, 90, 0.18);
+    transition: padding 0.3s;
+  }
+
+  .nav-logo {
+    font-family: var(--serif);
+    font-size: 1.6rem;
+    font-weight: 600;
+    letter-spacing: 0.25em;
+    color: var(--gold);
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-mid);
+    text-decoration: none;
+    position: relative;
+    transition: color 0.25s;
+  }
+
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -3px; left: 0;
+    width: 0; height: 1px;
+    background: var(--gold);
+    transition: width 0.3s;
+  }
+
+  .nav-links a:hover { color: var(--gold); }
+  .nav-links a:hover::after { width: 100%; }
+
+  .nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .nav-actions svg { width: 20px; height: 20px; stroke: var(--ink-mid); cursor: pointer; transition: stroke 0.2s; }
+  .nav-actions svg:hover { stroke: var(--gold); }
+
+  .cart-btn {
+    position: relative;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+  }
+
+  .cart-badge {
+    position: absolute;
+    top: -5px; right: -6px;
+    background: var(--gold);
+    color: var(--white);
+    font-size: 0.6rem;
+    font-weight: 500;
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding-top: 80px;
+  }
+
+  .hero-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 6rem 4rem 6rem 6rem;
+    animation: fadeUp 1s ease both;
+  }
+
+  .hero-eyebrow {
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .hero-eyebrow::before {
+    content: '';
+    display: block;
+    width: 30px;
+    height: 1px;
+    background: var(--gold);
+  }
+
+  .hero-headline {
+    font-family: var(--serif);
+    font-size: clamp(3.5rem, 5vw, 5.5rem);
+    font-weight: 300;
+    line-height: 1.05;
+    color: var(--ink);
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-headline em {
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .hero-sub {
+    font-size: 0.9rem;
+    font-weight: 300;
+    line-height: 1.85;
+    color: var(--ink-muted);
+    max-width: 380px;
+    margin-bottom: 3rem;
+  }
+
+  .hero-cta {
+    display: flex;
+    gap: 1.25rem;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: var(--gold);
+    color: var(--white);
+    font-family: var(--sans);
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 1rem 2rem;
+    border: 1px solid var(--gold);
+    cursor: pointer;
+    transition: background 0.3s, color 0.3s;
+  }
+
+  .btn-primary:hover {
+    background: transparent;
+    color: var(--gold);
+  }
+
+  .btn-outline {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: transparent;
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 1rem 2rem;
+    border: 1px solid rgba(26, 23, 20, 0.25);
+    cursor: pointer;
+    transition: border-color 0.3s, color 0.3s;
+  }
+
+  .btn-outline:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+  }
+
+  .hero-right {
+    position: relative;
+    overflow: hidden;
+    animation: fadeIn 1.2s ease 0.2s both;
+  }
+
+  .hero-img-wrap {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, #e8ddd0 0%, #c9b99a 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .hero-placeholder {
+    width: 55%;
+    aspect-ratio: 3/4;
+    background: rgba(255,255,255,0.25);
+    border: 1px solid rgba(255,255,255,0.5);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    color: rgba(255,255,255,0.7);
+  }
+
+  .hero-placeholder svg { width: 48px; height: 48px; opacity: 0.6; }
+  .hero-placeholder span { font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; }
+
+  .hero-badge {
+    position: absolute;
+    bottom: 3rem;
+    left: -1.5rem;
+    background: var(--white);
+    padding: 1.25rem 1.5rem;
+    border-left: 3px solid var(--gold);
+    animation: slideIn 1s ease 0.6s both;
+  }
+
+  .hero-badge-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+    margin-bottom: 0.3rem;
+  }
+
+  .hero-badge-val {
+    font-family: var(--serif);
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--gold);
+  }
+
+  /* ── MARQUEE ── */
+  .marquee-strip {
+    background: var(--gold);
+    padding: 0.85rem 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  .marquee-inner {
+    display: inline-flex;
+    gap: 3rem;
+    animation: marquee 22s linear infinite;
+  }
+
+  .marquee-item {
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.9);
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .marquee-dot {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.5);
+  }
+
+  /* ── CATEGORIES ── */
+  .section { padding: 7rem 6rem; }
+  .section-alt { background: var(--white); }
+
+  .section-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 4rem;
+  }
+
+  .section-tag {
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.75rem;
+  }
+
+  .section-title {
+    font-family: var(--serif);
+    font-size: clamp(2.2rem, 3.5vw, 3.2rem);
+    font-weight: 300;
+    line-height: 1.1;
+    color: var(--ink);
+  }
+
+  .section-title em { font-style: italic; color: var(--gold); }
+
+  .view-all {
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-mid);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: color 0.25s;
+    white-space: nowrap;
+    padding-bottom: 0.5rem;
+  }
+
+  .view-all:hover { color: var(--gold); }
+  .view-all svg { width: 14px; height: 14px; transition: transform 0.25s; }
+  .view-all:hover svg { transform: translateX(3px); }
+
+  .cat-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+  }
+
+  .cat-card {
+    position: relative;
+    aspect-ratio: 3/4;
+    overflow: hidden;
+    cursor: pointer;
+    group: true;
+  }
+
+  .cat-bg {
+    position: absolute;
+    inset: 0;
+    transition: transform 0.6s ease;
+  }
+
+  .cat-card:hover .cat-bg { transform: scale(1.04); }
+
+  .cat-bg-1 { background: linear-gradient(160deg, #ddd0c8 0%, #b89e8e 100%); }
+  .cat-bg-2 { background: linear-gradient(160deg, #c8d5d0 0%, #8ea8a0 100%); }
+  .cat-bg-3 { background: linear-gradient(160deg, #d0cad8 0%, #9e8eb8 100%); }
+  .cat-bg-4 { background: linear-gradient(160deg, #d8d0c0 0%, #b0a080 100%); }
+
+  .cat-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -60%);
+    opacity: 0.35;
+  }
+
+  .cat-icon svg { width: 64px; height: 64px; }
+
+  .cat-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(26,23,20,0.7) 0%, transparent 55%);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 1.5rem;
+  }
+
+  .cat-name {
+    font-family: var(--serif);
+    font-size: 1.4rem;
+    font-weight: 400;
+    color: var(--white);
+    margin-bottom: 0.25rem;
+  }
+
+  .cat-count {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.55);
+  }
+
+  /* ── FEATURED ── */
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+
+  .prod-card {
+    background: var(--cream);
+    border: 1px solid rgba(184,151,90,0.15);
+    transition: box-shadow 0.3s, transform 0.3s;
+    cursor: pointer;
+  }
+
+  .prod-card:hover {
+    box-shadow: 0 20px 50px rgba(26,23,20,0.12);
+    transform: translateY(-4px);
+  }
+
+  .prod-img {
+    aspect-ratio: 1;
+    background: var(--gold-pale);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .prod-img svg { width: 64px; height: 64px; opacity: 0.3; }
+
+  .prod-badge {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    background: var(--gold);
+    color: var(--white);
+    font-size: 0.6rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.65rem;
+  }
+
+  .prod-wish {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: var(--white);
+    border: none;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .prod-wish:hover { background: var(--gold-pale); }
+  .prod-wish svg { width: 16px; height: 16px; stroke: var(--ink-mid); }
+
+  .prod-info { padding: 1.25rem; }
+
+  .prod-brand {
+    font-size: 0.6rem;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.4rem;
+  }
+
+  .prod-name {
+    font-family: var(--serif);
+    font-size: 1.15rem;
+    font-weight: 400;
+    color: var(--ink);
+    margin-bottom: 0.5rem;
+  }
+
+  .prod-price {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+  }
+
+  .prod-price-main {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--ink);
+  }
+
+  .prod-price-old {
+    font-size: 0.85rem;
+    color: var(--ink-muted);
+    text-decoration: line-through;
+  }
+
+  .prod-add {
+    width: 100%;
+    background: var(--ink);
+    color: var(--white);
+    border: 1px solid var(--ink);
+    font-family: var(--sans);
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 0.85rem;
+    cursor: pointer;
+    transition: background 0.3s, color 0.3s;
+  }
+
+  .prod-add:hover { background: var(--gold); border-color: var(--gold); }
+
+  /* ── PROMO BANNER ── */
+  .promo {
+    background: var(--ink);
+    padding: 6rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  .promo-text {}
+
+  .promo-eyebrow {
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1.25rem;
+  }
+
+  .promo-title {
+    font-family: var(--serif);
+    font-size: clamp(2.5rem, 4vw, 4rem);
+    font-weight: 300;
+    color: var(--white);
+    line-height: 1.05;
+    margin-bottom: 1.25rem;
+  }
+
+  .promo-title em { font-style: italic; color: var(--gold-light); }
+
+  .promo-sub {
+    font-size: 0.88rem;
+    font-weight: 300;
+    line-height: 1.85;
+    color: rgba(255,255,255,0.5);
+    max-width: 380px;
+    margin-bottom: 2.5rem;
+  }
+
+  .promo-stats {
+    display: flex;
+    gap: 3rem;
+  }
+
+  .stat-val {
+    font-family: var(--serif);
+    font-size: 2.5rem;
+    font-weight: 300;
+    color: var(--gold);
+    line-height: 1;
+    margin-bottom: 0.3rem;
+  }
+
+  .stat-label {
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.35);
+  }
+
+  .promo-visual {
+    aspect-ratio: 4/3;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(184,151,90,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .promo-visual svg { opacity: 0.12; width: 80px; height: 80px; }
+
+  /* ── TESTIMONIALS ── */
+  .test-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+
+  .test-card {
+    background: var(--white);
+    border: 1px solid rgba(184,151,90,0.15);
+    padding: 2rem;
+  }
+
+  .stars {
+    display: flex;
+    gap: 3px;
+    margin-bottom: 1.25rem;
+  }
+
+  .star svg { width: 14px; height: 14px; fill: var(--gold); stroke: none; }
+
+  .test-quote {
+    font-family: var(--serif);
+    font-size: 1.05rem;
+    font-weight: 300;
+    line-height: 1.75;
+    color: var(--ink-mid);
+    margin-bottom: 1.5rem;
+    font-style: italic;
+  }
+
+  .test-author {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+  }
+
+  .test-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--gold-pale);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--serif);
+    font-size: 1rem;
+    color: var(--gold);
+  }
+
+  .test-name {
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--ink);
+  }
+
+  .test-loc {
+    font-size: 0.7rem;
+    color: var(--ink-muted);
+    margin-top: 1px;
+  }
+
+  /* ── NEWSLETTER ── */
+  .newsletter {
+    background: var(--gold-pale);
+    padding: 5rem 6rem;
+    text-align: center;
+    border-top: 1px solid rgba(184,151,90,0.2);
+    border-bottom: 1px solid rgba(184,151,90,0.2);
+  }
+
+  .newsletter .section-tag { text-align: center; margin-bottom: 0.75rem; }
+
+  .newsletter-title {
+    font-family: var(--serif);
+    font-size: clamp(2rem, 3vw, 2.8rem);
+    font-weight: 300;
+    color: var(--ink);
+    margin-bottom: 0.75rem;
+  }
+
+  .newsletter-sub {
+    font-size: 0.88rem;
+    font-weight: 300;
+    color: var(--ink-muted);
+    margin-bottom: 2.5rem;
+  }
+
+  .newsletter-form {
+    display: flex;
+    gap: 0;
+    max-width: 440px;
+    margin: 0 auto;
+  }
+
+  .newsletter-form input {
+    flex: 1;
+    background: var(--white);
+    border: 1px solid rgba(184,151,90,0.3);
+    border-right: none;
+    padding: 1rem 1.25rem;
+    font-family: var(--sans);
+    font-size: 0.85rem;
+    color: var(--ink);
+    outline: none;
+  }
+
+  .newsletter-form input::placeholder { color: var(--ink-muted); }
+
+  .newsletter-form button {
+    background: var(--gold);
+    color: var(--white);
+    border: 1px solid var(--gold);
+    padding: 1rem 1.75rem;
+    font-family: var(--sans);
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.3s;
+  }
+
+  .newsletter-form button:hover { background: #a0844c; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--ink);
+    padding: 5rem 6rem 2.5rem;
+    color: rgba(255,255,255,0.45);
+  }
+
+  .footer-top {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 4rem;
+    padding-bottom: 3rem;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    margin-bottom: 2rem;
+  }
+
+  .footer-brand {
+    font-family: var(--serif);
+    font-size: 1.6rem;
+    font-weight: 600;
+    letter-spacing: 0.25em;
+    color: var(--gold);
+    margin-bottom: 1rem;
+  }
+
+  .footer-about {
+    font-size: 0.82rem;
+    font-weight: 300;
+    line-height: 1.85;
+    color: rgba(255,255,255,0.4);
+    max-width: 240px;
+  }
+
+  .footer-col h4 {
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 1.25rem;
+  }
+
+  .footer-col ul { list-style: none; }
+
+  .footer-col li + li { margin-top: 0.6rem; }
+
+  .footer-col a {
+    font-size: 0.82rem;
+    font-weight: 300;
+    color: rgba(255,255,255,0.35);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .footer-col a:hover { color: var(--gold); }
+
+  .footer-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.72rem;
+    font-weight: 300;
+  }
+
+  .footer-socials {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .footer-socials a {
+    width: 34px;
+    height: 34px;
+    border: 1px solid rgba(255,255,255,0.12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color 0.2s;
+  }
+
+  .footer-socials a:hover { border-color: var(--gold); }
+  .footer-socials svg { width: 15px; height: 15px; stroke: rgba(255,255,255,0.45); }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateX(-20px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    nav { padding: 1.25rem 2rem; }
+    .nav-links { display: none; }
+    .hero { grid-template-columns: 1fr; }
+    .hero-right { height: 50vw; }
+    .hero-left { padding: 3rem 2rem; }
+    .section { padding: 4rem 2rem; }
+    .cat-grid { grid-template-columns: repeat(2, 1fr); }
+    .product-grid { grid-template-columns: repeat(2, 1fr); }
+    .promo { padding: 4rem 2rem; grid-template-columns: 1fr; }
+    .test-grid { grid-template-columns: 1fr; }
+    .newsletter { padding: 3.5rem 2rem; }
+    footer { padding: 3rem 2rem 1.5rem; }
+    .footer-top { grid-template-columns: 1fr 1fr; gap: 2rem; }
+    .footer-bottom { flex-direction: column; gap: 1rem; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">AURUM</a>
+  <ul class="nav-links">
+    <li><a href="#">Collections</a></li>
+    <li><a href="#">New In</a></li>
+    <li><a href="#">Jewellery</a></li>
+    <li><a href="#">Accessories</a></li>
+    <li><a href="#">About</a></li>
+  </ul>
+  <div class="nav-actions">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.35-4.35"/></svg>
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    <button class="cart-btn" aria-label="Cart">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+      <span class="cart-badge">3</span>
+    </button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <p class="hero-eyebrow">New Collection 2025</p>
+    <h1 class="hero-headline">Crafted for<br>the <em>Discerning</em><br>Few.</h1>
+    <p class="hero-sub">Each piece in our collection is a testament to centuries-old artisanship — where material excellence meets timeless elegance.</p>
+    <div class="hero-cta">
+      <a href="#featured" class="btn-primary">
+        Shop Collection
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><path d="M5 12h14m-7-7 7 7-7 7"/></svg>
+      </a>
+      <a href="#" class="btn-outline">Our Story</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-img-wrap">
+      <div class="hero-placeholder">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+        <span>Campaign Image</span>
+      </div>
+    </div>
+    <div class="hero-badge">
+      <p class="hero-badge-label">Est.</p>
+      <p class="hero-badge-val">1892</p>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-strip" aria-hidden="true">
+  <div class="marquee-inner">
+    <span class="marquee-item">Free shipping over $250 <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Handcrafted in Italy <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Lifetime warranty <span class="marquee-dot"></span></span>
+    <span class="marquee-item">30-day returns <span class="marquee-dot"></span></span>
+    <span class="marquee-item">New: Spring Atelier Collection <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Free shipping over $250 <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Handcrafted in Italy <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Lifetime warranty <span class="marquee-dot"></span></span>
+    <span class="marquee-item">30-day returns <span class="marquee-dot"></span></span>
+    <span class="marquee-item">New: Spring Atelier Collection <span class="marquee-dot"></span></span>
+  </div>
+</div>
+
+<!-- CATEGORIES -->
+<section class="section section-alt">
+  <div class="section-header reveal">
+    <div>
+      <p class="section-tag">Browse</p>
+      <h2 class="section-title">Our <em>Categories</em></h2>
+    </div>
+    <a href="#" class="view-all">View all <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></a>
+  </div>
+  <div class="cat-grid reveal">
+    <div class="cat-card">
+      <div class="cat-bg cat-bg-1"></div>
+      <div class="cat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 1 0 18"/><circle cx="12" cy="12" r="3"/></svg></div>
+      <div class="cat-overlay">
+        <h3 class="cat-name">Jewellery</h3>
+        <p class="cat-count">124 pieces</p>
+      </div>
+    </div>
+    <div class="cat-card">
+      <div class="cat-bg cat-bg-2"></div>
+      <div class="cat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1"><path d="M6 2h12v20l-6-3-6 3V2z"/></svg></div>
+      <div class="cat-overlay">
+        <h3 class="cat-name">Handbags</h3>
+        <p class="cat-count">68 pieces</p>
+      </div>
+    </div>
+    <div class="cat-card">
+      <div class="cat-bg cat-bg-3"></div>
+      <div class="cat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
+      <div class="cat-overlay">
+        <h3 class="cat-name">Timepieces</h3>
+        <p class="cat-count">41 pieces</p>
+      </div>
+    </div>
+    <div class="cat-card">
+      <div class="cat-bg cat-bg-4"></div>
+      <div class="cat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1"><path d="M20 7H4c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V9c0-1.1-.9-2-2-2z"/><path d="M16 3H8L6 7h12l-2-4z"/></svg></div>
+      <div class="cat-overlay">
+        <h3 class="cat-name">Accessories</h3>
+        <p class="cat-count">97 pieces</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURED PRODUCTS -->
+<section class="section" id="featured">
+  <div class="section-header reveal">
+    <div>
+      <p class="section-tag">Curated Selection</p>
+      <h2 class="section-title"><em>Featured</em> Pieces</h2>
+    </div>
+    <a href="#" class="view-all">View all <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></a>
+  </div>
+  <div class="product-grid">
+    <div class="prod-card reveal">
+      <div class="prod-img">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#b8975a" stroke-width="1"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/></svg>
+        <div class="prod-badge">New In</div>
+        <button class="prod-wish" aria-label="Add to wishlist"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+      </div>
+      <div class="prod-info">
+        <p class="prod-brand">Aurum Atelier</p>
+        <h3 class="prod-name">Lumière Diamond Pendant</h3>
+        <div class="prod-price">
+          <span class="prod-price-main">$4,800</span>
+        </div>
+        <button class="prod-add">Add to Cart</button>
+      </div>
+    </div>
+    <div class="prod-card reveal">
+      <div class="prod-img">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#b8975a" stroke-width="1"><rect x="2" y="7" width="20" height="15" rx="1"/><path d="M16 3H8L6 7h12l-2-4z"/></svg>
+        <div class="prod-badge">Sale</div>
+        <button class="prod-wish" aria-label="Add to wishlist"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+      </div>
+      <div class="prod-info">
+        <p class="prod-brand">Aurum Maison</p>
+        <h3 class="prod-name">Séville Leather Tote</h3>
+        <div class="prod-price">
+          <span class="prod-price-main">$1,290</span>
+          <span class="prod-price-old">$1,650</span>
+        </div>
+        <button class="prod-add">Add to Cart</button>
+      </div>
+    </div>
+    <div class="prod-card reveal">
+      <div class="prod-img">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#b8975a" stroke-width="1"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+        <button class="prod-wish" aria-label="Add to wishlist"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+      </div>
+      <div class="prod-info">
+        <p class="prod-brand">Aurum Horlogerie</p>
+        <h3 class="prod-name">Prestige 38 Moonphase</h3>
+        <div class="prod-price">
+          <span class="prod-price-main">$12,500</span>
+        </div>
+        <button class="prod-add">Add to Cart</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROMO BANNER -->
+<div class="promo">
+  <div class="promo-text reveal">
+    <p class="promo-eyebrow">Limited Offer · Ends May 31</p>
+    <h2 class="promo-title">Spring <em>Atelier</em><br>Collection.</h2>
+    <p class="promo-sub">Discover pieces born of seasonal inspiration — flowing silhouettes and botanical motifs rendered in 18-carat gold and ethically sourced gemstones.</p>
+    <div class="promo-stats">
+      <div>
+        <p class="stat-val">18K</p>
+        <p class="stat-label">Gold purity</p>
+      </div>
+      <div>
+        <p class="stat-val">30+</p>
+        <p class="stat-label">New designs</p>
+      </div>
+      <div>
+        <p class="stat-val">100%</p>
+        <p class="stat-label">Ethically sourced</p>
+      </div>
+    </div>
+  </div>
+  <div class="promo-visual reveal">
+    <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="0.5"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/><circle cx="12" cy="12" r="4"/></svg>
+  </div>
+</div>
+
+<!-- TESTIMONIALS -->
+<section class="section section-alt">
+  <div class="section-header reveal">
+    <div>
+      <p class="section-tag">Client Stories</p>
+      <h2 class="section-title">What They <em>Say</em></h2>
+    </div>
+  </div>
+  <div class="test-grid">
+    <div class="test-card reveal">
+      <div class="stars">
+        <span class="star"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>
+        <span class="star"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>
+        <span class="star"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>
+        <span class="star"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>
+        <span class="star"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>
+      </div>
+      <p class="test-quote">"The craftsmanship is unlike anything I have encountered. Each detail speaks to the devotion of the artisans behind the piece."</p>
+      <div class="test-author">
+        <div class="test-avatar">SC</div>
+        <div>
+          <p class="test-name">Sophia Chen</p>
+          <p class="test-loc">Hong Kong</p>
+        </div>
+      </div>
+    </div>
+    <div class="test-card reveal">
+      <div class="stars">
+        <span class="star"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>
+        <span class="star"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>
+        <span class="star"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>
+        <span class="star"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>
+        <span class="star"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>
+      </div>
+      <p class="test-quote">"A gift I purchased for my wife left her speechless. The presentation alone is worth every penny — an experience from start to finish."</p>
+      <div class="test-author">
+        <div class="test-avatar">JL</div>
+        <div>
+          <p class="test-name">James Laurent</p>
+          <p class="test-loc">Paris, France</p>
+        </div>
+      </div>
+    </div>
+    <div class="test-card reveal">
+      <div class="stars">
+        <span class="star"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>
+        <span class="star"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>
+        <span class="star"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>
+        <span class="star"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>
+        <span class="star"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>
+      </div>
+      <p class="test-quote">"I have worn luxury goods my entire life. Aurum is the rare maison that genuinely honors its heritage while feeling entirely contemporary."</p>
+      <div class="test-author">
+        <div class="test-avatar">NA</div>
+        <div>
+          <p class="test-name">Nadia Al-Rashid</p>
+          <p class="test-loc">Dubai, UAE</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NEWSLETTER -->
+<div class="newsletter">
+  <p class="section-tag">Stay Connected</p>
+  <h2 class="newsletter-title">The Aurum Edit</h2>
+  <p class="newsletter-sub">Private previews, exclusive offers, and stories from our ateliers — delivered monthly.</p>
+  <div class="newsletter-form">
+    <input type="email" placeholder="Your email address" />
+    <button type="button">Subscribe</button>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div>
+      <p class="footer-brand">AURUM</p>
+      <p class="footer-about">Crafting luxury since 1892. Each piece is an heirloom in the making — a blend of ancestral technique and contemporary vision.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Shop</h4>
+      <ul>
+        <li><a href="#">New In</a></li>
+        <li><a href="#">Jewellery</a></li>
+        <li><a href="#">Handbags</a></li>
+        <li><a href="#">Timepieces</a></li>
+        <li><a href="#">Accessories</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#">Our Story</a></li>
+        <li><a href="#">Atelier</a></li>
+        <li><a href="#">Sustainability</a></li>
+        <li><a href="#">Press</a></li>
+        <li><a href="#">Careers</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Support</h4>
+      <ul>
+        <li><a href="#">Client Care</a></li>
+        <li><a href="#">Shipping & Returns</a></li>
+        <li><a href="#">Authenticity</a></li>
+        <li><a href="#">Warranty</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 Aurum Maison. All rights reserved.</span>
+    <div class="footer-socials">
+      <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+      <a href="#" aria-label="Pinterest"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M12 2C6.48 2 2 6.48 2 12c0 4.24 2.65 7.86 6.39 9.29-.09-.78-.17-1.98.04-2.83.19-.77 1.27-5.38 1.27-5.38s-.32-.65-.32-1.61c0-1.51.88-2.64 1.97-2.64.93 0 1.38.7 1.38 1.54 0 .94-.6 2.34-.91 3.64-.26 1.09.54 1.97 1.6 1.97 1.92 0 3.4-2.02 3.4-4.95 0-2.58-1.86-4.39-4.52-4.39-3.08 0-4.89 2.31-4.89 4.7 0 .93.36 1.93.8 2.47.09.11.1.2.07.31-.08.34-.27 1.09-.3 1.24-.05.2-.16.24-.37.14-1.39-.65-2.26-2.68-2.26-4.32 0-3.51 2.55-6.74 7.35-6.74 3.86 0 6.86 2.75 6.86 6.42 0 3.83-2.41 6.91-5.76 6.91-1.13 0-2.19-.59-2.55-1.28l-.69 2.59c-.25.97-.93 2.18-1.39 2.92.04.01.09.01.13.01C17.52 22 22 17.52 22 12S17.52 2 12 2z"/></svg></a>
+      <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const revealEls = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  revealEls.forEach(el => observer.observe(el));
+
+  document.querySelectorAll('.prod-add').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const orig = this.textContent;
+      this.textContent = 'Added ✓';
+      this.style.background = '#5a8a5a';
+      this.style.borderColor = '#5a8a5a';
+      setTimeout(() => {
+        this.textContent = orig;
+        this.style.background = '';
+        this.style.borderColor = '';
+      }, 1800);
+    });
+  });
+
+  document.querySelectorAll('.prod-wish').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const svg = this.querySelector('svg');
+      const isLiked = svg.style.fill === 'var(--gold)';
+      svg.style.fill = isLiked ? 'none' : 'var(--gold)';
+      svg.style.stroke = isLiked ? 'var(--ink-mid)' : 'var(--gold)';
+    });
+  });
+</script>
+</body>
+</html>

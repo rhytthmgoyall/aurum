@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>{{ product.name }} - Aurum</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --gold: #b8975a;
+    --gold-light: #d4b47a;
+    --gold-pale: #f5efe4;
+    --ink: #1a1714;
+    --ink-mid: #4a433b;
+    --ink-muted: #8a7f72;
+    --cream: #faf7f2;
+    --white: #ffffff;
+    --serif: "Cormorant Garamond", Georgia, serif;
+    --sans: "Jost", sans-serif;
+  }
+
+  body {
+    font-family: var(--sans);
+    background: var(--cream);
+    color: var(--ink);
+  }
+
+  header {
+    padding: 1.25rem 4rem;
+    border-bottom: 1px solid rgba(184, 151, 90, 0.18);
+    background: rgba(250, 247, 242, 0.92);
+    backdrop-filter: blur(12px);
+  }
+
+  .brand {
+    font-family: var(--serif);
+    font-size: 1.6rem;
+    font-weight: 600;
+    letter-spacing: 0.25em;
+    color: var(--gold);
+    text-decoration: none;
+  }
+
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 4rem;
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 3rem;
+  }
+
+  .media {
+    background: var(--gold-pale);
+    border: 1px solid rgba(184, 151, 90, 0.2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    gap: 1rem;
+  }
+
+  .media img {
+    width: 100%;
+    height: auto;
+    max-height: 520px;
+    object-fit: cover;
+  }
+
+  .thumbs {
+    display: flex;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .thumbs img {
+    width: 64px;
+    height: 64px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid rgba(184, 151, 90, 0.2);
+    background: var(--white);
+  }
+
+  .details h1 {
+    font-family: var(--serif);
+    font-size: clamp(2.4rem, 3.5vw, 3.4rem);
+    font-weight: 300;
+    margin-bottom: 1rem;
+  }
+
+  .price {
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: var(--ink-mid);
+    margin-bottom: 1.5rem;
+  }
+
+  .divider {
+    height: 1px;
+    background: rgba(184, 151, 90, 0.2);
+    margin: 1.5rem 0;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    padding: 0.9rem 2rem;
+    background: var(--ink);
+    color: var(--white);
+    border: 1px solid var(--ink);
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-size: 0.7rem;
+    transition: background 0.25s, color 0.25s, border-color 0.25s;
+  }
+
+  .btn:hover {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: var(--white);
+  }
+
+  .muted {
+    color: var(--ink-muted);
+    font-size: 0.9rem;
+    line-height: 1.7;
+  }
+
+  .meta {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem 1.5rem;
+    font-size: 0.85rem;
+    color: var(--ink-mid);
+    margin-top: 1.5rem;
+  }
+
+  .meta span {
+    color: var(--ink);
+    font-weight: 500;
+  }
+
+  @media (max-width: 900px) {
+    header { padding: 1rem 1.5rem; }
+    .container { padding: 2rem 1.5rem; grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <a class="brand" href="/">AURUM</a>
+</header>
+<main class="container">
+  <div class="media">
+    {% if product.image %}
+    <img src="{{ product.image.url }}" alt="{{ product.name }}" />
+    {% else %}
+    <img src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=800&q=80" alt="{{ product.name }}" />
+    {% endif %}
+    {% if product.images.all %}
+    <div class="thumbs">
+      {% for image in product.images.all %}
+      <img src="{{ image.image.url }}" alt="{{ product.name }} thumbnail {{ forloop.counter }}" />
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+  <div class="details">
+    <h1>{{ product.name }}</h1>
+    <div class="price">$ {{product.price }}</div>
+    <p class="muted">
+      {{ product.description|default:"Crafted with meticulous detail and timeless design. Each Aurum piece is built to last across generations, with a focus on exceptional materials and finish." }}
+    </p>
+    <div class="meta">
+      <div>Category: <span>{{ product.category.name|default:"Collection" }}</span></div>
+      <div>SKU: <span>{{ product.sku|default:"—" }}</span></div>
+      <div>Material: <span>{{ product.material|default:"—" }}</span></div>
+      <div>Origin: <span>{{ product.origin|default:"—" }}</span></div>
+      <div>Warranty: <span>{{ product.warranty|default:"—" }}</span></div>
+    </div>
+    <div class="divider"></div>
+    <a class="btn" href="/">Back to Collection</a>
+    <section class="reviews-section">
+    <h2>Customer Reviews</h2>
+
+    <p>Total reviews: {{ reviews|length }}</p>
+
+    {% if reviews %}
+        {% for review in reviews %}
+            <div class="review-card">
+                <h4>{{ review.customer_name }}</h4>
+
+                <div class="stars">
+                    {% for i in "12345" %}
+                        {% if forloop.counter <= review.rating %}
+                            ★
+                        {% else %}
+                            ☆
+                        {% endif %}
+                    {% endfor %}
+                </div>
+
+                <p>{{ review.comment }}</p>
+
+                <small>{{ review.created_at|date:"M d, Y" }}</small>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No reviews yet.</p>
+    {% endif %}
+</section>
+  </div>
+</main>
+</body>
+</html>
