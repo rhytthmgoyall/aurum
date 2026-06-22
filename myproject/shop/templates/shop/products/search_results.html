@@ -1,8 +1,70 @@
 <div class="search-page">
     <div class="search-header">
-        <p class="search-eyebrow">Search Results</p>
-        <h1>Results for <em>"{{ query }}"</em></h1>
+    <p class="search-eyebrow">Search Results</p>
+    <h1>Results for <em>"{{ query }}"</em></h1>
+</div>
+
+<form method="GET" class="filter-sort-bar">
+
+    <input type="hidden" name="q" value="{{ query }}">
+
+    <!-- Category Filter -->
+    <div class="filter-item">
+        <label>Filter</label>
+        <select name="category">
+            <option value="">All Categories</option>
+
+            {% for category in categories %}
+                <option
+                    value="{{ category.id }}"
+                    {% if selected_category == category.id|stringformat:"s" %}
+                        selected
+                    {% endif %}
+                >
+                    {{ category.name }}
+                </option>
+            {% endfor %}
+        </select>
     </div>
+
+    <!-- Sort -->
+    <div class="filter-item">
+        <label>Sort By</label>
+        <select name="sort">
+            <option value="">Featured</option>
+
+            <option value="price_low"
+                {% if selected_sort == "price_low" %}selected{% endif %}>
+                Price: Low → High
+            </option>
+
+            <option value="price_high"
+                {% if selected_sort == "price_high" %}selected{% endif %}>
+                Price: High → Low
+            </option>
+
+            <option value="name_az"
+                {% if selected_sort == "name_az" %}selected{% endif %}>
+                Name: A → Z
+            </option>
+
+            <option value="name_za"
+                {% if selected_sort == "name_za" %}selected{% endif %}>
+                Name: Z → A
+            </option>
+
+            <option value="rating_high">Rating: High → Low</option>
+            <option value="most_reviewed">Most Reviewed</option>
+        </select>
+    </div>
+
+    <button type="submit" class="filter-btn">
+        Apply
+    </button>
+
+</form>
+
+<div class="search-products">
 
     <div class="search-products">
         {% for product in products %}
@@ -19,9 +81,20 @@
                     <p class="product-brand">AURUM COLLECTION</p>
                     <h2>{{ product.name }}</h2>
                     <p class="product-price">${{ product.price }}</p>
-                    <p class="product-description">
-                        {{ product.description|default:"Crafted with timeless elegance and refined detail."|truncatewords:18 }}
-                    </p>
+
+<div class="product-rating">
+    <span class="rating-star">★</span>
+
+    <span class="rating-score">
+        {{ product.avg_rating|floatformat:1 }} / 5
+    </span>
+
+    <span class="rating-divider"></span>
+
+    <span class="rating-count">
+        {{ product.review_count }} reviews
+    </span>
+</div>
                 </div>
             </a>
         {% empty %}
@@ -114,6 +187,43 @@ body {
     font-style: italic;
 }
 
+.filter-sort-bar {
+    display: flex;
+    align-items: end;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.filter-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.filter-item label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--gold);
+}
+
+.filter-item select {
+    min-width: 220px;
+    height: 48px;
+    padding: 0 1rem;
+}
+
+@media(max-width:700px){
+    .filter-sort-bar{
+        flex-direction:column;
+        align-items:stretch;
+    }
+
+    .filter-item select{
+        min-width:100%;
+    }
+}
+
 .search-products {
     display: grid;
     gap: 1.5rem;
@@ -182,6 +292,35 @@ body {
     margin-bottom: 0.8rem;
 }
 
+.product-rating {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    margin: 1rem 0 1.1rem;
+    font-size: 1rem;
+}
+
+.rating-star {
+    color: var(--gold);
+    font-size: 1.25rem;
+    line-height: 1;
+}
+
+.rating-score {
+    color: var(--ink);
+    font-weight: 500;
+}
+
+.rating-divider {
+    width: 1px;
+    height: 24px;
+    background: rgba(26, 23, 20, 0.18);
+}
+
+.rating-count {
+    color: var(--ink-muted);
+}
+
 .product-description {
     color: var(--ink-muted);
     line-height: 1.7;
@@ -189,8 +328,7 @@ body {
     max-width: 520px;
 }
 
-{% if not is_mobile and page_obj.has_other_pages %}
-    .pagination {
+.pagination {
     margin-top: 3rem;
     display: flex;
     justify-content: center;
@@ -260,4 +398,3 @@ body {
     }
 }
 </style>
-{% endif %}

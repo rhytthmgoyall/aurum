@@ -95,12 +95,55 @@
     margin-bottom: 1rem;
   }
 
+  .reviews-section {
+  grid-column: 1 / -1;
+}
+
+  .review-card {
+    padding: 1.5rem 0;
+    border-bottom: 1px solid rgba(184,151,90,0.15);
+}
+
+  .review-card:last-child {
+    border-bottom: none;
+}
+
   .price {
     font-size: 1.25rem;
     font-weight: 500;
     color: var(--ink-mid);
     margin-bottom: 1.5rem;
   }
+
+  .product-rating {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    margin-bottom: 1.5rem;
+}
+
+.rating-star {
+    color: var(--gold);
+    font-size: 1.25rem;
+    line-height: 1;
+}
+
+.rating-score {
+    color: var(--ink);
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.rating-divider {
+    width: 1px;
+    height: 22px;
+    background: rgba(26, 23, 20, 0.15);
+}
+
+.rating-count {
+    color: var(--ink-muted);
+    font-size: 0.95rem;
+}
 
   .divider {
     height: 1px;
@@ -149,7 +192,7 @@
     color: var(--ink);
     font-weight: 500;
   }
-
+  
   @media (max-width: 900px) {
     header { padding: 1rem 1.5rem; }
     .container { padding: 2rem 1.5rem; grid-template-columns: 1fr; }
@@ -161,65 +204,69 @@
   <a class="brand" href="/">AURUM</a>
 </header>
 <main class="container">
+
   <div class="media">
     {% if product.image %}
-    <img src="{{ product.image.url }}" alt="{{ product.name }}" />
+      <img src="{{ product.image.url }}" alt="{{ product.name }}" />
     {% else %}
-    <img src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=800&q=80" alt="{{ product.name }}" />
+      <img src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=800&q=80" alt="{{ product.name }}" />
     {% endif %}
-    {% if product.images.all %}
-    <div class="thumbs">
-      {% for image in product.images.all %}
-      <img src="{{ image.image.url }}" alt="{{ product.name }} thumbnail {{ forloop.counter }}" />
-      {% endfor %}
-    </div>
-    {% endif %}
+
   </div>
+
   <div class="details">
     <h1>{{ product.name }}</h1>
-    <div class="price">$ {{product.price }}</div>
-    <p class="muted">
-      {{ product.description|default:"Crafted with meticulous detail and timeless design. Each Aurum piece is built to last across generations, with a focus on exceptional materials and finish." }}
-    </p>
+    <div class="price">$ {{ product.price }}</div>
+
+<div class="product-rating">
+    <span class="rating-star">★</span>
+
+    <span class="rating-score">
+        {{ avg_rating|floatformat:1 }} / 5
+    </span>
+
+    <span class="rating-divider"></span>
+
+    <span class="rating-count">
+        {{ review_count }} reviews
+    </span>
+</div>
+
     <div class="meta">
       <div>Category: <span>{{ product.category.name|default:"Collection" }}</span></div>
-      <div>SKU: <span>{{ product.sku|default:"—" }}</span></div>
-      <div>Material: <span>{{ product.material|default:"—" }}</span></div>
-      <div>Origin: <span>{{ product.origin|default:"—" }}</span></div>
-      <div>Warranty: <span>{{ product.warranty|default:"—" }}</span></div>
     </div>
+
     <div class="divider"></div>
     <a class="btn" href="/">Back to Collection</a>
-    <section class="reviews-section">
-    <h2>Customer Reviews</h2>
+  </div>
 
+  <section class="reviews-section">
+    <h2>Customer Reviews</h2>
     <p>Total reviews: {{ reviews|length }}</p>
 
     {% if reviews %}
-        {% for review in reviews %}
-            <div class="review-card">
-                <h4>{{ review.customer_name }}</h4>
+      {% for review in reviews %}
+        <div class="review-card">
+          <h4>{{ review.customer_name }}</h4>
 
-                <div class="stars">
-                    {% for i in "12345" %}
-                        {% if forloop.counter <= review.rating %}
-                            ★
-                        {% else %}
-                            ☆
-                        {% endif %}
-                    {% endfor %}
-                </div>
+          <div class="stars">
+            {% for i in "12345" %}
+              {% if forloop.counter <= review.rating %}
+                ★
+              {% else %}
+                ☆
+              {% endif %}
+            {% endfor %}
+          </div>
 
-                <p>{{ review.comment }}</p>
-
-                <small>{{ review.created_at|date:"M d, Y" }}</small>
-            </div>
-        {% endfor %}
+          <p>{{ review.comment }}</p>
+        </div>
+      {% endfor %}
     {% else %}
-        <p>No reviews yet.</p>
+      <p>No reviews yet.</p>
     {% endif %}
-</section>
-  </div>
+  </section>
+
 </main>
 </body>
 </html>

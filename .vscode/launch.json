@@ -14,7 +14,8 @@
             ],
             "django": true,
             "autoStartBrowser": false,
-            "program": "${workspaceFolder}\\myproject\\manage.py"
+            "program": "${workspaceFolder}\\myproject\\manage.py",
+            "python": "${workspaceFolder}\\env\\Scripts\\python.exe"
         }
     ]
 }

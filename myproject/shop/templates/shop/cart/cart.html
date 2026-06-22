@@ -1,0 +1,559 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Your Cart | AURUM</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #faf7f2;
+            font-family: 'Jost', sans-serif;
+            color: #1a1714;
+            min-height: 100vh;
+        }
+
+        .page {
+            width: min(1200px, 92%);
+            margin: 0 auto;
+            padding: 3rem 0 5rem;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+        }
+
+        .brand {
+            font-family: 'Cormorant Garamond', serif;
+            letter-spacing: 0.45em;
+            color: #b8975a;
+            font-size: 1.9rem;
+            text-decoration: none;
+        }
+
+        .top-link {
+            color: #4a433b;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .top-link:hover {
+            color: #b8975a;
+        }
+
+        .cart-header {
+            margin-bottom: 2.5rem;
+        }
+
+        .eyebrow {
+            text-transform: uppercase;
+            letter-spacing: 0.35em;
+            color: #b8975a;
+            font-size: 0.72rem;
+            margin-bottom: 0.8rem;
+        }
+
+        h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 4rem;
+            font-weight: 400;
+            margin-bottom: 0.7rem;
+        }
+
+        .cart-subtitle {
+            color: #8a7f72;
+            line-height: 1.8;
+            max-width: 620px;
+        }
+
+        .cart-layout {
+            display: grid;
+            grid-template-columns: 1.6fr 0.85fr;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        .cart-list {
+            background: #fff;
+            border: 1px solid rgba(184, 151, 90, 0.22);
+            box-shadow: 0 22px 60px rgba(26, 23, 20, 0.08);
+        }
+
+        .cart-list-head {
+            padding: 1.3rem 1.5rem;
+            border-bottom: 1px solid rgba(184, 151, 90, 0.22);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cart-list-head h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.8rem;
+            font-weight: 400;
+        }
+
+        .cart-count {
+            color: #8a7f72;
+            font-size: 0.9rem;
+        }
+
+        .cart-item {
+            display: grid;
+            grid-template-columns: 135px 1fr auto;
+            gap: 1.5rem;
+            padding: 1.5rem;
+            border-bottom: 1px solid rgba(184, 151, 90, 0.18);
+            align-items: center;
+        }
+
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+
+        .item-image {
+            width: 135px;
+            height: 155px;
+            background: #faf7f2;
+            border: 1px solid rgba(184, 151, 90, 0.22);
+            overflow: hidden;
+        }
+
+        .item-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .item-brand {
+            color: #b8975a;
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
+            font-size: 0.68rem;
+            margin-bottom: 0.45rem;
+        }
+
+        .item-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.9rem;
+            font-weight: 400;
+            margin-bottom: 0.6rem;
+        }
+
+        .item-meta {
+            color: #8a7f72;
+            font-size: 0.92rem;
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+
+        .item-controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .qty-box {
+            display: inline-flex;
+            align-items: center;
+            border: 1px solid rgba(184, 151, 90, 0.38);
+            background: #fff;
+        }
+
+        .qty-form {
+            display: inline;
+        }
+
+        .qty-btn {
+            width: 38px;
+            height: 38px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-size: 1.1rem;
+            color: #1a1714;
+        }
+
+        .qty-btn:hover {
+            background: #b8975a;
+            color: #fff;
+        }
+
+        .qty-value {
+            min-width: 44px;
+            text-align: center;
+            font-size: 0.95rem;
+        }
+
+        .remove-form {
+            display: inline;
+        }
+
+        .remove-btn {
+            border: none;
+            background: transparent;
+            color: #8a7f72;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+            cursor: pointer;
+            font-family: 'Jost', sans-serif;
+            font-size: 0.86rem;
+        }
+
+        .remove-btn:hover {
+            color: #b00020;
+        }
+
+        .item-price {
+            text-align: right;
+            min-width: 130px;
+        }
+
+        .each-price {
+            color: #8a7f72;
+            font-size: 0.84rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtotal {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.9rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .subtotal-label {
+            color: #8a7f72;
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
+        }
+
+        .summary-card {
+            background: #fff;
+            border: 1px solid rgba(184, 151, 90, 0.22);
+            padding: 1.7rem;
+            box-shadow: 0 22px 60px rgba(26, 23, 20, 0.08);
+            position: sticky;
+            top: 1.5rem;
+        }
+
+        .summary-card h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2rem;
+            font-weight: 400;
+            margin-bottom: 1rem;
+        }
+
+        .summary-note {
+            color: #8a7f72;
+            font-size: 0.9rem;
+            line-height: 1.8;
+            margin-bottom: 1.4rem;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: 0.85rem 0;
+            border-bottom: 1px solid rgba(184, 151, 90, 0.18);
+            color: #4a433b;
+            font-size: 0.95rem;
+        }
+
+        .summary-row strong {
+            color: #1a1714;
+            font-weight: 500;
+        }
+
+        .summary-total {
+            display: flex;
+            justify-content: space-between;
+            align-items: end;
+            margin: 1.5rem 0;
+        }
+
+        .summary-total span {
+            color: #8a7f72;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            font-size: 0.75rem;
+        }
+
+        .summary-total strong {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.7rem;
+            font-weight: 400;
+        }
+
+        .btn {
+            width: 100%;
+            display: block;
+            padding: 1rem 1.4rem;
+            text-align: center;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 0.16em;
+            font-size: 0.78rem;
+            border: none;
+            cursor: pointer;
+            font-family: 'Jost', sans-serif;
+        }
+
+        .btn-gold {
+            background: #b8975a;
+            color: #fff;
+            margin-bottom: 0.8rem;
+        }
+
+        .btn-gold:hover {
+            background: #9f7d46;
+        }
+
+        .btn-dark {
+            background: #1a1714;
+            color: #fff;
+        }
+
+        .btn-dark:hover {
+            background: #2e2924;
+        }
+
+        .secure-note {
+            margin-top: 1.2rem;
+            color: #8a7f72;
+            font-size: 0.84rem;
+            line-height: 1.7;
+        }
+
+        .empty {
+            background: #fff;
+            padding: 4rem 2rem;
+            text-align: center;
+            border: 1px solid rgba(184, 151, 90, 0.22);
+            box-shadow: 0 22px 60px rgba(26, 23, 20, 0.08);
+        }
+
+        .empty h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.8rem;
+            font-weight: 400;
+            margin-bottom: 0.7rem;
+        }
+
+        .empty p {
+            color: #8a7f72;
+            margin-bottom: 1.5rem;
+        }
+
+        .empty .btn {
+            width: auto;
+            display: inline-block;
+        }
+
+        @media(max-width: 950px) {
+            .cart-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .summary-card {
+                position: static;
+            }
+        }
+
+        @media(max-width: 700px) {
+            .page {
+                width: 94%;
+                padding-top: 1.5rem;
+            }
+
+            .topbar {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            h1 {
+                font-size: 3rem;
+            }
+
+            .cart-item {
+                grid-template-columns: 1fr;
+            }
+
+            .item-image {
+                width: 100%;
+                max-width: 230px;
+                height: 250px;
+            }
+
+            .item-price {
+                text-align: left;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="page">
+
+    <div class="topbar">
+        <a href="{% url 'home' %}" class="brand">AURUM</a>
+        <a href="{% url 'home' %}" class="top-link">Continue Shopping</a>
+    </div>
+
+    <div class="cart-header">
+        <p class="eyebrow">Your Selection</p>
+        <h1>Shopping Cart</h1>
+        <p class="cart-subtitle">
+            Review your selected pieces, update quantities, remove items, and proceed securely to checkout.
+        </p>
+    </div>
+
+    {% if cart_items %}
+        <div class="cart-layout">
+
+            <div class="cart-list">
+                <div class="cart-list-head">
+                    <h2>Cart Items</h2>
+                    <p class="cart-count">{{ cart_items|length }} item{{ cart_items|length|pluralize }}</p>
+                </div>
+
+                {% for item in cart_items %}
+                    <div class="cart-item">
+
+                        <div class="item-image">
+                            {% if item.product.image %}
+                                <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
+                            {% else %}
+                                <img src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=600&q=80" alt="{{ item.product.name }}">
+                            {% endif %}
+                        </div>
+
+                        <div class="item-details">
+                            <p class="item-brand">Aurum Collection</p>
+
+                            <h2 class="item-name">
+                                {{ item.product.name }}
+                            </h2>
+
+                            <p class="item-meta">
+                                Price: ${{ item.product.price }}
+
+                                {% if item.product.category %}
+                                    <br>
+                                    Category: {{ item.product.category.name }}
+                                {% endif %}
+                            </p>
+
+                            <div class="item-controls">
+                                <div class="qty-box">
+
+                                    <form method="POST" action="{% url 'decrease_session_cart' item.product.id %}" class="qty-form">
+                                        {% csrf_token %}
+                                        <button type="submit" class="qty-btn">−</button>
+                                    </form>
+
+                                    <span class="qty-value">
+                                        {{ item.quantity }}
+                                    </span>
+
+                                    <form method="POST" action="{% url 'add_to_session_cart' item.product.id %}" class="qty-form">
+                                        {% csrf_token %}
+                                        <button type="submit" class="qty-btn">+</button>
+                                    </form>
+
+                                </div>
+
+                                <form method="POST" action="{% url 'remove_from_session_cart' item.product.id %}" class="remove-form">
+                                    {% csrf_token %}
+                                    <button type="submit" class="remove-btn">
+                                        Remove item
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div class="item-price">
+                            <p class="each-price">${{ item.product.price }} each</p>
+                            <p class="subtotal">${{ item.subtotal }}</p>
+                            <p class="subtotal-label">Subtotal</p>
+                        </div>
+
+                    </div>
+                {% endfor %}
+            </div>
+
+            <aside class="summary-card">
+                <h2>Order Summary</h2>
+
+                <p class="summary-note">
+                    Shipping and taxes will be calculated during checkout.
+                </p>
+
+                <div class="summary-row">
+    <span>Subtotal</span>
+    <strong>${{ subtotal }}</strong>
+</div>
+
+<div class="summary-row">
+    <span>Shipping</span>
+    {% if shipping == 0 %}
+        <strong>Free</strong>
+    {% else %}
+        <strong>${{ shipping }}</strong>
+    {% endif %}
+</div>
+
+<div class="summary-row">
+    <span>Taxes</span>
+    <strong>${{ tax }}</strong>
+</div>
+
+<div class="summary-total">
+    <span>Total</span>
+    <strong>${{ grand_total }}</strong>
+</div>
+
+                <a href="{% url 'checkout' %}" class="btn btn-gold">
+                    Proceed to Checkout
+                </a>
+
+                
+
+                <p class="secure-note">
+                    Secure checkout • Carefully packed delivery • Trusted client care
+                </p>
+            </aside>
+
+        </div>
+    {% else %}
+        <div class="empty">
+            <h2>Your cart is empty</h2>
+            <p>Explore our latest arrivals and add your favourite pieces.</p>
+
+            <a href="{% url 'home' %}" class="btn btn-gold">
+                Start Shopping
+            </a>
+        </div>
+    {% endif %}
+
+</div>
+
+</body>
+</html>

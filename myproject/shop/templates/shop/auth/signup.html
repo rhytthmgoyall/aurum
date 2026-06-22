@@ -1,0 +1,394 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sign Up | AURUM</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+        }
+
+        body{
+            min-height:100vh;
+            background:#faf7f2;
+            font-family:'Jost',sans-serif;
+            color:#1a1714;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            padding:2rem;
+        }
+
+        .auth-wrap{
+            width:min(560px,92%);
+            background:#fff;
+            padding:4rem;
+            box-shadow:0 30px 80px rgba(26,23,20,.12);
+        }
+
+        .auth-box{
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+            text-align:center;
+        }
+
+        .brand{
+            font-family:'Cormorant Garamond',serif;
+            letter-spacing:.45em;
+            color:#b8975a;
+            font-size:1.8rem;
+            margin-bottom:3rem;
+        }
+
+        .eyebrow{
+            text-transform:uppercase;
+            letter-spacing:.35em;
+            color:#b8975a;
+            font-size:.72rem;
+            margin-bottom:1rem;
+        }
+
+        h1{
+            font-family:'Cormorant Garamond',serif;
+            font-size:3.2rem;
+            font-weight:400;
+            margin-bottom:.8rem;
+        }
+
+        .sub{
+            color:#8a7f72;
+            line-height:1.8;
+            font-size:.95rem;
+            margin-bottom:2rem;
+            max-width:340px;
+        }
+
+        input{
+            width:100%;
+            max-width:330px;
+            border:1px solid rgba(184,151,90,.35);
+            padding:1rem;
+            margin-bottom:1rem;
+            font-family:'Jost',sans-serif;
+            outline:none;
+            background:#faf7f2;
+        }
+
+        input:focus{
+            border-color:#b8975a;
+        }
+
+        button{
+            width:100%;
+            max-width:330px;
+            padding:1rem;
+            border:none;
+            background:#b8975a;
+            color:#fff;
+            letter-spacing:.18em;
+            text-transform:uppercase;
+            cursor:pointer;
+            margin-top:.5rem;
+            transition:.25s;
+        }
+
+        button:hover{
+            background:#a6864f;
+        }
+
+        .switch{
+            margin-top:1.5rem;
+            color:#8a7f72;
+            font-size:.9rem;
+        }
+
+        .switch a{
+            color:#b8975a;
+            text-decoration:none;
+        }
+
+        #error{
+            margin-top:1rem;
+            color:#b00020;
+            font-size:.9rem;
+        }
+
+        .otp-overlay{
+            position:fixed;
+            inset:0;
+            display:none;
+            align-items:center;
+            justify-content:center;
+            padding:2rem;
+            background:rgba(26,23,20,.55);
+            z-index:1000;
+        }
+
+        .otp-overlay.open{
+            display:flex;
+        }
+
+        .otp-modal{
+            width:min(440px,100%);
+            padding:3rem;
+            background:#fff;
+            box-shadow:0 30px 80px rgba(26,23,20,.25);
+            text-align:center;
+        }
+
+        .otp-modal h2{
+            margin-bottom:.75rem;
+            font-family:'Cormorant Garamond',serif;
+            font-size:2.3rem;
+            font-weight:400;
+        }
+
+        .otp-modal .sub{
+            margin-right:auto;
+            margin-left:auto;
+        }
+
+        .otp-actions{
+            display:flex;
+            gap:.75rem;
+        }
+
+        .otp-actions button{
+            letter-spacing:.1em;
+        }
+
+        #otpMessage{
+            min-height:1.4rem;
+            margin-top:1rem;
+            color:#b00020;
+            font-size:.9rem;
+        }
+
+        @media(max-width:760px){
+            .auth-wrap{
+                width:95%;
+                padding:2rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="auth-wrap">
+    <div class="auth-box">
+
+        <div class="brand">AURUM</div>
+
+        <p class="eyebrow">Join The Maison</p>
+
+        <h1>Create Account</h1>
+
+        <p class="sub">
+            Create your account to save favourites,
+            manage your cart, and enjoy a personalized luxury shopping experience.
+        </p>
+
+        <input id="username" type="text" placeholder="Username" autocomplete="username" required>
+
+        <input id="email" type="email" placeholder="Email Address" autocomplete="email" required>
+
+        <input id="password" type="password" placeholder="Password" autocomplete="new-password" required>
+        
+        <input
+    id="confirmPassword"
+    type="password"
+    placeholder="Confirm Password"
+    autocomplete="new-password"
+    required
+>
+
+        <button onclick="signupUser()">Create Account</button>
+
+        <p id="error"></p>
+
+        <p class="switch">
+            Already have an account?
+            <a href="{% url 'login' %}">Login</a>
+        </p>
+
+    </div>
+</div>
+
+<div class="otp-overlay" id="otpOverlay" role="dialog" aria-modal="true" aria-labelledby="otpTitle">
+    <div class="otp-modal">
+        <p class="eyebrow">Email Verification</p>
+        <h2 id="otpTitle">Enter Your Code</h2>
+        <p class="sub">
+            We sent a six-digit verification code to
+            <strong id="otpEmail"></strong>.
+        </p>
+
+        <input
+            id="otp"
+            type="text"
+            inputmode="numeric"
+            maxlength="6"
+            autocomplete="one-time-code"
+            placeholder="6-digit OTP"
+        >
+
+        <div class="otp-actions">
+            <button type="button" onclick="verifyOtp()">Verify</button>
+            <button type="button" onclick="resendOtp()">Resend</button>
+        </div>
+
+        <p id="otpMessage"></p>
+    </div>
+</div>
+
+<script>
+let pendingSignupId = null;
+
+async function signupUser() {
+    const error = document.getElementById("error");
+    const username = document.getElementById("username").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value;
+    const confirmPassword =
+    document.getElementById("confirmPassword").value;
+
+    error.innerText = "";
+
+    if (!username || !email || !password || !confirmPassword) {
+        error.innerText = "All fields are required";
+        return;
+    }
+
+    if (password !== confirmPassword) {
+    error.innerText = "Passwords do not match";
+    return;
+}
+
+    try {
+        const response = await fetch("/api/signup/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+    username,
+    email,
+    password,
+    confirm_password: confirmPassword
+})
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            pendingSignupId = data.pending_signup_id;
+            sessionStorage.setItem("pending_signup_id", pendingSignupId);
+            document.getElementById("otpEmail").textContent = email;
+            document.getElementById("otpMessage").textContent =
+                "Enter the code within 5 minutes.";
+            document.getElementById("otpOverlay").classList.add("open");
+            document.getElementById("otp").focus();
+            return;
+        }
+
+        error.innerText = data.error || "Unable to create account";
+    } catch {
+        error.innerText = "Unable to reach the server";
+    }
+}
+
+async function verifyOtp() {
+    const otp = document.getElementById("otp").value.trim();
+    const message = document.getElementById("otpMessage");
+    const pendingId =
+        pendingSignupId || sessionStorage.getItem("pending_signup_id");
+
+    if (!/^\d{6}$/.test(otp)) {
+        message.textContent = "Enter a valid six-digit code.";
+        return;
+    }
+
+    const response = await fetch("/api/signup/verify/", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            pending_signup_id: pendingId,
+            otp
+        })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        message.textContent = data.error || "Unable to verify code.";
+        return;
+    }
+
+    localStorage.setItem("access", data.access);
+    localStorage.setItem("refresh", data.refresh);
+    sessionStorage.removeItem("pending_signup_id");
+
+    await mergeGuestCart(data.access);
+
+    const params = new URLSearchParams(window.location.search);
+    window.location.href = params.get("next") || "/cart/";
+}
+
+async function resendOtp() {
+    const message = document.getElementById("otpMessage");
+    const pendingId =
+        pendingSignupId || sessionStorage.getItem("pending_signup_id");
+
+    const response = await fetch("/api/signup/resend/", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            pending_signup_id: pendingId
+        })
+    });
+
+    const data = await response.json();
+    message.textContent = response.ok
+        ? "A new verification code was sent."
+        : data.error || "Unable to resend code.";
+}
+
+async function mergeGuestCart(token) {
+    const guestCart = JSON.parse(localStorage.getItem("guest_cart") || "{}");
+
+    if (Object.keys(guestCart).length === 0) {
+        return;
+    }
+
+    const response = await fetch("/api/cart/merge/", {
+        method: "POST",
+        headers: {
+            "Authorization": "Bearer " + token,
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            items: guestCart
+        })
+    });
+
+    if (response.ok) {
+        localStorage.removeItem("guest_cart");
+    }
+}
+
+</script>
+
+</body>
+</html>

@@ -99,7 +99,7 @@ for i in range(TOTAL_REVIEWS):
 
     comment = (
         f"{comment} "
-        f"{fake.sentence(nb_words=random.randint(8, 16))} "
+
     )
 
     reviews.append(

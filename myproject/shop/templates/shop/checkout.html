@@ -1,0 +1,540 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Checkout | AURUM</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #faf7f2;
+            font-family: 'Jost', sans-serif;
+            color: #1a1714;
+            min-height: 100vh;
+        }
+
+        .page {
+            width: min(1200px, 92%);
+            margin: 0 auto;
+            padding: 3rem 0 5rem;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+        }
+
+        .brand {
+            font-family: 'Cormorant Garamond', serif;
+            letter-spacing: 0.45em;
+            color: #b8975a;
+            font-size: 1.9rem;
+            text-decoration: none;
+        }
+
+        .top-link {
+            color: #4a433b;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .top-link:hover {
+            color: #b8975a;
+        }
+
+        .checkout-header {
+            margin-bottom: 2.5rem;
+        }
+
+        .eyebrow {
+            text-transform: uppercase;
+            letter-spacing: 0.35em;
+            color: #b8975a;
+            font-size: 0.72rem;
+            margin-bottom: 0.8rem;
+        }
+
+        h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 4rem;
+            font-weight: 400;
+            margin-bottom: 0.7rem;
+        }
+
+        .subtitle {
+            color: #8a7f72;
+            line-height: 1.8;
+            max-width: 620px;
+        }
+
+        .checkout-layout {
+            display: grid;
+            grid-template-columns: 1.35fr 0.9fr;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        .form-card,
+        .summary-card {
+            background: #fff;
+            border: 1px solid rgba(184, 151, 90, 0.22);
+            box-shadow: 0 22px 60px rgba(26, 23, 20, 0.08);
+        }
+
+        .form-card {
+            padding: 2rem;
+        }
+
+        .card-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2rem;
+            font-weight: 400;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 0.45rem;
+        }
+
+        .field.full {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            color: #8a7f72;
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 0.16em;
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 1px solid rgba(184, 151, 90, 0.35);
+            background: #faf7f2;
+            font-family: 'Jost', sans-serif;
+            outline: none;
+            color: #1a1714;
+        }
+
+        textarea {
+            min-height: 110px;
+            resize: vertical;
+        }
+
+        input:focus,
+        textarea:focus {
+            border-color: #b8975a;
+            background: #fff;
+        }
+
+        .submit-btn {
+            margin-top: 1.5rem;
+            width: 100%;
+            border: none;
+            background: #b8975a;
+            color: #fff;
+            padding: 1rem 1.4rem;
+            text-transform: uppercase;
+            letter-spacing: 0.16em;
+            cursor: pointer;
+            font-family: 'Jost', sans-serif;
+        }
+
+        .submit-btn:hover {
+            background: #9f7d46;
+        }
+
+        .payment-btn {
+    margin-top: 1rem;
+    width: 100%;
+    border: 1px solid #1a1714;
+    background: #1a1714;
+    color: #fff;
+    padding: 1rem 1.4rem;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    cursor: not-allowed;
+    font-family: 'Jost', sans-serif;
+    opacity: 0.65;
+}
+
+.payment-btn:hover {
+    background: #1a1714;
+}
+
+        .message {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: #8a7f72;
+        }
+
+        .message.error {
+            color: #b00020;
+        }
+
+        .message.success {
+            color: #26734d;
+        }
+
+        .summary-card {
+            padding: 1.7rem;
+            position: sticky;
+            top: 1.5rem;
+        }
+
+        .summary-card h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2rem;
+            font-weight: 400;
+            margin-bottom: 1rem;
+        }
+
+        .summary-note {
+            color: #8a7f72;
+            font-size: 0.9rem;
+            line-height: 1.8;
+            margin-bottom: 1.4rem;
+        }
+
+        .summary-items {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 1.4rem;
+            max-height: 280px;
+            overflow-y: auto;
+            padding-right: 0.4rem;
+        }
+
+        .summary-item {
+            display: grid;
+            grid-template-columns: 64px 1fr auto;
+            gap: 0.9rem;
+            align-items: center;
+        }
+
+        .summary-item img {
+            width: 64px;
+            height: 76px;
+            object-fit: cover;
+            background: #faf7f2;
+            border: 1px solid rgba(184, 151, 90, 0.2);
+        }
+
+        .summary-item-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.2rem;
+            line-height: 1.1;
+        }
+
+        .summary-item-meta {
+            color: #8a7f72;
+            font-size: 0.82rem;
+            margin-top: 0.25rem;
+        }
+
+        .summary-item-price {
+            font-size: 0.9rem;
+            color: #1a1714;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: 0.85rem 0;
+            border-bottom: 1px solid rgba(184, 151, 90, 0.18);
+            color: #4a433b;
+            font-size: 0.95rem;
+        }
+
+        .summary-row strong {
+            color: #1a1714;
+            font-weight: 500;
+        }
+
+        .summary-total {
+            display: flex;
+            justify-content: space-between;
+            align-items: end;
+            margin-top: 1.5rem;
+        }
+
+        .summary-total span {
+            color: #8a7f72;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            font-size: 0.75rem;
+        }
+
+        .summary-total strong {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.7rem;
+            font-weight: 400;
+        }
+
+        @media(max-width: 900px) {
+            .checkout-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .summary-card {
+                position: static;
+            }
+        }
+
+        @media(max-width: 650px) {
+            h1 {
+                font-size: 3rem;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .topbar {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="page">
+
+    <div class="topbar">
+        <a href="{% url 'home' %}" class="brand">AURUM</a>
+        <a href="{% url 'cart' %}" class="top-link">Back to Cart</a>
+    </div>
+
+    <div class="checkout-header">
+        <p class="eyebrow">Secure Checkout</p>
+        <h1>Checkout</h1>
+        <p class="subtitle">
+            Enter your shipping details below. Your cart summary is loaded using JSON from the server.
+        </p>
+    </div>
+
+    <div class="checkout-layout">
+
+        <section class="form-card">
+            <h2 class="card-title">Shipping Address</h2>
+
+            <form id="shippingForm">
+                <div class="form-grid">
+                    <div class="field">
+                        <label>First Name</label>
+                        <input type="text" name="first_name" required>
+                    </div>
+
+                    <div class="field">
+                        <label>Last Name</label>
+                        <input type="text" name="last_name" required>
+                    </div>
+
+                    <div class="field full">
+                        <label>Email</label>
+                        <input type="email" name="email" required>
+                    </div>
+
+                    <div class="field full">
+                        <label>Address</label>
+                        <textarea name="address" required></textarea>
+                    </div>
+
+                    <div class="field">
+                        <label>City</label>
+                        <input type="text" name="city" required>
+                    </div>
+
+                    <div class="field">
+                        <label>Postal Code</label>
+                        <input type="text" name="postal_code" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn">
+                    Save Shipping Address
+                </button>
+
+                <button type="button" class="payment-btn" disabled>
+    Proceed to Payment
+</button>
+
+                <p id="formMessage" class="message"></p>
+            </form>
+        </section>
+
+        <aside class="summary-card">
+            <h2>Order Summary</h2>
+
+            <p class="summary-note">
+                Cart details are fetched using JSON.
+            </p>
+
+            <div class="summary-items" id="summaryItems">
+                Loading cart...
+            </div>
+
+            <div class="summary-row">
+                <span>Subtotal</span>
+                <strong id="subtotal">$0</strong>
+            </div>
+
+            <div class="summary-row">
+                <span>Shipping</span>
+                <strong id="shipping">$0</strong>
+            </div>
+
+            <div class="summary-row">
+                <span>Taxes</span>
+                <strong id="tax">$0</strong>
+            </div>
+
+            <div class="summary-total">
+                <span>Total</span>
+                <strong id="grandTotal">$0</strong>
+            </div>
+        </aside>
+
+    </div>
+
+</div>
+
+<script>
+    function getCookie(name) {
+        const cookies = document.cookie ? document.cookie.split(";") : [];
+
+        for (let cookie of cookies) {
+            cookie = cookie.trim();
+
+            if (cookie.startsWith(name + "=")) {
+                return decodeURIComponent(cookie.substring(name.length + 1));
+            }
+        }
+
+        return null;
+    }
+
+    function money(value) {
+        return "$" + Number(value || 0).toLocaleString(undefined, {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+    }
+
+    async function loadCheckoutSummary() {
+        const container = document.getElementById("summaryItems");
+
+        try {
+            const response = await fetch("/api/checkout/summary/");
+
+            if (response.status === 401) {
+                window.location.href = "/login/?next=/checkout/";
+                return;
+            }
+
+            const data = await response.json();
+
+            if (!data.items || data.items.length === 0) {
+                container.innerHTML = "<p style='color:#8a7f72;'>Your cart is empty.</p>";
+                return;
+            }
+
+            container.innerHTML = data.items.map(item => `
+                <div class="summary-item">
+                    ${
+                        item.image
+                        ? `<img src="${item.image}" alt="${item.name}">`
+                        : `<img src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=600&q=80" alt="${item.name}">`
+                    }
+
+                    <div>
+                        <div class="summary-item-name">${item.name}</div>
+                        <div class="summary-item-meta">Qty: ${item.quantity}</div>
+                    </div>
+
+                    <div class="summary-item-price">${money(item.subtotal)}</div>
+                </div>
+            `).join("");
+
+            document.getElementById("subtotal").textContent = money(data.subtotal);
+            document.getElementById("shipping").textContent = Number(data.shipping) === 0 ? "Free" : money(data.shipping);
+            document.getElementById("tax").textContent = money(data.tax);
+            document.getElementById("grandTotal").textContent = money(data.grand_total);
+
+        } catch {
+            container.innerHTML = "<p style='color:#b00020;'>Unable to load cart summary.</p>";
+        }
+    }
+
+    document.getElementById("shippingForm").addEventListener("submit", async function(event) {
+        event.preventDefault();
+
+        const form = event.target;
+        const message = document.getElementById("formMessage");
+
+        const payload = {
+            first_name: form.first_name.value.trim(),
+            last_name: form.last_name.value.trim(),
+            email: form.email.value.trim(),
+            address: form.address.value.trim(),
+            city: form.city.value.trim(),
+            postal_code: form.postal_code.value.trim(),
+        };
+
+        try {
+            const response = await fetch("/api/checkout/shipping/", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": getCookie("csrftoken")
+                },
+                body: JSON.stringify(payload)
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                message.className = "message success";
+                message.textContent = data.message || "Shipping address saved.";
+            } else {
+                message.className = "message error";
+                message.textContent = data.error || "Unable to save shipping address.";
+            }
+
+        } catch {
+            message.className = "message error";
+            message.textContent = "Unable to reach server.";
+        }
+    });
+
+    loadCheckoutSummary();
+</script>
+
+</body>
+</html>

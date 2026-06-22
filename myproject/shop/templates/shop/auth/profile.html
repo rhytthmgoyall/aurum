@@ -1,0 +1,189 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile | AURUM</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            background: #faf7f2;
+            font-family: 'Jost', sans-serif;
+            color: #1a1714;
+            display: grid;
+            place-items: center;
+        }
+
+        .profile-wrap {
+            width: min(640px, 92%);
+            background: #fff;
+            padding: 4rem;
+            box-shadow: 0 30px 80px rgba(26, 23, 20, 0.12);
+        }
+
+        .brand {
+            font-family: 'Cormorant Garamond', serif;
+            letter-spacing: 0.45em;
+            color: #b8975a;
+            font-size: 1.8rem;
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .eyebrow {
+            text-transform: uppercase;
+            letter-spacing: 0.35em;
+            color: #b8975a;
+            font-size: 0.72rem;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 3rem;
+            font-weight: 400;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .profile-card {
+            border: 1px solid rgba(184, 151, 90, 0.25);
+            padding: 2rem;
+            background: #faf7f2;
+        }
+
+        .row {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(184, 151, 90, 0.18);
+        }
+
+        .row:last-child {
+            border-bottom: none;
+        }
+
+        .label {
+            color: #8a7f72;
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
+            font-size: 0.72rem;
+        }
+
+        .value {
+            color: #1a1714;
+            font-size: 0.95rem;
+            text-align: right;
+        }
+
+        .actions {
+            margin-top: 2rem;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 1rem;
+            background: #b8975a;
+            color: #fff;
+            text-decoration: none;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 0.16em;
+            font-size: 0.78rem;
+        }
+
+        .btn-dark {
+            background: #1a1714;
+        }
+
+        @media(max-width: 760px) {
+            .profile-wrap {
+                padding: 2rem;
+            }
+
+            .row {
+                flex-direction: column;
+            }
+
+            .value {
+                text-align: left;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="profile-wrap">
+        <div class="brand">AURUM</div>
+
+        <p class="eyebrow">Account Details</p>
+
+        <h1>My Profile</h1>
+
+        <div class="profile-card">
+            <div class="row">
+                <div class="label">Username</div>
+                <div class="value">{{ username }}</div>
+            </div>
+
+            <div class="row">
+                <div class="label">Email</div>
+                <div class="value">
+                    {% if email %}
+                        {{ email }}
+                    {% else %}
+                        Not added
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="label">First Name</div>
+                <div class="value">
+                    {% if first_name %}
+                        {{ first_name }}
+                    {% else %}
+                        Not added
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="label">Last Name</div>
+                <div class="value">
+                    {% if last_name %}
+                        {{ last_name }}
+                    {% else %}
+                        Not added
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="actions">
+            <a href="{% url 'home' %}" class="btn">Back Home</a>
+            <a href="{% url 'logout' %}" class="btn btn-dark">Logout</a>
+        </div>
+    </div>
+
+</body>
+</html>

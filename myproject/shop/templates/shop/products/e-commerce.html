@@ -13,6 +13,7 @@
 <body>
 
 <!-- ══ PRODUCT DETAIL MODAL ══ -->
+
 <div class="modal-backdrop" id="modalBackdrop"></div>
 <div class="modal" id="productModal" role="dialog" aria-label="Product details">
   <button class="modal-close" id="modalCloseBtn" aria-label="Close">
@@ -22,6 +23,7 @@
 </div>
 
 <!-- ══ SEARCH ══ -->
+
 <div class="search-backdrop" id="searchBackdrop"></div>
 <div class="search-overlay" id="searchOverlay" role="search">
   <div class="search-inner">
@@ -53,26 +55,8 @@
   </div>
 </div>
 
-<!-- ══ CART ══ -->
-<div class="cart-overlay" id="cartOverlay"></div>
-<aside class="cart-drawer" id="cartDrawer" aria-label="Shopping cart">
-  <div class="cart-header">
-    <h2>Your Cart</h2>
-    <button class="cart-close" id="cartCloseBtn" aria-label="Close cart">
-      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M18 6 6 18M6 6l12 12"/></svg>
-    </button>
-  </div>
-  <div class="cart-items" id="cartItems"></div>
-  <div class="cart-footer" id="cartFooter" style="display:none;">
-    <div class="cart-subtotal">
-      <span>Subtotal</span>
-      <strong id="cartTotal">$0</strong>
-    </div>
-    <button class="checkout-btn">Proceed to Checkout</button>
-  </div>
-</aside>
-
 <!-- ══ NAV ══ -->
+
 <nav>
   <span class="nav-logo" id="navLogo">AURUM</span>
   <ul class="nav-links">
@@ -83,20 +67,32 @@
     <li><button class="nav-tab-link active" id="allTab" data-page="all" data-filter="All">All Products</button></li>
   </ul>
   <div class="nav-actions">
+    <a href="/profile/" class="nav-icon-btn" aria-label="Profile">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5">
+        <circle cx="12" cy="8" r="4"/>
+        <path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/>
+    </svg>
+</a>
     <button class="nav-icon-btn" id="searchOpenBtn" aria-label="Search">
       <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.35-4.35"/></svg>
     </button>
     <div class="cart-btn-wrap">
-      <button class="nav-icon-btn" id="cartOpenBtn" aria-label="Cart">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-      </button>
-      <span class="cart-badge" id="cartCount">0</span>
+    <a href="/cart/" class="nav-icon-btn" aria-label="Cart" id="cartLink">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5">
+            <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <path d="M16 10a4 4 0 0 1-8 0"/>
+        </svg>
+    </a>
+    <span class="cart-badge" id="cartCount" hidden>0</span>
     </div>
   </div>
 </nav>
 
 <!-- ══════════ HOME PAGE ══════════ -->
+
 <div class="page active" id="page-home">
+
 
   <section class="hero">
     <div class="hero-left">
@@ -139,6 +135,7 @@
   </div>
 
   <!-- CATEGORIES — Django rendered -->
+
   <section class="section section-alt">
     <div class="section-header reveal">
       <div><p class="section-tag">Browse</p><h2 class="section-title">Our <em>Categories</em></h2></div>
@@ -168,16 +165,15 @@
   </section>
 
   <!-- FEATURED PRODUCTS — Django rendered, no JS needed -->
+
   <section class="section" id="featured">
     <div class="section-header reveal">
       <div><p class="section-tag">Curated Selection</p><h2 class="section-title"><em>Featured</em> Pieces</h2></div>
       <button class="view-all" data-page="all" data-filter="All">View all <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></button>
     </div>
     <div class="product-grid reveal">
-      {# Show featured products, fall back to first 6 if none marked featured #}
-      {% with featured_products=products|dictsort:"is_featured" %}
       {% for product in products %}
-        {% if product.is_featured or forloop.counter <= 6 %}
+        {% if forloop.counter <= 6 %}
         <div class="prod-card" data-product-id="{{ product.id }}">
           <a class="prod-click-zone" href="{% url 'product_detail' product.id %}">
             <div class="prod-img">
@@ -186,18 +182,12 @@
               {% else %}
               <img src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=600&q=80" alt="{{ product.name }}" loading="lazy"/>
               {% endif %}
-              {% if product.badge %}
-              <div class="prod-badge">{{ product.badge }}</div>
-              {% endif %}
             </div>
             <div class="prod-info">
-              <p class="prod-brand">{{ product.brand|default:"Aurum Collection" }}</p>
+              <p class="prod-brand">Aurum Collection</p>
               <h3 class="prod-name">{{ product.name }}</h3>
               <div class="prod-price">
                 <span class="prod-price-main">${{ product.price }}</span>
-                {% if product.old_price %}
-                <span class="prod-price-old">${{ product.old_price }}</span>
-                {% endif %}
               </div>
             </div>
           </a>
@@ -208,7 +198,6 @@
         </div>
         {% endif %}
       {% endfor %}
-      {% endwith %}
       {% if not products %}
       <p style="color:var(--ink-muted);font-size:0.9rem;grid-column:1/-1;">No products available yet.</p>
       {% endif %}
@@ -216,6 +205,7 @@
   </section>
 
   <!-- SLIDER — Django rendered, duplicated for infinite scroll -->
+
   <section class="slider-section section-alt">
     <div class="slider-header reveal">
       <div>
@@ -238,7 +228,7 @@
           <img class="slider-img" src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=600&q=80" alt="{{ product.name }}">
           {% endif %}
           <div class="slider-info">
-            <p class="slider-brand">{{ product.brand|default:"Aurum Collection" }}</p>
+            <p class="slider-brand">Aurum Collection</p>
             <p class="slider-name">{{ product.name }}</p>
             <p class="slider-price">${{ product.price }}</p>
           </div>
@@ -255,7 +245,7 @@
           <img class="slider-img" src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=600&q=80" alt="">
           {% endif %}
           <div class="slider-info">
-            <p class="slider-brand">{{ product.brand|default:"Aurum Collection" }}</p>
+            <p class="slider-brand">Aurum Collection</p>
             <p class="slider-name">{{ product.name }}</p>
             <p class="slider-price">${{ product.price }}</p>
           </div>
@@ -266,43 +256,10 @@
   </section>
 
   <!-- PROMO -->
-  <div class="promo">
-    <div class="promo-text reveal">
-      <p class="promo-eyebrow">Limited Offer · Ends June 30</p>
-      <h2 class="promo-title">Spring <em>Atelier</em><br>Collection.</h2>
-      <p class="promo-sub">Discover pieces born of seasonal inspiration — flowing silhouettes and botanical motifs rendered in 18-carat gold and ethically sourced gemstones.</p>
-      <div class="promo-stats">
-        <div><p class="stat-val">18K</p><p class="stat-label">Gold purity</p></div>
-        <div><p class="stat-val">30+</p><p class="stat-label">New designs</p></div>
-        <div><p class="stat-val">100%</p><p class="stat-label">Ethically sourced</p></div>
-      </div>
-    </div>
-    <img class="promo-img reveal" src="https://images.unsplash.com/photo-1599643477877-530eb83abc8e?w=800&q=80" alt="Spring Atelier Collection"/>
-  </div>
+
 
   <!-- TESTIMONIALS -->
-  <section class="section section-alt">
-    <div class="section-header reveal">
-      <div><p class="section-tag">Client Stories</p><h2 class="section-title">What They <em>Say</em></h2></div>
-    </div>
-    <div class="test-grid">
-      <div class="test-card reveal">
-        <div class="stars"><span class="star"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span><span class="star"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span><span class="star"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span><span class="star"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span><span class="star"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span></div>
-        <p class="test-quote">"The craftsmanship is unlike anything I have encountered. Each detail speaks to the devotion of the artisans behind the piece."</p>
-        <div class="test-author"><div class="test-avatar">SC</div><div><p class="test-name">Sophia Chen</p><p class="test-loc">Hong Kong</p></div></div>
-      </div>
-      <div class="test-card reveal">
-        <div class="stars"><span class="star"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span><span class="star"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span><span class="star"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span><span class="star"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span><span class="star"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span></div>
-        <p class="test-quote">"A gift I purchased for my wife left her speechless. The presentation alone is worth every penny — an experience from start to finish."</p>
-        <div class="test-author"><div class="test-avatar">JL</div><div><p class="test-name">James Laurent</p><p class="test-loc">Paris, France</p></div></div>
-      </div>
-      <div class="test-card reveal">
-        <div class="stars"><span class="star"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span><span class="star"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span><span class="star"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span><span class="star"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span><span class="star"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span></div>
-        <p class="test-quote">"I have worn luxury goods my entire life. Aurum is the rare maison that genuinely honors its heritage while feeling entirely contemporary."</p>
-        <div class="test-author"><div class="test-avatar">NA</div><div><p class="test-name">Nadia Al-Rashid</p><p class="test-loc">Dubai, UAE</p></div></div>
-      </div>
-    </div>
-  </section>
+
 
   <footer>
     <div class="footer-top">
@@ -325,8 +282,8 @@
   </footer>
 </div><!-- end #page-home -->
 
-
 <!-- ══════════ ALL PRODUCTS PAGE ══════════ -->
+
 <div class="page" id="page-all">
   <div class="all-products-header">
     <h1>All <em style="font-style:italic;color:var(--gold);">Products</em></h1>
@@ -335,6 +292,7 @@
   </div>
 
   <!-- Filter bar — category names must match data-cat on cards below -->
+
   <div class="filter-bar" id="filterBar">
     <button class="filter-btn active" data-filter="All">All</button>
     {% if categories %}
@@ -353,6 +311,7 @@
     KEY CHANGE: Cards are rendered by Django. Each card carries data-cat so JS can
     show/hide them for filtering — no innerHTML re-rendering needed.
   -->
+
   <div class="all-products-grid" id="allProductsGrid">
     {% for product in products %}
     <div class="prod-card visible"
@@ -365,18 +324,12 @@
           {% else %}
           <img src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=600&q=80" alt="{{ product.name }}" loading="lazy"/>
           {% endif %}
-          {% if product.badge %}
-          <div class="prod-badge">{{ product.badge }}</div>
-          {% endif %}
         </div>
         <div class="prod-info">
-          <p class="prod-brand">{{ product.brand|default:"Aurum Collection" }}</p>
+          <p class="prod-brand">Aurum Collection</p>
           <h3 class="prod-name">{{ product.name }}</h3>
           <div class="prod-price">
             <span class="prod-price-main">${{ product.price }}</span>
-            {% if product.old_price %}
-            <span class="prod-price-old">${{ product.old_price }}</span>
-            {% endif %}
           </div>
         </div>
       </a>
@@ -411,22 +364,17 @@ const PRODUCTS = [
   {% for product in products %}{
     id: {{ product.id }},
     name: "{{ product.name|escapejs }}",
-    brand: "{{ product.brand|default:'Aurum Collection'|escapejs }}",
+    brand: "Aurum Collection",
     cat: "{{ product.category.name|default:'All'|escapejs }}",
     price: {{ product.price }},
-    old: {% if product.old_price %}{{ product.old_price }}{% else %}null{% endif %},
-    badge: {% if product.badge %}"{{ product.badge|escapejs }}"{% else %}null{% endif %},
-    sku: "{{ product.sku|default:''|escapejs }}",
-    description: "{{ product.description|default:''|escapejs }}",
-    material: "{{ product.material|default:''|escapejs }}",
-    origin: "{{ product.origin|default:''|escapejs }}",
-    warranty: "{{ product.warranty|default:''|escapejs }}",
-    img: "{% if product.image %}{{ product.image.url }}{% else %}https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=600&q=80{% endif %}",
-    images: [{% for image in product.images.all %}"{{ image.image.url }}"{% if not forloop.last %},{% endif %}{% endfor %}]
+    img: "{% if product.image %}{{ product.image.url }}{% else %}https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=600&q=80{% endif %}"
   }{% if not forloop.last %},{% endif %}
   {% endfor %}
 ];
 </script>
+
 <script src="{% static 'shop/js/e-commerce.js' %}"></script>
+
 </body>
 </html>
+

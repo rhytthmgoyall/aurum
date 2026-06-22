@@ -1,0 +1,226 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login | AURUM</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            background: #faf7f2;
+            font-family: 'Jost', sans-serif;
+            color: #1a1714;
+            display: grid;
+            place-items: center;
+        }
+
+        .auth-wrap {
+            width: min(560px, 92%);
+            background: #fff;
+            padding: 4rem;
+            box-shadow: 0 30px 80px rgba(26, 23, 20, 0.12);
+        }
+
+        .auth-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .brand {
+            font-family: 'Cormorant Garamond', serif;
+            letter-spacing: 0.45em;
+            color: #b8975a;
+            font-size: 1.8rem;
+            margin-bottom: 3rem;
+        }
+
+        .eyebrow {
+            text-transform: uppercase;
+            letter-spacing: 0.35em;
+            color: #b8975a;
+            font-size: 0.72rem;
+            margin-bottom: 1rem;
+        }
+
+        h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 3.2rem;
+            font-weight: 400;
+            margin-bottom: 0.8rem;
+        }
+
+        .sub {
+            color: #8a7f72;
+            line-height: 1.8;
+            font-size: 0.95rem;
+            margin-bottom: 2rem;
+        }
+
+        form {
+            width: 100%;
+        }
+
+        input {
+            width: 100%;
+            border: 1px solid rgba(184, 151, 90, 0.35);
+            padding: 1rem;
+            margin-bottom: 1rem;
+            font-family: 'Jost', sans-serif;
+            outline: none;
+            background: #faf7f2;
+        }
+
+        input:focus {
+            border-color: #b8975a;
+        }
+
+        button {
+            width: 100%;
+            padding: 1rem;
+            border: none;
+            background: #b8975a;
+            color: white;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            cursor: pointer;
+            margin-top: 0.5rem;
+            font-family: 'Jost', sans-serif;
+        }
+
+        button:hover {
+            background: #a78345;
+        }
+
+        .google-login-btn,
+        .google-btn {
+            display: block;
+            width: 100%;
+            padding: 1rem;
+            margin-top: 0.8rem;
+            background: #1a1714;
+            color: white;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            text-decoration: none;
+            font-size: 0.85rem;
+        }
+
+        .google-login-btn:hover,
+        .google-btn:hover {
+            background: #333;
+        }
+
+        .switch {
+            margin-top: 1.5rem;
+            color: #8a7f72;
+            font-size: 0.9rem;
+        }
+
+        .switch a {
+            color: #b8975a;
+            text-decoration: none;
+        }
+
+        .forgot-link {
+            display: block;
+            margin: -0.25rem 0 0.75rem;
+            color: #8a7f72;
+            font-size: 0.86rem;
+            text-align: right;
+            text-decoration: none;
+        }
+
+        .forgot-link:hover {
+            color: #b8975a;
+        }
+
+        .error {
+            color: #b00020;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        @media(max-width: 760px) {
+            .auth-wrap {
+                width: 95%;
+                padding: 2rem;
+            }
+
+            .auth-box {
+                padding: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="auth-wrap">
+        <div class="auth-box">
+
+            <div class="brand">AURUM</div>
+
+            <p class="eyebrow">Welcome Back</p>
+
+            <h1>Login</h1>
+
+            <p class="sub">
+                Access your personal cart and continue curating your luxury collection.
+            </p>
+
+            <form method="POST" action="{% url 'login' %}">
+                {% csrf_token %}
+
+                {% if error %}
+                    <p class="error">{{ error }}</p>
+                {% endif %}
+
+                <input
+                    type="text"
+                    name="username"
+                    placeholder="Username"
+                    required
+                >
+
+                <input
+                    type="password"
+                    name="password"
+                    placeholder="Password"
+                    required
+                >
+
+                <a href="{% url 'forgot_password' %}" class="forgot-link">
+                    Forgot password?
+                </a>
+
+                <button type="submit">
+                    Login
+                </button>
+            </form>
+
+            <a href="{% url 'google_login' %}" class="google-login-btn">
+                Continue with Google
+            </a>
+
+            <p class="switch">
+                New user?
+                <a href="{% url 'signup' %}">Create account</a>
+            </p>
+
+        </div>
+    </div>
+
+</body>
+</html>
