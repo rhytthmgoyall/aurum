@@ -4,3 +4,12 @@ __pycache__/
 *.py[cod]
 .venv/
 env/
+
+env/
+.venv/
+__pycache__/
+*.pyc
+db.sqlite3
+.env
+.vscode/
+media/
