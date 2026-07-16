@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <title>Profile | AURUM</title>
 
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Forum&family=Cormorant+Garamond:wght@400;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
 
     <style>
         * {
@@ -17,7 +17,7 @@
 
         body {
             min-height: 100vh;
-            background: #faf7f2;
+            background: #f4f0e8;
             font-family: 'Jost', sans-serif;
             color: #1a1714;
             display: grid;
@@ -33,9 +33,10 @@
 
         .brand {
             font-family: 'Cormorant Garamond', serif;
-            letter-spacing: 0.45em;
-            color: #b8975a;
-            font-size: 1.8rem;
+            letter-spacing: 0.25em;
+            color: #6b4735;
+            font-size: 1.6rem;
+            font-weight: 600;
             text-align: center;
             margin-bottom: 3rem;
         }
@@ -43,14 +44,14 @@
         .eyebrow {
             text-transform: uppercase;
             letter-spacing: 0.35em;
-            color: #b8975a;
+            color: #6b4735;
             font-size: 0.72rem;
             text-align: center;
             margin-bottom: 1rem;
         }
 
         h1 {
-            font-family: 'Cormorant Garamond', serif;
+            font-family: 'Forum', 'Cormorant Garamond', serif;
             font-size: 3rem;
             font-weight: 400;
             text-align: center;
@@ -60,7 +61,155 @@
         .profile-card {
             border: 1px solid rgba(184, 151, 90, 0.25);
             padding: 2rem;
-            background: #faf7f2;
+            background: #f4f0e8;
+        }
+
+        .profile-photo-block {
+            display: grid;
+            place-items: center;
+            gap: 1rem;
+            padding-bottom: 2rem;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid rgba(184, 151, 90, 0.18);
+        }
+
+        .profile-photo-button {
+            border: none;
+            background: transparent;
+            padding: 0;
+            display: grid;
+            place-items: center;
+            cursor: pointer;
+        }
+
+        .profile-photo,
+        .profile-photo-placeholder {
+            width: 156px;
+            height: 156px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 1px solid rgba(184, 151, 90, 0.35);
+            background: #fff;
+            cursor: pointer;
+        }
+
+        .profile-photo-placeholder {
+            display: grid;
+            place-items: center;
+            background: #fff;
+        }
+
+        .profile-photo-placeholder::after {
+            content: "";
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            border: 1px solid rgba(184, 151, 90, 0.45);
+        }
+
+        .profile-upload-form {
+            display: none;
+            gap: 0.75rem;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            width: 100%;
+        }
+
+        .profile-upload-form.is-visible {
+            display: flex;
+        }
+
+        .avatar-grid {
+            width: 100%;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.85rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .avatar-option {
+            display: grid;
+            place-items: center;
+            gap: 0.45rem;
+            padding: 0.65rem;
+            border: 1px solid rgba(184, 151, 90, 0.22);
+            background: rgba(255, 255, 255, 0.45);
+            cursor: pointer;
+        }
+
+        .avatar-option input {
+            display: none;
+        }
+
+        .avatar-option img {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 1px solid rgba(184, 151, 90, 0.28);
+        }
+
+        .avatar-option span {
+            color: #8a7f72;
+            font-size: 0.58rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+
+        .avatar-option:has(input:checked) {
+            border-color: #6b4735;
+            background: #f3ebe6;
+        }
+
+        .upload-divider {
+            width: 100%;
+            text-align: center;
+            color: #8a7f72;
+            font-size: 0.66rem;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            margin: 0.25rem 0;
+        }
+
+        .profile-upload-form > input {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+        }
+
+        .profile-file-trigger,
+        .profile-upload-form button {
+            border: none;
+            padding: 0.8rem 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            font-size: 0.68rem;
+            cursor: pointer;
+            font-family: 'Jost', sans-serif;
+        }
+
+        .profile-file-trigger {
+            border: 1px solid rgba(184, 151, 90, 0.35);
+            background: transparent;
+            color: #4a433b;
+        }
+
+        .profile-file-name {
+            min-width: 8rem;
+            max-width: 11rem;
+            color: #8a7f72;
+            font-size: 0.78rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .profile-upload-form button {
+            background: #1a1714;
+            color: #fff;
         }
 
         .row {
@@ -97,7 +246,7 @@
         .btn {
             flex: 1;
             padding: 1rem;
-            background: #b8975a;
+            background: #6b4735;
             color: #fff;
             text-decoration: none;
             text-align: center;
@@ -126,6 +275,11 @@
             .actions {
                 flex-direction: column;
             }
+
+            .avatar-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
         }
     </style>
 </head>
@@ -135,11 +289,47 @@
     <div class="profile-wrap">
         <div class="brand">AURUM</div>
 
-        <p class="eyebrow">Account Details</p>
-
         <h1>My Profile</h1>
 
         <div class="profile-card">
+            <div class="profile-photo-block">
+                {% if profile.profile_picture %}
+                    <button type="button" class="profile-photo-button" id="profilePhotoToggle" aria-label="Change profile picture">
+                        <img src="{{ profile.profile_picture.url }}" alt="{{ username }}" class="profile-photo">
+                    </button>
+                {% elif profile.avatar_choice %}
+                    <button type="button" class="profile-photo-button" id="profilePhotoToggle" aria-label="Change profile picture">
+                        {% for avatar in avatar_choices %}
+                            {% if avatar.id == profile.avatar_choice %}
+                                <img src="{% static avatar.image %}" alt="{{ avatar.name }}" class="profile-photo">
+                            {% endif %}
+                        {% endfor %}
+                    </button>
+                {% else %}
+                    <button type="button" class="profile-photo-button" id="profilePhotoToggle" aria-label="Add profile picture">
+                    <div class="profile-photo-placeholder">
+                    </div>
+                    </button>
+                {% endif %}
+
+                <form method="POST" enctype="multipart/form-data" class="profile-upload-form" id="profileUploadForm">
+                    {% csrf_token %}
+                    <div class="avatar-grid">
+                        {% for avatar in avatar_choices %}
+                            <label class="avatar-option">
+                                <input type="radio" name="avatar_choice" value="{{ avatar.id }}" {% if profile.avatar_choice == avatar.id %}checked{% endif %}>
+                                <img src="{% static avatar.image %}" alt="{{ avatar.name }}">
+                            </label>
+                        {% endfor %}
+                    </div>
+                    <div class="upload-divider">or upload your own</div>
+                    <label class="profile-file-trigger" for="profilePictureInput">Choose Image</label>
+                    <input id="profilePictureInput" type="file" name="profile_picture" accept="image/*">
+                    <span class="profile-file-name" id="profileFileName">No image selected</span>
+                    <button type="submit">Save Image</button>
+                </form>
+            </div>
+
             <div class="row">
                 <div class="label">Username</div>
                 <div class="value">{{ username }}</div>
@@ -177,13 +367,39 @@
                     {% endif %}
                 </div>
             </div>
+
+            <div class="row">
+                <div class="label">Wallet</div>
+                <div class="value">&#8377;{{ wallet.balance }}</div>
+            </div>
         </div>
 
         <div class="actions">
             <a href="{% url 'home' %}" class="btn">Back Home</a>
+            <a href="{% url 'wallet_balance' %}" class="btn">My Wallet</a>
+            <a href="{% url 'membership' %}" class="btn">Aurum Select</a>
             <a href="{% url 'logout' %}" class="btn btn-dark">Logout</a>
         </div>
     </div>
 
+    <script>
+        const profilePhotoToggle = document.getElementById("profilePhotoToggle");
+        const profileUploadForm = document.getElementById("profileUploadForm");
+        const profilePictureInput = document.getElementById("profilePictureInput");
+        const profileFileName = document.getElementById("profileFileName");
+
+        if (profilePhotoToggle && profileUploadForm) {
+            profilePhotoToggle.addEventListener("click", () => {
+                profileUploadForm.classList.toggle("is-visible");
+            });
+        }
+
+        if (profilePictureInput && profileFileName) {
+            profilePictureInput.addEventListener("change", () => {
+                const file = profilePictureInput.files[0];
+                profileFileName.textContent = file ? file.name : "No image selected";
+            });
+        }
+    </script>
 </body>
 </html>

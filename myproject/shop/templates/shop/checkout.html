@@ -1,4 +1,4 @@
-{% load static %}
+﻿{% load static %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <title>Checkout | AURUM</title>
 
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Forum&family=Cormorant+Garamond:wght@400;500;600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
 
     <style>
         * {
@@ -16,7 +16,7 @@
         }
 
         body {
-            background: #faf7f2;
+            background: #f4f0e8;
             font-family: 'Jost', sans-serif;
             color: #1a1714;
             min-height: 100vh;
@@ -37,9 +37,10 @@
 
         .brand {
             font-family: 'Cormorant Garamond', serif;
-            letter-spacing: 0.45em;
-            color: #b8975a;
-            font-size: 1.9rem;
+            letter-spacing: 0.25em;
+            color: #6b4735;
+            font-size: 1.6rem;
+            font-weight: 600;
             text-decoration: none;
         }
 
@@ -50,7 +51,7 @@
         }
 
         .top-link:hover {
-            color: #b8975a;
+            color: #6b4735;
         }
 
         .checkout-header {
@@ -60,13 +61,13 @@
         .eyebrow {
             text-transform: uppercase;
             letter-spacing: 0.35em;
-            color: #b8975a;
+            color: #6b4735;
             font-size: 0.72rem;
             margin-bottom: 0.8rem;
         }
 
         h1 {
-            font-family: 'Cormorant Garamond', serif;
+            font-family: 'Forum', 'Cormorant Garamond', serif;
             font-size: 4rem;
             font-weight: 400;
             margin-bottom: 0.7rem;
@@ -97,7 +98,7 @@
         }
 
         .card-title {
-            font-family: 'Cormorant Garamond', serif;
+            font-family: 'Forum', 'Cormorant Garamond', serif;
             font-size: 2rem;
             font-weight: 400;
             margin-bottom: 1.5rem;
@@ -131,7 +132,7 @@
             width: 100%;
             padding: 1rem;
             border: 1px solid rgba(184, 151, 90, 0.35);
-            background: #faf7f2;
+            background: #f4f0e8;
             font-family: 'Jost', sans-serif;
             outline: none;
             color: #1a1714;
@@ -144,7 +145,7 @@
 
         input:focus,
         textarea:focus {
-            border-color: #b8975a;
+            border-color: #6b4735;
             background: #fff;
         }
 
@@ -152,7 +153,7 @@
             margin-top: 1.5rem;
             width: 100%;
             border: none;
-            background: #b8975a;
+            background: #6b4735;
             color: #fff;
             padding: 1rem 1.4rem;
             text-transform: uppercase;
@@ -166,22 +167,23 @@
         }
 
         .payment-btn {
-    margin-top: 1rem;
-    width: 100%;
-    border: 1px solid #1a1714;
-    background: #1a1714;
-    color: #fff;
-    padding: 1rem 1.4rem;
-    text-transform: uppercase;
-    letter-spacing: 0.16em;
-    cursor: not-allowed;
-    font-family: 'Jost', sans-serif;
-    opacity: 0.65;
-}
+            margin-top: 1rem;
+            width: 100%;
+            border: 1px solid #1a1714;
+            background: #1a1714;
+            color: #fff;
+            padding: 1rem 1.4rem;
+            text-transform: uppercase;
+            letter-spacing: 0.16em;
+            cursor: pointer;
+            font-family: 'Jost', sans-serif;
+            transition: background 0.25s, border-color 0.25s;
+        }
 
-.payment-btn:hover {
-    background: #1a1714;
-}
+        .payment-btn:hover {
+            background: #6b4735;
+            border-color: #6b4735;
+        }
 
         .message {
             margin-top: 1rem;
@@ -197,6 +199,45 @@
             color: #26734d;
         }
 
+        .saved-addresses {
+            margin-bottom: 1.8rem;
+        }
+
+        .saved-title {
+            font-family: 'Forum', 'Cormorant Garamond', serif;
+            font-size: 1.35rem;
+            font-weight: 400;
+            margin: 0 0 1rem;
+        }
+
+        .address-option {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 0.9rem;
+            align-items: start;
+            padding: 1rem;
+            margin-bottom: 0.8rem;
+            border: 1px solid rgba(107, 71, 53, 0.22);
+            background: rgba(255, 255, 255, 0.35);
+            cursor: pointer;
+            text-transform: none;
+            letter-spacing: 0;
+            color: #4a433b;
+            font-size: 0.9rem;
+            line-height: 1.65;
+        }
+
+        .address-option input {
+            width: auto;
+            margin-top: 0.35rem;
+            accent-color: #6b4735;
+        }
+
+        .address-option:has(input:checked) {
+            border-color: #6b4735;
+            background: #f3ebe6;
+        }
+
         .summary-card {
             padding: 1.7rem;
             position: sticky;
@@ -204,7 +245,7 @@
         }
 
         .summary-card h2 {
-            font-family: 'Cormorant Garamond', serif;
+            font-family: 'Forum', 'Cormorant Garamond', serif;
             font-size: 2rem;
             font-weight: 400;
             margin-bottom: 1rem;
@@ -238,12 +279,12 @@
             width: 64px;
             height: 76px;
             object-fit: cover;
-            background: #faf7f2;
+            background: #f4f0e8;
             border: 1px solid rgba(184, 151, 90, 0.2);
         }
 
         .summary-item-name {
-            font-family: 'Cormorant Garamond', serif;
+            font-family: 'Forum', 'Cormorant Garamond', serif;
             font-size: 1.2rem;
             line-height: 1.1;
         }
@@ -289,9 +330,48 @@
         }
 
         .summary-total strong {
-            font-family: 'Cormorant Garamond', serif;
+            font-family: 'Forum', 'Cormorant Garamond', serif;
             font-size: 2.7rem;
             font-weight: 400;
+        }
+
+        .payment-btn:disabled {
+            opacity: 0.55;
+            cursor: not-allowed;
+        }
+
+        .confirm-order-box {
+            display: none;
+            margin-top: 1rem;
+            padding: 1.2rem;
+            background: #f4f0e8;
+            border: 1px solid rgba(107, 71, 53, 0.22);
+        }
+
+        .confirm-order-box.active {
+            display: block;
+        }
+
+        .confirm-order-box p {
+            color: #7d6f63;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .confirm-order-btn {
+            width: 100%;
+            border: 1px solid #6b4735;
+            background: #6b4735;
+            color: #fff;
+            padding: 1rem 1.4rem;
+            text-transform: uppercase;
+            letter-spacing: 0.16em;
+            cursor: pointer;
+            font-family: 'Jost', sans-serif;
+        }
+
+        .confirm-order-btn:hover {
+            background: #503426;
         }
 
         @media(max-width: 900px) {
@@ -332,10 +412,8 @@
     </div>
 
     <div class="checkout-header">
-        <p class="eyebrow">Secure Checkout</p>
         <h1>Checkout</h1>
         <p class="subtitle">
-            Enter your shipping details below. Your cart summary is loaded using JSON from the server.
         </p>
     </div>
 
@@ -344,26 +422,42 @@
         <section class="form-card">
             <h2 class="card-title">Shipping Address</h2>
 
+            {% if saved_addresses %}
+                <div class="saved-addresses">
+
+                    {% for address in saved_addresses %}
+                        <label class="address-option">
+                            <input type="radio" name="saved_address_id" value="{{ address.id }}">
+
+                            <span>
+                                <strong>{{ address.full_name }}</strong><br>
+                                {{ address.phone }}<br>
+                                {{ address.address_line }}<br>
+                                {{ address.city }}, {{ address.state }} - {{ address.postal_code }}<br>
+                                {{ address.country }}
+                            </span>
+                        </label>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <h3 class="saved-title">Add New Address</h3>
+
             <form id="shippingForm">
                 <div class="form-grid">
-                    <div class="field">
-                        <label>First Name</label>
-                        <input type="text" name="first_name" required>
-                    </div>
-
-                    <div class="field">
-                        <label>Last Name</label>
-                        <input type="text" name="last_name" required>
+                    <div class="field full">
+                        <label>Full Name</label>
+                        <input type="text" name="full_name" required>
                     </div>
 
                     <div class="field full">
-                        <label>Email</label>
-                        <input type="email" name="email" required>
+                        <label>Phone</label>
+                        <input type="text" name="phone" required>
                     </div>
 
                     <div class="field full">
                         <label>Address</label>
-                        <textarea name="address" required></textarea>
+                        <textarea name="address_line" required></textarea>
                     </div>
 
                     <div class="field">
@@ -372,8 +466,18 @@
                     </div>
 
                     <div class="field">
+                        <label>State</label>
+                        <input type="text" name="state" required>
+                    </div>
+
+                    <div class="field">
                         <label>Postal Code</label>
                         <input type="text" name="postal_code" required>
+                    </div>
+
+                    <div class="field">
+                        <label>Country</label>
+                        <input type="text" name="country" value="India" required>
                     </div>
                 </div>
 
@@ -381,9 +485,9 @@
                     Save Shipping Address
                 </button>
 
-                <button type="button" class="payment-btn" disabled>
-    Proceed to Payment
-</button>
+                <button type="button" class="payment-btn" id="placeOrderBtn">
+                    Proceed to Payment
+                </button>
 
                 <p id="formMessage" class="message"></p>
             </form>
@@ -402,28 +506,35 @@
 
             <div class="summary-row">
                 <span>Subtotal</span>
-                <strong id="subtotal">$0</strong>
+                <strong id="subtotal">&#8377;0</strong>
+            </div>
+
+            <div class="summary-row" id="membershipDiscountRow" hidden>
+                <span id="membershipDiscountLabel">Aurum Select</span>
+                <strong id="membershipDiscount">-&#8377;0</strong>
             </div>
 
             <div class="summary-row">
                 <span>Shipping</span>
-                <strong id="shipping">$0</strong>
+                <strong id="shipping">&#8377;0</strong>
             </div>
 
             <div class="summary-row">
                 <span>Taxes</span>
-                <strong id="tax">$0</strong>
+                <strong id="tax">&#8377;0</strong>
             </div>
 
             <div class="summary-total">
                 <span>Total</span>
-                <strong id="grandTotal">$0</strong>
+                <strong id="grandTotal">&#8377;0</strong>
             </div>
         </aside>
 
     </div>
 
 </div>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
 <script>
     function getCookie(name) {
@@ -441,11 +552,42 @@
     }
 
     function money(value) {
-        return "$" + Number(value || 0).toLocaleString(undefined, {
+        return "\u20B9" + Number(value || 0).toLocaleString(undefined, {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2
         });
     }
+
+    const savedAddressData = {
+        {% for address in saved_addresses %}
+            "{{ address.id }}": {
+                full_name: "{{ address.full_name|escapejs }}",
+                phone: "{{ address.phone|escapejs }}",
+                address_line: "{{ address.address_line|escapejs }}",
+                city: "{{ address.city|escapejs }}",
+                state: "{{ address.state|escapejs }}",
+                postal_code: "{{ address.postal_code|escapejs }}",
+                country: "{{ address.country|escapejs }}"
+            },
+        {% endfor %}
+    };
+
+    document.querySelectorAll('input[name="saved_address_id"]').forEach(input => {
+        input.addEventListener("change", function () {
+            const address = savedAddressData[this.value];
+            const form = document.getElementById("shippingForm");
+
+            if (!address || !form) return;
+
+            form.full_name.value = address.full_name;
+            form.phone.value = address.phone;
+            form.address_line.value = address.address_line;
+            form.city.value = address.city;
+            form.state.value = address.state;
+            form.postal_code.value = address.postal_code;
+            form.country.value = address.country || "India";
+        });
+    });
 
     async function loadCheckoutSummary() {
         const container = document.getElementById("summaryItems");
@@ -475,6 +617,7 @@
 
                     <div>
                         <div class="summary-item-name">${item.name}</div>
+                        ${(item.size || item.purity) ? `<div class="summary-item-meta">${item.size ? `Size: ${item.size}` : ""}${item.size && item.purity ? " · " : ""}${item.purity ? `Purity: ${item.purity}` : ""}</div>` : ""}
                         <div class="summary-item-meta">Qty: ${item.quantity}</div>
                     </div>
 
@@ -483,6 +626,14 @@
             `).join("");
 
             document.getElementById("subtotal").textContent = money(data.subtotal);
+            const discountRow = document.getElementById("membershipDiscountRow");
+            if (Number(data.membership_discount) > 0) {
+                discountRow.hidden = false;
+                document.getElementById("membershipDiscountLabel").textContent = `${data.membership_name} (${Number(data.discount_percent)}% off)`;
+                document.getElementById("membershipDiscount").textContent = `-${money(data.membership_discount)}`;
+            } else {
+                discountRow.hidden = true;
+            }
             document.getElementById("shipping").textContent = Number(data.shipping) === 0 ? "Free" : money(data.shipping);
             document.getElementById("tax").textContent = money(data.tax);
             document.getElementById("grandTotal").textContent = money(data.grand_total);
@@ -499,12 +650,13 @@
         const message = document.getElementById("formMessage");
 
         const payload = {
-            first_name: form.first_name.value.trim(),
-            last_name: form.last_name.value.trim(),
-            email: form.email.value.trim(),
-            address: form.address.value.trim(),
+            full_name: form.full_name.value.trim(),
+            phone: form.phone.value.trim(),
+            address_line: form.address_line.value.trim(),
             city: form.city.value.trim(),
+            state: form.state.value.trim(),
             postal_code: form.postal_code.value.trim(),
+            country: form.country.value.trim() || "India",
         };
 
         try {
@@ -530,6 +682,97 @@
         } catch {
             message.className = "message error";
             message.textContent = "Unable to reach server.";
+        }
+    });
+
+    async function confirmOrder(paymentResponse) {
+    const message = document.getElementById("formMessage");
+
+    const response = await fetch("/api/order/confirm/", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": getCookie("csrftoken")
+        },
+        body: JSON.stringify(paymentResponse)
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+        window.location.href = data.redirect_url;
+    } else {
+        message.className = "message error";
+        message.textContent = data.error || "Unable to confirm order.";
+    }
+}
+
+    document.getElementById("placeOrderBtn").addEventListener("click", async function () {
+        const message = document.getElementById("formMessage");
+
+        const response = await fetch("/api/payment/create/", {
+            method: "POST",
+            headers: {
+                "X-CSRFToken": getCookie("csrftoken")
+            }
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            message.className = "message error";
+            message.textContent = data.error || "Unable to start payment.";
+            return;
+        }
+
+        const options = {
+            key: data.key,
+            amount: data.amount,
+            currency: data.currency,
+            name: data.name,
+            description: data.description,
+            order_id: data.razorpay_order_id,
+            theme: {
+                color: "#6b4735"
+            },
+            handler: async function (response) {
+                message.className = "message success";
+                message.textContent = "Payment received. Confirming your order...";
+                document.getElementById("placeOrderBtn").disabled = true;
+
+                await confirmOrder(response);
+            }
+        };
+
+        const razorpay = new Razorpay(options);
+        razorpay.open();
+    });
+
+    document.getElementById("confirmOrderBtn").addEventListener("click", async function () {
+        const message = document.getElementById("formMessage");
+
+        if (!paidPayload) {
+            message.className = "message error";
+            message.textContent = "Please complete payment first.";
+            return;
+        }
+
+        const response = await fetch("/api/order/confirm/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": getCookie("csrftoken")
+            },
+            body: JSON.stringify(paidPayload)
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            window.location.href = data.redirect_url;
+        } else {
+            message.className = "message error";
+            message.textContent = data.error || "Unable to confirm order.";
         }
     });
 

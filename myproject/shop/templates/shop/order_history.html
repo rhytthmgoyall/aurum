@@ -1,0 +1,671 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order History | AURUM</title>
+    <link href="https://fonts.googleapis.com/css2?family=Forum&family=Cormorant+Garamond:wght@400;500;600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --cream: #f4f0e8;
+            --paper: #fffaf3;
+            --ink: #241812;
+            --muted: #7d6f63;
+            --walnut: #6b4735;
+            --copper: #b77759;
+            --line: rgba(107, 71, 53, 0.18);
+            --soft: rgba(107, 71, 53, 0.07);
+        }
+        body {
+            min-height: 100vh;
+            background: var(--cream);
+            color: var(--ink);
+            font-family: 'Jost', sans-serif;
+        }
+        .page {
+            width: min(1180px, 92vw);
+            margin: 0 auto;
+            padding: 2.2rem 0 4rem;
+        }
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2.4rem;
+        }
+        .brand {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.6rem;
+            font-weight: 600;
+            letter-spacing: 0.25em;
+            color: var(--walnut);
+            text-decoration: none;
+        }
+        .top-link {
+            color: var(--muted);
+            font-size: 0.74rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            text-decoration: none;
+        }
+        .hero {
+            display: flex;
+            justify-content: space-between;
+            gap: 2rem;
+            align-items: end;
+            margin-bottom: 1.6rem;
+        }
+        .eyebrow {
+            color: var(--walnut);
+            font-size: 0.72rem;
+            letter-spacing: 0.28em;
+            text-transform: uppercase;
+            margin-bottom: 0.7rem;
+        }
+        h1 {
+            font-family: 'Forum', 'Cormorant Garamond', serif;
+            font-size: clamp(3.5rem, 7vw, 6rem);
+            font-weight: 400;
+            line-height: 0.95;
+            color: #3b251d;
+        }
+        .hero-copy {
+            max-width: 360px;
+            color: var(--muted);
+            font-size: 0.92rem;
+            line-height: 1.7;
+        }
+        .orders {
+            display: grid;
+            gap: 1.1rem;
+        }
+        .order-card {
+            background: var(--paper);
+            border: 1px solid var(--line);
+            box-shadow: 0 18px 50px rgba(36, 24, 18, 0.06);
+        }
+        .order-head {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 1rem;
+            padding: 1.2rem 1.35rem;
+            border-bottom: 1px solid var(--line);
+        }
+        .order-title {
+            font-family: 'Forum', serif;
+            font-size: 1.75rem;
+            font-weight: 400;
+            color: var(--ink);
+        }
+        .order-meta {
+            margin-top: 0.25rem;
+            color: var(--muted);
+            font-size: 0.76rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+        .status-stack {
+            display: flex;
+            gap: 0.45rem;
+            align-items: flex-start;
+            justify-content: flex-end;
+            flex-wrap: wrap;
+        }
+        .pill {
+            border: 1px solid rgba(107, 71, 53, 0.24);
+            color: var(--walnut);
+            padding: 0.42rem 0.7rem;
+            font-size: 0.62rem;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+        .pill-dark {
+            background: var(--walnut);
+            color: #fff;
+            border-color: var(--walnut);
+        }
+        .pill-soft {
+            background: var(--soft);
+        }
+        .order-body {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 280px;
+            gap: 1.2rem;
+            padding: 1.2rem 1.35rem 1.35rem;
+        }
+        .items {
+            display: grid;
+            gap: 0.7rem;
+        }
+        .item {
+            display: grid;
+            grid-template-columns: 58px minmax(0, 1fr) auto minmax(150px, 170px);
+            gap: 0.85rem;
+            align-items: center;
+            padding-bottom: 0.7rem;
+            border-bottom: 1px solid rgba(107, 71, 53, 0.1);
+        }
+        .item:last-child {
+            border-bottom: 0;
+            padding-bottom: 0;
+        }
+        .item img,
+        .item-fallback {
+            width: 58px;
+            height: 58px;
+            object-fit: cover;
+            background: var(--cream);
+            border: 1px solid rgba(107, 71, 53, 0.14);
+        }
+        .item-fallback {
+            display: grid;
+            place-items: center;
+            color: var(--walnut);
+            font-family: 'Forum', serif;
+            font-size: 1.2rem;
+        }
+        .item-name {
+            font-family: 'Forum', serif;
+            font-size: 1.18rem;
+            font-weight: 400;
+            color: var(--ink);
+        }
+        .item-meta {
+            margin-top: 0.15rem;
+            color: var(--muted);
+            font-size: 0.74rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+        .item-total {
+            color: var(--walnut);
+            font-family: 'Forum', serif;
+            font-size: 1.15rem;
+            white-space: nowrap;
+        }
+        .item-refund {
+            display: grid;
+            gap: 0.35rem;
+            justify-items: stretch;
+        }
+        .item-refund-note {
+            color: var(--muted);
+            font-size: 0.68rem;
+            line-height: 1.35;
+            text-align: right;
+        }
+        .summary {
+            border-left: 1px solid var(--line);
+            padding-left: 1.2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.9rem;
+        }
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            color: var(--muted);
+            font-size: 0.84rem;
+        }
+        .summary-row strong {
+            color: var(--ink);
+            font-weight: 500;
+        }
+        .grand {
+            padding-top: 0.8rem;
+            border-top: 1px solid var(--line);
+        }
+        .grand strong {
+            font-family: 'Forum', serif;
+            font-size: 1.65rem;
+            font-weight: 400;
+            color: var(--walnut);
+        }
+        .refund-note {
+            color: var(--muted);
+            font-size: 0.76rem;
+            line-height: 1.55;
+        }
+        .refund-history {
+            display: grid;
+            gap: 0.4rem;
+            color: var(--muted);
+            font-size: 0.75rem;
+            line-height: 1.4;
+        }
+        .refund-action {
+            display: inline-block;
+            width: 100%;
+            border: 1px solid var(--walnut);
+            background: var(--walnut);
+            color: #fff;
+            padding: 0.85rem 1rem;
+            cursor: pointer;
+            font-family: 'Jost', sans-serif;
+            font-size: 0.68rem;
+            font-weight: 500;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            text-align: center;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+        .refund-action:hover {
+            background: #503426;
+        }
+        .refund-action.is-compact {
+            padding: 0.62rem 0.7rem;
+            font-size: 0.58rem;
+            letter-spacing: 0.12em;
+        }
+        .empty {
+            background: var(--paper);
+            border: 1px solid var(--line);
+            padding: 3rem;
+            text-align: center;
+        }
+        .empty h2 {
+            font-family: 'Forum', serif;
+            font-size: 2.4rem;
+            font-weight: 400;
+            margin-bottom: 0.6rem;
+        }
+        .empty p {
+            color: var(--muted);
+            margin-bottom: 1.4rem;
+        }
+        .empty a {
+            color: var(--walnut);
+            text-transform: uppercase;
+            letter-spacing: 0.16em;
+            font-size: 0.72rem;
+        }
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(36, 24, 18, 0.46);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s;
+            z-index: 500;
+        }
+        .modal-backdrop.is-open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .refund-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: min(430px, 92vw);
+            background: var(--paper);
+            border: 1px solid var(--line);
+            box-shadow: 0 24px 80px rgba(36, 24, 18, 0.24);
+            padding: 1.4rem;
+            transform: translate(-50%, -46%);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s, transform 0.2s;
+            z-index: 501;
+        }
+        .refund-modal.is-open {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translate(-50%, -50%);
+        }
+        .modal-title {
+            font-family: 'Forum', serif;
+            font-size: 2rem;
+            font-weight: 400;
+            margin-bottom: 0.3rem;
+        }
+        .modal-copy {
+            color: var(--muted);
+            font-size: 0.86rem;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+        .field {
+            display: grid;
+            gap: 0.35rem;
+            margin-bottom: 0.8rem;
+        }
+        .field label {
+            color: var(--muted);
+            font-size: 0.65rem;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+        }
+        .field input,
+        .field textarea,
+        .field select {
+            width: 100%;
+            border: 1px solid rgba(107, 71, 53, 0.22);
+            background: #fff;
+            color: var(--ink);
+            font-family: 'Jost', sans-serif;
+            padding: 0.75rem 0.85rem;
+            outline: none;
+        }
+        .field textarea {
+            min-height: 84px;
+            resize: vertical;
+        }
+        .modal-actions {
+            display: flex;
+            gap: 0.7rem;
+            margin-top: 1rem;
+        }
+        .modal-btn {
+            flex: 1;
+            border: 1px solid var(--walnut);
+            padding: 0.82rem 1rem;
+            cursor: pointer;
+            font-family: 'Jost', sans-serif;
+            font-size: 0.68rem;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+        }
+        .modal-btn-primary {
+            background: var(--walnut);
+            color: #fff;
+        }
+        .modal-btn-secondary {
+            background: transparent;
+            color: var(--walnut);
+        }
+        .modal-message {
+            min-height: 1.2rem;
+            color: #8b2f24;
+            font-size: 0.78rem;
+            margin-top: 0.7rem;
+        }
+        @media (max-width: 800px) {
+            .hero,
+            .topbar,
+            .order-head {
+                grid-template-columns: 1fr;
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .order-body {
+                grid-template-columns: 1fr;
+            }
+            .summary {
+                border-left: 0;
+                border-top: 1px solid var(--line);
+                padding-left: 0;
+                padding-top: 1rem;
+            }
+            .item {
+                grid-template-columns: 52px 1fr;
+            }
+            .item-total {
+                grid-column: 2;
+            }
+            .item-refund {
+                grid-column: 2;
+            }
+            .item-refund-note {
+                text-align: left;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main class="page">
+        <header class="topbar">
+            <a href="{% url 'home' %}" class="brand">AURUM</a>
+            <a href="{% url 'profile' %}" class="top-link">My Profile</a>
+        </header>
+
+        <section class="hero">
+            <div>
+                <h1>Order History</h1>
+            </div>
+        </section>
+
+        {% if orders %}
+            <section class="orders">
+                {% for order in orders %}
+                    <article class="order-card">
+                        <header class="order-head">
+                            <div>
+                                <p class="order-meta">Placed {{ order.created_at|date:"M d, Y" }} at {{ order.created_at|date:"h:i A" }}</p>
+                            </div>
+                            <div class="status-stack">
+                                <span class="pill pill-dark">{{ order.status|title }}</span>
+                                {% if order.payment_record %}
+                                    <span class="pill pill-soft">{{ order.payment_record.status|title }}</span>
+                                {% endif %}
+                            </div>
+                        </header>
+
+                        <div class="order-body">
+                            <div class="items">
+                                {% for item in order.items.all %}
+                                    <div class="item">
+                                        {% if item.product_image %}
+                                            <img src="{{ item.product_image.url }}" alt="{{ item.product_name }}">
+                                        {% else %}
+                                            <div class="item-fallback">A</div>
+                                        {% endif %}
+                                        <div>
+                                            <h3 class="item-name">{{ item.product_name }}</h3>
+                                            <p class="item-meta">Qty {{ item.quantity }} | &#8377;{{ item.product_price }} each</p>
+                                        </div>
+                                        <p class="item-total">&#8377;{{ item.item_total }}</p>
+                                        <div class="item-refund">
+                                            {% if item.can_refund %}
+                                                <a
+                                                    href="{% url 'refund_request' order.id %}?item={{ item.id }}"
+                                                    class="refund-action is-compact"
+                                                >
+                                                    Refund Item
+                                                </a>
+                                                {% if item.refunded_amount %}
+                                                    <p class="item-refund-note">&#8377;{{ item.remaining_refund_rupees }} left for this item</p>
+                                                {% endif %}
+                                            {% elif order.payment_record %}
+                                                <p class="item-refund-note">No item refund available</p>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+
+                            <aside class="summary">
+                                <div class="summary-row">
+                                    <span>Subtotal</span>
+                                    <strong>&#8377;{{ order.subtotal }}</strong>
+                                </div>
+                                {% if order.membership_discount > 0 %}
+                                <div class="summary-row">
+                                    <span>Aurum Select</span>
+                                    <strong>-&#8377;{{ order.membership_discount }}</strong>
+                                </div>
+                                {% endif %}
+                                <div class="summary-row">
+                                    <span>Shipping</span>
+                                    <strong>{% if order.shipping == 0 %}Free{% else %}&#8377;{{ order.shipping }}{% endif %}</strong>
+                                </div>
+                                <div class="summary-row">
+                                    <span>Tax</span>
+                                    <strong>&#8377;{{ order.tax }}</strong>
+                                </div>
+                                <div class="summary-row grand">
+                                    <span>Total</span>
+                                    <strong>&#8377;{{ order.total }}</strong>
+                                </div>
+
+                                {% if order.payment_record %}
+                                    <div class="summary-row">
+                                        <span>Refunded</span>
+                                        <strong>&#8377;{{ order.payment_record.refunded_amount_rupees }}</strong>
+                                    </div>
+
+                                    {% if order.payment_record.refund_rows %}
+                                        <div class="refund-history">
+                                            {% for refund in order.payment_record.refund_rows %}
+                                                <p>Refund {{ refund.id }}: &#8377;{{ refund.amount_rupees }}, {{ refund.status|title }}</p>
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+
+                                    {% if not order.payment_record.can_refund %}
+                                        <p class="refund-note">No refund action is currently available for this order.</p>
+                                    {% endif %}
+                                {% else %}
+                                {% endif %}
+                            </aside>
+                        </div>
+                    </article>
+                {% endfor %}
+            </section>
+        {% else %}
+            <section class="empty">
+                <h2>No orders yet</h2>
+                <p>Your confirmed purchases will appear here.</p>
+                <a href="{% url 'home' %}">Start Shopping</a>
+            </section>
+        {% endif %}
+    </main>
+
+    <div class="modal-backdrop" id="refundBackdrop"></div>
+    <section class="refund-modal" id="refundModal" aria-modal="true" role="dialog" aria-label="Request refund">
+        <h2 class="modal-title">Request Refund</h2>
+        <p class="modal-copy" id="refundLimitText">Enter the refund amount and reason.</p>
+
+        <form id="refundForm">
+            {% csrf_token %}
+            <input type="hidden" id="refundOrderId">
+            <input type="hidden" id="refundItemId">
+            <input type="hidden" id="refundMaxPaise">
+
+            <div class="field">
+                <label for="refundAmount">Amount in rupees</label>
+                <input type="number" id="refundAmount" min="1" step="0.01" required>
+            </div>
+
+            <div class="field">
+                <label for="refundReason">Reason</label>
+                <textarea id="refundReason" placeholder="Example: Size issue, cancellation request, duplicate order"></textarea>
+            </div>
+
+            <div class="field">
+                <label for="refundSpeed">Refund Speed</label>
+                <select id="refundSpeed">
+                    <option value="normal">Normal</option>
+                    <option value="optimum">Optimum</option>
+                </select>
+            </div>
+
+            <div class="modal-actions">
+                <button type="button" class="modal-btn modal-btn-secondary" id="refundCancel">Cancel</button>
+                <button type="submit" class="modal-btn modal-btn-primary" id="refundSubmit">Submit</button>
+            </div>
+            <p class="modal-message" id="refundMessage"></p>
+        </form>
+    </section>
+
+    <script>
+        const refundBackdrop = document.getElementById("refundBackdrop");
+        const refundModal = document.getElementById("refundModal");
+        const refundForm = document.getElementById("refundForm");
+        const refundOrderId = document.getElementById("refundOrderId");
+        const refundItemId = document.getElementById("refundItemId");
+        const refundMaxPaise = document.getElementById("refundMaxPaise");
+        const refundAmount = document.getElementById("refundAmount");
+        const refundReason = document.getElementById("refundReason");
+        const refundSpeed = document.getElementById("refundSpeed");
+        const refundLimitText = document.getElementById("refundLimitText");
+        const refundMessage = document.getElementById("refundMessage");
+        const refundSubmit = document.getElementById("refundSubmit");
+
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(";").shift();
+            return "";
+        }
+
+        function openRefundModal(button) {
+            const maxRupees = button.dataset.maxRupees;
+            refundOrderId.value = button.dataset.orderId;
+            refundItemId.value = button.dataset.itemId;
+            refundMaxPaise.value = button.dataset.maxPaise;
+            refundAmount.value = maxRupees;
+            refundAmount.max = maxRupees;
+            refundReason.value = "";
+            refundSpeed.value = "normal";
+            refundMessage.textContent = "";
+            refundLimitText.textContent = `You can refund up to Rs. ${maxRupees} for ${button.dataset.itemName}.`;
+            refundBackdrop.classList.add("is-open");
+            refundModal.classList.add("is-open");
+        }
+
+        function closeRefundModal() {
+            refundBackdrop.classList.remove("is-open");
+            refundModal.classList.remove("is-open");
+        }
+
+        document.querySelectorAll("[data-refund-open]").forEach(button => {
+            button.addEventListener("click", () => openRefundModal(button));
+        });
+
+        document.getElementById("refundCancel").addEventListener("click", closeRefundModal);
+        refundBackdrop.addEventListener("click", closeRefundModal);
+
+        refundForm.addEventListener("submit", async event => {
+            event.preventDefault();
+
+            const orderId = refundOrderId.value;
+            const itemId = refundItemId.value;
+            const amountPaise = Math.round(Number(refundAmount.value) * 100);
+            const maxPaise = Number(refundMaxPaise.value);
+
+            if (!amountPaise || amountPaise <= 0 || amountPaise > maxPaise) {
+                refundMessage.textContent = "Enter a valid refund amount.";
+                return;
+            }
+
+            refundSubmit.disabled = true;
+            refundMessage.textContent = "Creating refund request...";
+
+            try {
+                const response = await fetch(`/orders/${orderId}/items/${itemId}/refund/`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRFToken": getCookie("csrftoken"),
+                    },
+                    body: JSON.stringify({
+                        amount: amountPaise,
+                        reason: refundReason.value.trim(),
+                        speed: refundSpeed.value,
+                    }),
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    refundMessage.textContent = data.error || "Unable to create refund.";
+                    return;
+                }
+
+                refundMessage.textContent = "Refund request created.";
+                setTimeout(() => window.location.reload(), 900);
+            } catch (error) {
+                refundMessage.textContent = "Network error while creating refund.";
+            } finally {
+                refundSubmit.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>

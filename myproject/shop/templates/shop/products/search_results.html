@@ -1,4 +1,4 @@
-<div class="search-page">
+﻿<div class="search-page">
     <div class="search-header">
     <p class="search-eyebrow">Search Results</p>
     <h1>Results for <em>"{{ query }}"</em></h1>
@@ -35,25 +35,25 @@
 
             <option value="price_low"
                 {% if selected_sort == "price_low" %}selected{% endif %}>
-                Price: Low → High
+                Price: Low â†’ High
             </option>
 
             <option value="price_high"
                 {% if selected_sort == "price_high" %}selected{% endif %}>
-                Price: High → Low
+                Price: High â†’ Low
             </option>
 
             <option value="name_az"
                 {% if selected_sort == "name_az" %}selected{% endif %}>
-                Name: A → Z
+                Name: A â†’ Z
             </option>
 
             <option value="name_za"
                 {% if selected_sort == "name_za" %}selected{% endif %}>
-                Name: Z → A
+                Name: Z â†’ A
             </option>
 
-            <option value="rating_high">Rating: High → Low</option>
+            <option value="rating_high">Rating: High â†’ Low</option>
             <option value="most_reviewed">Most Reviewed</option>
         </select>
     </div>
@@ -78,12 +78,11 @@
                 </div>
 
                 <div class="search-card-content">
-                    <p class="product-brand">AURUM COLLECTION</p>
                     <h2>{{ product.name }}</h2>
-                    <p class="product-price">${{ product.price }}</p>
+                    <p class="product-price">&#8377;{{ product.price }}</p>
 
 <div class="product-rating">
-    <span class="rating-star">★</span>
+    <span class="rating-star">â˜…</span>
 
     <span class="rating-score">
         {{ product.avg_rating|floatformat:1 }} / 5
@@ -109,7 +108,7 @@
         <div class="pagination">
             {% if page_obj.has_previous %}
                 <a href="?q={{ query }}&page={{ page_obj.previous_page_number }}" class="page-btn">
-                    ← Previous
+                    â† Previous
                 </a>
             {% endif %}
 
@@ -119,7 +118,7 @@
 
             {% if page_obj.has_next %}
                 <a href="?q={{ query }}&page={{ page_obj.next_page_number }}" class="page-btn">
-                    Next →
+                    Next â†’
                 </a>
             {% endif %}
         </div>
@@ -127,17 +126,18 @@
 </div>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Forum&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap');
 
 :root {
-    --gold:#b8975a;
-    --gold-light:#d4b47a;
-    --gold-pale:#f5efe4;
+    --gold:#6b4735;
+    --gold-light:#b77759;
+    --gold-pale:#f3ebe6;
     --ink:#1a1714;
     --ink-mid:#4a433b;
     --ink-muted:#8a7f72;
-    --cream:#faf7f2;
+    --cream:#f4f0e8;
     --white:#ffffff;
+    --display: 'Forum', 'Cormorant Garamond', Georgia, serif;
     --serif:'Cormorant Garamond', Georgia, serif;
     --sans:'Jost', sans-serif;
 }
@@ -161,7 +161,7 @@ body {
 
 .search-header {
     margin-bottom: 3rem;
-    border-bottom: 1px solid rgba(184,151,90,0.18);
+    border-bottom: 1px solid rgba(107,71,53,0.18);
     padding-bottom: 2rem;
 }
 
@@ -175,7 +175,7 @@ body {
 }
 
 .search-header h1 {
-    font-family: var(--serif);
+    font-family: var(--display);
     font-size: clamp(2.4rem, 4vw, 4rem);
     font-weight: 300;
     color: var(--ink);
@@ -235,7 +235,7 @@ body {
     gap: 2rem;
     align-items: center;
     background: var(--white);
-    border: 1px solid rgba(184,151,90,0.18);
+    border: 1px solid rgba(107,71,53,0.18);
     padding: 1.25rem;
     text-decoration: none;
     color: inherit;
@@ -278,7 +278,7 @@ body {
 }
 
 .search-card-content h2 {
-    font-family: var(--serif);
+    font-family: var(--display);
     font-size: 2rem;
     font-weight: 400;
     color: var(--ink);
@@ -338,7 +338,7 @@ body {
 
 .page-btn {
     padding: 0.85rem 1.4rem;
-    border: 1px solid rgba(184,151,90,0.35);
+    border: 1px solid rgba(107,71,53,0.35);
     text-decoration: none;
     color: var(--ink-mid);
     font-size: 0.7rem;
@@ -354,7 +354,7 @@ body {
 }
 
 .page-status {
-    font-family: var(--serif);
+    font-family: var(--display);
     color: var(--ink-muted);
     font-size: 1.1rem;
 }
@@ -363,11 +363,11 @@ body {
     text-align: center;
     background: var(--white);
     padding: 4rem 2rem;
-    border: 1px solid rgba(184,151,90,0.18);
+    border: 1px solid rgba(107,71,53,0.18);
 }
 
 .empty-results h2 {
-    font-family: var(--serif);
+    font-family: var(--display);
     font-size: 2rem;
     font-weight: 400;
     color: var(--ink);

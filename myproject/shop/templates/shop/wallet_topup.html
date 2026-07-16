@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wallet Top-Up | AURUM</title>
+    <link href="https://fonts.googleapis.com/css2?family=Forum&family=Cormorant+Garamond:wght@400;500;600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            min-height: 100vh;
+            background: #f4f0e8;
+            color: #241812;
+            font-family: 'Jost', sans-serif;
+            display: grid;
+            place-items: center;
+        }
+        .panel {
+            width: min(460px, 92vw);
+            background: #fffaf3;
+            border: 1px solid rgba(107, 71, 53, 0.18);
+            padding: 2rem;
+            text-align: center;
+        }
+        h1 {
+            font-family: 'Forum', serif;
+            font-size: 2.8rem;
+            font-weight: 400;
+            margin-bottom: 0.8rem;
+        }
+        p {
+            color: #7d6f63;
+            line-height: 1.6;
+            margin-bottom: 1.2rem;
+        }
+        .btn {
+            width: 100%;
+            border: 1px solid #6b4735;
+            background: #6b4735;
+            color: #fff;
+            padding: 0.86rem 1rem;
+            cursor: pointer;
+            font-family: 'Jost', sans-serif;
+            font-size: 0.68rem;
+            font-weight: 500;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+        }
+        .message {
+            min-height: 1.2rem;
+            color: #8b2f24;
+            font-size: 0.84rem;
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <section class="panel">
+        <h1>Wallet Top-Up</h1>
+        <p>Add &#8377;{{ amount }} to your AURUM wallet.</p>
+        <button type="button" class="btn" id="payButton">Pay with Razorpay</button>
+        <p class="message" id="topupMessage"></p>
+    </section>
+
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script>
+        const payButton = document.getElementById("payButton");
+        const topupMessage = document.getElementById("topupMessage");
+
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(";").shift();
+            return "";
+        }
+
+        async function verifyTopup(response) {
+            topupMessage.textContent = "Verifying payment...";
+            const verifyResponse = await fetch("{{ callback_url }}", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": getCookie("csrftoken"),
+                },
+                body: JSON.stringify(response),
+            });
+            const data = await verifyResponse.json();
+            if (!verifyResponse.ok) {
+                topupMessage.textContent = data.error || "Wallet top-up failed.";
+                payButton.disabled = false;
+                return;
+            }
+            window.location.href = "{% url 'wallet_balance' %}";
+        }
+
+        const options = {
+            key: "{{ key }}",
+            amount: "{{ amount_paise }}",
+            currency: "INR",
+            name: "AURUM",
+            description: "Wallet top-up",
+            order_id: "{{ razorpay_order_id }}",
+            prefill: {
+                name: "{{ customer_name|escapejs }}",
+                email: "{{ customer_email|escapejs }}",
+            },
+            handler: verifyTopup,
+            modal: {
+                ondismiss: function () {
+                    payButton.disabled = false;
+                }
+            },
+            theme: {
+                color: "#6b4735"
+            }
+        };
+
+        payButton.addEventListener("click", () => {
+            payButton.disabled = true;
+            topupMessage.textContent = "";
+            const checkout = new Razorpay(options);
+            checkout.open();
+        });
+
+        payButton.click();
+    </script>
+</body>
+</html>

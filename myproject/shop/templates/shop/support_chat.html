@@ -1,0 +1,64 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Support Chat | AURUM</title>
+  <meta charset="UTF-8">
+  <link href="https://fonts.googleapis.com/css2?family=Forum&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    body { margin:0; background:#f4f0e8; font-family:Jost,sans-serif; color:#241812; }
+    .layout { display:grid; grid-template-columns:320px 1fr; min-height:100vh; }
+    .sidebar { border-right:1px solid rgba(107,71,53,.18); background:#fffaf3; padding:1.2rem; }
+    .brand { font-family:Forum,serif; font-size:2rem; color:#6b4735; margin-bottom:1rem; }
+    .conversation { display:block; padding:.9rem; border-bottom:1px solid rgba(107,71,53,.12); color:#241812; text-decoration:none; }
+    .conversation:hover { background:rgba(107,71,53,.07); }
+    .conversation-name { display:block; font-weight:500; color:#241812; margin-bottom:.25rem; }
+    .conversation-meta { display:block; color:#6b5f55; font-size:.78rem; line-height:1.45; }
+    .chat { display:flex; flex-direction:column; }
+    .chat-head { padding:1.2rem; border-bottom:1px solid rgba(107,71,53,.18); background:#fffaf3; }
+    .messages { flex:1; padding:1rem; overflow:auto; display:flex; flex-direction:column; gap:.65rem; }
+    .msg { max-width:70%; padding:.7rem .8rem; background:#fffaf3; border:1px solid rgba(107,71,53,.14); }
+    .msg.staff { align-self:flex-end; background:#6b4735; color:white; }
+    .form { display:grid; grid-template-columns:1fr auto; border-top:1px solid rgba(107,71,53,.18); }
+    .form input { border:0; padding:1rem; outline:0; }
+    .form button { border:0; background:#6b4735; color:white; padding:0 1.4rem; cursor:pointer; }
+  </style>
+</head>
+<body>
+  <script src="https://cdn.jsdelivr.net/npm/agora-rtm-sdk@1.5.1/index.js"></script>
+
+  <main class="layout">
+    <aside class="sidebar">
+      <div class="brand">AURUM</div>
+      {% for conversation in conversations %}
+        <a href="#" class="conversation" data-channel="{{ conversation.channel_name }}" data-title="{% if conversation.user %}{{ conversation.user.username }}{% else %}{{ conversation.guest_name|default:'Guest visitor' }}{% endif %}">
+          <span class="conversation-name">
+            {% if conversation.user %}
+              {{ conversation.user.username }}
+            {% else %}
+              {{ conversation.guest_name|default:"Guest visitor" }}
+            {% endif %}
+          </span>
+          {% if not conversation.user and conversation.guest_email %}
+            <span class="conversation-meta">{{ conversation.guest_email }}</span>
+          {% endif %}
+          <span class="conversation-meta">{{ conversation.updated_at|date:"M d, h:i A" }}</span>
+        </a>
+      {% endfor %}
+    </aside>
+
+    <section class="chat">
+      <header class="chat-head">
+        <strong id="chatTitle">Select a conversation</strong>
+      </header>
+      <div class="messages" id="staffMessages"></div>
+      <form class="form" id="staffChatForm">
+        <input id="staffChatInput" placeholder="Type a reply..." autocomplete="off">
+        <button>Send</button>
+      </form>
+    </section>
+  </main>
+
+  <script src="{% static 'shop/js/support-admin-chat.js' %}"></script>
+</body>
+</html>

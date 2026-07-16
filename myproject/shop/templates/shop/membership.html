@@ -1,0 +1,169 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Aurum Select | AURUM</title>
+    <link href="https://fonts.googleapis.com/css2?family=Forum&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root { --ink:#211713; --brown:#563a2d; --copper:#b87554; --gold:#b8975a; --cream:#f5f0e7; --paper:#fffdf9; }
+        * { box-sizing:border-box; margin:0; padding:0; }
+        body { color:var(--ink); background:var(--cream); font-family:'Jost',sans-serif; font-weight:300; }
+        .select-nav { height:78px; display:flex; align-items:center; justify-content:space-between; padding:0 5vw; background:rgba(255,253,249,.96); border-bottom:1px solid rgba(86,58,45,.13); }
+        .brand { color:var(--brown); text-decoration:none; font-family:'Cormorant Garamond',serif; font-size:1.7rem; letter-spacing:.32em; font-weight:600; }
+        .nav-back { color:var(--brown); text-decoration:none; text-transform:uppercase; letter-spacing:.16em; font-size:.68rem; }
+        .hero { min-height:420px; display:grid; grid-template-columns:1.08fr .92fr; overflow:hidden; background:var(--ink); color:white; }
+        .hero-copy { padding:72px 7vw; display:flex; flex-direction:column; justify-content:center; background:radial-gradient(circle at 80% 20%,rgba(184,151,90,.2),transparent 33%),linear-gradient(135deg,#211713,#422c23); }
+        .eyebrow { color:#d4b888; text-transform:uppercase; letter-spacing:.34em; font-size:.68rem; margin-bottom:20px; }
+        h1 { font-family:'Forum',serif; font-weight:400; font-size:clamp(3.4rem,7vw,6.8rem); line-height:.86; }
+        h1 em { color:#d0a184; font-family:'Cormorant Garamond',serif; font-weight:400; }
+        .hero-copy > p:last-child { max-width:590px; margin-top:28px; color:#ddd0c7; line-height:1.8; }
+        .hero-art { position:relative; background:linear-gradient(145deg,#d8c4ad,#8d644e); display:grid; place-items:center; }
+        .member-card { width:min(390px,78%); aspect-ratio:1.58; padding:34px; border:1px solid rgba(255,255,255,.4); background:linear-gradient(135deg,rgba(31,20,16,.96),rgba(112,72,53,.88)); color:white; box-shadow:0 35px 70px rgba(0,0,0,.32); transform:rotate(-4deg); position:relative; overflow:hidden; }
+        .member-card:after { content:""; position:absolute; width:220px; height:220px; border:1px solid rgba(212,184,136,.28); border-radius:50%; right:-90px; bottom:-100px; }
+        .card-brand { font-family:'Cormorant Garamond',serif; letter-spacing:.28em; font-size:1.3rem; }
+        .card-select { margin-top:50px; font-family:'Forum',serif; font-size:2.5rem; color:#d4b888; }
+        .card-name { position:absolute; left:34px; bottom:29px; text-transform:uppercase; letter-spacing:.16em; font-size:.62rem; }
+        .page { width:min(1180px,90vw); margin:0 auto; padding:76px 0 100px; }
+        .flash { padding:15px 18px; margin-bottom:22px; border:1px solid rgba(184,151,90,.35); background:#fffaf1; }
+        .current { display:flex; align-items:center; justify-content:space-between; gap:25px; padding:28px 32px; margin-bottom:50px; background:var(--paper); border:1px solid rgba(86,58,45,.14); box-shadow:0 18px 45px rgba(50,32,24,.07); }
+        .current-label { color:var(--copper); text-transform:uppercase; letter-spacing:.2em; font-size:.65rem; }
+        .current h2 { font-family:'Forum',serif; font-weight:400; font-size:2rem; margin:4px 0; }
+        .current p { color:#76685e; font-size:.82rem; }
+        .cancel { border:1px solid #a68b7d; background:transparent; padding:12px 20px; color:var(--brown); cursor:pointer; text-transform:uppercase; letter-spacing:.14em; font-family:'Jost',sans-serif; font-size:.65rem; }
+        .section-head { text-align:center; max-width:670px; margin:0 auto 38px; }
+        .section-head h2 { font-family:'Forum',serif; font-size:3rem; font-weight:400; }
+        .section-head p { color:#76685e; line-height:1.7; margin-top:10px; }
+        .plans { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:22px; }
+        .plan { background:var(--paper); border:1px solid rgba(86,58,45,.14); padding:34px; position:relative; transition:.25s ease; }
+        .plan:hover { transform:translateY(-6px); box-shadow:0 24px 55px rgba(50,32,24,.1); border-color:rgba(184,151,90,.6); }
+        .plan-cycle { color:var(--copper); text-transform:uppercase; letter-spacing:.24em; font-size:.62rem; }
+        .plan h3 { font-family:'Forum',serif; font-weight:400; font-size:2rem; margin:8px 0 16px; }
+        .price { font-family:'Cormorant Garamond',serif; font-size:2.6rem; font-weight:600; }
+        .price small { font:300 .7rem 'Jost',sans-serif; color:#82756b; text-transform:uppercase; letter-spacing:.12em; }
+        .benefits { list-style:none; border-top:1px solid rgba(86,58,45,.12); margin:25px 0; padding-top:20px; }
+        .benefits li { padding:8px 0; color:#5f534b; font-size:.86rem; display:flex; gap:10px; }
+        .benefits li:before { content:"✦"; color:var(--gold); }
+        .join { width:100%; border:0; padding:15px; background:var(--brown); color:white; cursor:pointer; font-family:'Jost',sans-serif; text-transform:uppercase; letter-spacing:.16em; font-size:.67rem; }
+        .join:disabled { background:#c8beb7; cursor:default; }
+        .security { text-align:center; color:#877970; font-size:.72rem; margin-top:24px; }
+        .message { min-height:24px; text-align:center; color:#8f332b; margin-top:15px; font-size:.82rem; }
+        @media(max-width:760px) { .hero{grid-template-columns:1fr}.hero-art{min-height:310px}.hero-copy{padding:55px 8vw}.current{align-items:flex-start;flex-direction:column}.page{padding-top:50px}.select-nav{padding:0 22px}.brand{font-size:1.35rem} }
+    </style>
+</head>
+<body>
+    <nav class="select-nav">
+        <a class="brand" href="{% url 'home' %}">AURUM</a>
+        <a class="nav-back" href="{% url 'profile' %}">My account &nbsp;→</a>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-copy">
+            <p class="eyebrow">The private circle</p>
+            <h1>Aurum<br><em>Select</em></h1>
+            <p>Exceptional privileges for those who choose jewellery with intention—member pricing, complimentary delivery and rewards returned to your Aurum wallet.</p>
+        </div>
+        <div class="hero-art">
+            <div class="member-card">
+                <div class="card-brand">AURUM</div>
+                <div class="card-select">SELECT</div>
+                <div class="card-name">{{ request.user.get_full_name|default:request.user.username }}</div>
+            </div>
+        </div>
+    </section>
+
+    <main class="page">
+        {% for message in messages %}<div class="flash">{{ message }}</div>{% endfor %}
+
+        {% if membership %}
+        <section class="current">
+            <div>
+                <div class="current-label">Current membership · {{ membership.get_status_display }}</div>
+                <h2>{{ membership.plan.name }}</h2>
+                <p>{% if membership.is_active %}Benefits active until {{ membership.next_billing_date|date:"d M Y" }}{% else %}This membership is not currently active.{% endif %}</p>
+            </div>
+            {% if membership.is_active %}
+            <form method="post" action="{% url 'membership_cancel' %}" onsubmit="return confirm('Cancel your Aurum Select membership?');">
+                {% csrf_token %}<button class="cancel" type="submit">Cancel membership</button>
+            </form>
+            {% endif %}
+        </section>
+        {% endif %}
+
+        <div class="section-head">
+            <p class="eyebrow">Choose your access</p>
+            <h2>Membership, beautifully rewarded.</h2>
+            <p>Your benefits apply automatically at checkout. Choose another plan at any time to upgrade your membership.</p>
+        </div>
+
+        <section class="plans">
+            {% for plan in plans %}
+            <article class="plan">
+                <div class="plan-cycle">{{ plan.get_billing_cycle_display }}</div>
+                <h3>{{ plan.name }}</h3>
+                <div class="price">₹{{ plan.price }} <small>/ {{ plan.billing_cycle }}</small></div>
+                <ul class="benefits">
+                    <li>{{ plan.discount_percent }}% off every jewellery order</li>
+                    <li>{% if plan.free_shipping %}Complimentary shipping, always{% else %}Standard shipping benefits{% endif %}</li>
+                    <li>{{ plan.wallet_bonus_percent }}% returned to your Aurum wallet</li>
+                    <li>Benefits applied automatically at checkout</li>
+                </ul>
+                <button class="join" type="button" data-plan-id="{{ plan.id }}" {% if membership.is_active and membership.plan_id == plan.id %}disabled{% endif %}>
+                    {% if membership.is_active and membership.plan_id == plan.id %}Your current plan{% elif membership.is_active %}Switch to this plan{% else %}Join Aurum Select{% endif %}
+                </button>
+            </article>
+            {% empty %}
+            <article class="plan"><h3>Plans coming soon</h3><p>Membership plans can be configured in the Aurum administration.</p></article>
+            {% endfor %}
+        </section>
+        <p class="security">Secure recurring billing powered by Razorpay. Cancel from your account at any time.</p>
+        <div class="message" id="membershipMessage"></div>
+    </main>
+
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script>
+        function cookie(name) {
+            return document.cookie.split(';').map(v => v.trim()).find(v => v.startsWith(name + '='))?.split('=')[1] || '';
+        }
+        const message = document.getElementById('membershipMessage');
+        document.querySelectorAll('[data-plan-id]').forEach(button => {
+            button.addEventListener('click', async () => {
+                button.disabled = true;
+                message.textContent = 'Preparing your secure membership…';
+                try {
+                    const response = await fetch("{% url 'membership_subscribe' %}", {
+                        method: 'POST',
+                        headers: {'Content-Type':'application/json','X-CSRFToken':decodeURIComponent(cookie('csrftoken'))},
+                        body: JSON.stringify({plan_id: button.dataset.planId})
+                    });
+                    const data = await response.json();
+                    if (!response.ok) throw new Error(data.error || 'Unable to create subscription');
+                    new Razorpay({
+                        key: data.key,
+                        subscription_id: data.subscription_id,
+                        name: data.name,
+                        description: data.description,
+                        prefill: data.prefill,
+                        theme: {color:'#563a2d'},
+                        handler: async function(result) {
+                            const verify = await fetch("{% url 'membership_verify' %}", {
+                                method:'POST',
+                                headers:{'Content-Type':'application/json','X-CSRFToken':decodeURIComponent(cookie('csrftoken'))},
+                                body:JSON.stringify(result)
+                            });
+                            const verified = await verify.json();
+                            if (!verify.ok) { message.textContent = verified.error || 'Verification failed'; button.disabled = false; return; }
+                            window.location.reload();
+                        },
+                        modal: {ondismiss: () => {button.disabled=false;message.textContent='';}}
+                    }).open();
+                } catch (error) {
+                    message.textContent = error.message;
+                    button.disabled = false;
+                }
+            });
+        });
+    </script>
+</body>
+</html>

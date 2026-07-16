@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
@@ -6,19 +6,20 @@
 <title>{{ product.name }} - Aurum</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Forum&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --gold: #b8975a;
-    --gold-light: #d4b47a;
-    --gold-pale: #f5efe4;
+    --gold: #6b4735;
+    --gold-light: #b77759;
+    --gold-pale: #f3ebe6;
     --ink: #1a1714;
     --ink-mid: #4a433b;
     --ink-muted: #8a7f72;
-    --cream: #faf7f2;
+    --cream: #f4f0e8;
     --white: #ffffff;
+    --display: "Forum", "Cormorant Garamond", Georgia, serif;
     --serif: "Cormorant Garamond", Georgia, serif;
     --sans: "Jost", sans-serif;
   }
@@ -63,7 +64,21 @@
     justify-content: center;
     padding: 2rem;
     gap: 1rem;
+    position: relative;
   }
+
+  .detail-new-badge {
+  position: absolute;
+  top: 22px;
+  left: 24px;
+  z-index: 3;
+  font-family: var(--sans);
+  font-size: 0.78rem;
+  font-weight: 400;
+  letter-spacing: 0.42em;
+  color: #1a1714;
+  text-transform: uppercase;
+}
 
   .media img {
     width: 100%;
@@ -89,7 +104,7 @@
   }
 
   .details h1 {
-    font-family: var(--serif);
+    font-family: var(--display);
     font-size: clamp(2.4rem, 3.5vw, 3.4rem);
     font-weight: 300;
     margin-bottom: 1rem;
@@ -99,9 +114,100 @@
   grid-column: 1 / -1;
 }
 
+  .more-pieces {
+    grid-column: 1 / -1;
+    padding: 1rem 0 2.5rem;
+    border-top: 1px solid rgba(184, 151, 90, 0.16);
+    border-bottom: 1px solid rgba(184, 151, 90, 0.16);
+  }
+
+  .more-pieces-header {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .more-pieces h2 {
+    font-family: var(--display);
+    font-size: clamp(2rem, 3vw, 2.7rem);
+    font-weight: 300;
+  }
+
+  .more-pieces-note {
+    color: var(--ink-muted);
+    font-size: 0.85rem;
+    text-align: right;
+  }
+
+  .more-pieces-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+  }
+
+  .more-piece-card {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+    border: 1px solid rgba(184, 151, 90, 0.16);
+    background: rgba(255, 255, 255, 0.32);
+    transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
+  }
+
+  .more-piece-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(184, 151, 90, 0.34);
+    box-shadow: 0 18px 42px rgba(26, 23, 20, 0.08);
+  }
+
+  .more-piece-image {
+    aspect-ratio: 1 / 1;
+    background: var(--gold-pale);
+    overflow: hidden;
+  }
+
+  .more-piece-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.25s;
+  }
+
+  .more-piece-card:hover .more-piece-image img {
+    transform: scale(1.04);
+  }
+
+  .more-piece-body {
+    padding: 0.9rem;
+  }
+
+  .more-piece-category {
+    color: var(--gold);
+    font-size: 0.68rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    margin-bottom: 0.35rem;
+  }
+
+  .more-piece-name {
+    font-family: var(--display);
+    font-size: 1.3rem;
+    font-weight: 400;
+    line-height: 1.15;
+    margin-bottom: 0.45rem;
+  }
+
+  .more-piece-price {
+    color: var(--ink-mid);
+    font-size: 0.95rem;
+    font-weight: 500;
+  }
+
   .review-card {
     padding: 1.5rem 0;
-    border-bottom: 1px solid rgba(184,151,90,0.15);
+    border-bottom: 1px solid rgba(107,71,53,0.15);
 }
 
   .review-card:last-child {
@@ -192,10 +298,134 @@
     color: var(--ink);
     font-weight: 500;
   }
+
+  .stock-status {
+    margin-top: 1rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  .stock-status.out {
+    color: #7a4b3a;
+  }
+
+  .variant-selector-list {
+    display: grid;
+    gap: 1.2rem;
+    margin: 1.5rem 0;
+  }
+
+  .variant-selector-heading {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    margin-bottom: 0.65rem;
+    color: var(--ink-muted);
+    font-size: 0.82rem;
+  }
+
+  .variant-selector-heading strong {
+    color: var(--ink);
+    font-weight: 500;
+  }
+
+  .variant-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+  }
+
+  .variant-option {
+    min-width: 76px;
+    padding: 0.68rem 0.85rem;
+    border: 1px solid rgba(107, 71, 53, 0.25);
+    background: var(--white);
+    color: var(--ink);
+    text-align: center;
+    text-decoration: none;
+    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+  }
+
+  .variant-option:hover {
+    border-color: var(--gold);
+  }
+
+  .variant-option.active {
+    border-color: var(--gold);
+    box-shadow: inset 0 0 0 1px var(--gold);
+    background: var(--gold-pale);
+  }
+
+  .variant-option.unavailable {
+    color: var(--ink-muted);
+    background: rgba(107, 71, 53, 0.04);
+  }
+
+  .variant-option small {
+    display: block;
+    max-width: 100px;
+    margin: 0.3rem auto 0;
+    color: #a13b2c;
+    font-size: 0.62rem;
+    line-height: 1.25;
+  }
+
+  .stock-variant-selectors {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+    margin: 1.5rem 0;
+  }
+
+  .stock-option-field label {
+    display: block;
+    margin-bottom: 0.45rem;
+    color: var(--ink-muted);
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .stock-option-field select {
+    width: 100%;
+    padding: 0.75rem 0.85rem;
+    border: 1px solid rgba(107, 71, 53, 0.25);
+    background: var(--white);
+    color: var(--ink);
+    font: inherit;
+  }
+
+  .stock-variant-loading {
+    min-height: 1.2rem;
+    margin-top: 0.6rem;
+    color: var(--ink-muted);
+    font-size: 0.75rem;
+  }
+
+  .add-cart-form {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+  }
+
+  .add-cart-form .btn[disabled] {
+    cursor: not-allowed;
+    opacity: 0.45;
+  }
   
   @media (max-width: 900px) {
     header { padding: 1rem 1.5rem; }
     .container { padding: 2rem 1.5rem; grid-template-columns: 1fr; }
+    .more-pieces-header { align-items: start; flex-direction: column; }
+    .more-pieces-note { text-align: left; }
+    .more-pieces-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (max-width: 560px) {
+    .more-pieces-grid { grid-template-columns: 1fr; }
   }
 </style>
 </head>
@@ -206,6 +436,9 @@
 <main class="container">
 
   <div class="media">
+    {% if product.is_new %}
+        <span class="new-badge detail-new-badge">N E W</span>
+    {% endif %}
     {% if product.image %}
       <img src="{{ product.image.url }}" alt="{{ product.name }}" />
     {% else %}
@@ -216,10 +449,10 @@
 
   <div class="details">
     <h1>{{ product.name }}</h1>
-    <div class="price">$ {{ product.price }}</div>
+    <div class="price" id="productPrice">&#8377; {% if default_stock_variant %}{{ default_stock_variant.final_price|floatformat:2 }}{% else %}{{ product.price }}{% endif %}</div>
 
 <div class="product-rating">
-    <span class="rating-star">★</span>
+    <span class="rating-star">â˜…</span>
 
     <span class="rating-score">
         {{ avg_rating|floatformat:1 }} / 5
@@ -232,13 +465,111 @@
     </span>
 </div>
 
+    {% if variants|length > 1 %}
+      <section class="variant-selector-list" aria-label="Product variations">
+        {% for selector in variant_selectors %}
+          <div class="variant-selector" data-variant-attribute="{{ selector.key }}">
+            <div class="variant-selector-heading">
+              <span>{{ selector.label }}:</span>
+              {% for option in selector.options %}
+                {% if option.is_active %}<strong>{{ option.value }}</strong>{% endif %}
+              {% endfor %}
+            </div>
+
+            <div class="variant-options">
+              {% for option in selector.options %}
+                <a
+                  href="{% url 'product_detail' option.product.id %}"
+                  class="variant-option{% if option.is_active %} active{% endif %}{% if not option.is_available %} unavailable{% endif %}"
+                  {% if option.is_active %}aria-current="page"{% endif %}
+                >
+                  <span>{{ option.value }}</span>
+                  {% if not option.is_available %}<small>Currently unavailable</small>{% endif %}
+                </a>
+              {% endfor %}
+            </div>
+          </div>
+        {% endfor %}
+      </section>
+    {% endif %}
+
+    {% if stock_variants %}
+      <section class="stock-variant-selectors" id="stockVariantSelectors" data-endpoint="{% url 'product_variant_stock_api' product.id %}">
+        {% if size_options %}
+          <div class="stock-option-field">
+            <label for="sizeSelect">Size</label>
+            <select id="sizeSelect">
+              {% for size in size_options %}
+                <option value="{{ size }}"{% if default_stock_variant.size == size %} selected{% endif %}>{{ size }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        {% endif %}
+
+        {% if purity_options %}
+          <div class="stock-option-field">
+            <label for="puritySelect">Purity</label>
+            <select id="puritySelect">
+              {% for purity in purity_options %}
+                <option value="{{ purity }}"{% if default_stock_variant.purity == purity %} selected{% endif %}>{{ purity }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        {% endif %}
+      </section>
+      <p class="stock-variant-loading" id="stockVariantLoading" aria-live="polite"></p>
+    {% endif %}
+
     <div class="meta">
-      <div>Category: <span>{{ product.category.name|default:"Collection" }}</span></div>
+      <div>Category: <span>{{ product.primary_category.name|default:"Collection" }}</span></div>
+      <div>Subcategory: <span>{{ product.primary_subcategory.name|default:"" }}</span></div>
     </div>
 
+    {% if default_stock_variant %}
+      <p class="stock-status{% if default_stock_variant.stock_quantity <= 0 %} out{% endif %}" id="stockStatus">
+        {% if default_stock_variant.stock_quantity <= 0 %}Out of stock{% else %}Available — {{ default_stock_variant.stock_quantity }} left{% endif %}
+      </p>
+    {% elif product.stock <= 0 %}
+      <p class="stock-status out" id="stockStatus">Out of Stock</p>
+    {% else %}
+      <p class="stock-status" id="stockStatus">Available</p>
+    {% endif %}
+
     <div class="divider"></div>
+    <form method="POST" action="{% url 'add_to_session_cart' product.id %}" class="add-cart-form" id="addCartForm">
+      {% csrf_token %}
+      <input type="hidden" name="stock_variant_id" id="stockVariantId" value="{% if default_stock_variant %}{{ default_stock_variant.id }}{% endif %}">
+      <button class="btn" type="submit" id="addCartButton"{% if default_stock_variant and default_stock_variant.stock_quantity <= 0 or not default_stock_variant and product.stock <= 0 %} disabled{% endif %}>Add to Cart</button>
+    </form>
     <a class="btn" href="/">Back to Collection</a>
   </div>
+
+  {% if more_pieces %}
+    <section class="more-pieces">
+      <div class="more-pieces-header">
+        <h2>More Pieces</h2>
+        
+      </div>
+
+      <div class="more-pieces-grid">
+        {% for item in more_pieces %}
+          <a class="more-piece-card" href="{% url 'product_detail' item.id %}">
+            <div class="more-piece-image">
+              {% if item.image %}
+                <img src="{{ item.image.url }}" alt="{{ item.name }}" loading="lazy" />
+              {% else %}
+                <img src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=600&q=80" alt="{{ item.name }}" loading="lazy" />
+              {% endif %}
+            </div>
+            <div class="more-piece-body">
+              <h3 class="more-piece-name">{{ item.name }}</h3>
+              <p class="more-piece-price">&#8377; {{ item.price }}</p>
+            </div>
+          </a>
+        {% endfor %}
+      </div>
+    </section>
+  {% endif %}
 
   <section class="reviews-section">
     <h2>Customer Reviews</h2>
@@ -252,9 +583,9 @@
           <div class="stars">
             {% for i in "12345" %}
               {% if forloop.counter <= review.rating %}
-                ★
+                â˜…
               {% else %}
-                ☆
+                â˜†
               {% endif %}
             {% endfor %}
           </div>
@@ -268,5 +599,62 @@
   </section>
 
 </main>
+<script>
+  (() => {
+    const selectors = document.getElementById("stockVariantSelectors");
+    if (!selectors) return;
+
+    const sizeSelect = document.getElementById("sizeSelect");
+    const puritySelect = document.getElementById("puritySelect");
+    const price = document.getElementById("productPrice");
+    const stockStatus = document.getElementById("stockStatus");
+    const loading = document.getElementById("stockVariantLoading");
+    const variantId = document.getElementById("stockVariantId");
+    const addButton = document.getElementById("addCartButton");
+    let debounceTimer;
+    let requestController;
+
+    const loadSelection = () => {
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(async () => {
+        if (requestController) requestController.abort();
+        requestController = new AbortController();
+        const params = new URLSearchParams();
+        if (sizeSelect) params.set("size", sizeSelect.value);
+        if (puritySelect) params.set("purity", puritySelect.value);
+
+        loading.textContent = "Checking availability…";
+        addButton.disabled = true;
+
+        try {
+          const response = await fetch(`${selectors.dataset.endpoint}?${params}`, {
+            signal: requestController.signal,
+          });
+          const data = await response.json();
+          if (!response.ok) throw new Error(data.error || "Selection unavailable");
+
+          price.textContent = `₹ ${Number(data.price).toLocaleString("en-IN", {minimumFractionDigits: 2})}`;
+          variantId.value = data.stock_variant_id;
+          stockStatus.textContent = data.available
+            ? `Available — ${data.stock_quantity} left`
+            : "Out of stock";
+          stockStatus.classList.toggle("out", !data.available);
+          addButton.disabled = !data.available;
+          loading.textContent = `SKU: ${data.sku}`;
+        } catch (error) {
+          if (error.name === "AbortError") return;
+          variantId.value = "";
+          stockStatus.textContent = "Combination unavailable";
+          stockStatus.classList.add("out");
+          loading.textContent = error.message;
+          addButton.disabled = true;
+        }
+      }, 250);
+    };
+
+    sizeSelect?.addEventListener("change", loadSelection);
+    puritySelect?.addEventListener("change", loadSelection);
+  })();
+</script>
 </body>
 </html>

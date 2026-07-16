@@ -1,24 +1,25 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>AURUM — Luxury Goods</title>
+<title>AURUM - Luxury Goods</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Forum&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --gold: #b8975a;
-    --gold-light: #d4b47a;
-    --gold-pale: #f5efe4;
+    --gold: #6b4735;
+    --gold-light: #b77759;
+    --gold-pale: #f3ebe6;
     --ink: #1a1714;
     --ink-mid: #4a433b;
     --ink-muted: #8a7f72;
-    --cream: #faf7f2;
+    --cream: #f4f0e8;
     --white: #ffffff;
+    --display: 'Forum', 'Cormorant Garamond', Georgia, serif;
     --serif: 'Cormorant Garamond', Georgia, serif;
     --sans: 'Jost', sans-serif;
   }
@@ -32,7 +33,7 @@
     overflow-x: hidden;
   }
 
-  /* ── NAV ── */
+  /* â”€â”€ NAV â”€â”€ */
   nav {
     position: fixed;
     top: 0; left: 0; right: 0;
@@ -116,7 +117,7 @@
     justify-content: center;
   }
 
-  /* ── HERO ── */
+  /* â”€â”€ HERO â”€â”€ */
   .hero {
     min-height: 100vh;
     display: grid;
@@ -153,7 +154,7 @@
   }
 
   .hero-headline {
-    font-family: var(--serif);
+    font-family: var(--display);
     font-size: clamp(3.5rem, 5vw, 5.5rem);
     font-weight: 300;
     line-height: 1.05;
@@ -277,13 +278,13 @@
   }
 
   .hero-badge-val {
-    font-family: var(--serif);
+    font-family: var(--display);
     font-size: 1.5rem;
     font-weight: 600;
     color: var(--gold);
   }
 
-  /* ── MARQUEE ── */
+  /* â”€â”€ MARQUEE â”€â”€ */
   .marquee-strip {
     background: var(--gold);
     padding: 0.85rem 0;
@@ -315,9 +316,9 @@
     background: rgba(255,255,255,0.5);
   }
 
-  /* ── CATEGORIES ── */
+  /* â”€â”€ CATEGORIES â”€â”€ */
   .section { padding: 7rem 6rem; }
-  .section-alt { background: var(--white); }
+  .section-alt { background: var(--cream); }
 
   .section-header {
     display: flex;
@@ -336,7 +337,7 @@
   }
 
   .section-title {
-    font-family: var(--serif);
+    font-family: var(--display);
     font-size: clamp(2.2rem, 3.5vw, 3.2rem);
     font-weight: 300;
     line-height: 1.1;
@@ -412,7 +413,7 @@
   }
 
   .cat-name {
-    font-family: var(--serif);
+    font-family: var(--display);
     font-size: 1.4rem;
     font-weight: 400;
     color: var(--white);
@@ -426,7 +427,7 @@
     color: rgba(255,255,255,0.55);
   }
 
-  /* ── FEATURED ── */
+  /* â”€â”€ FEATURED â”€â”€ */
   .product-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -435,7 +436,7 @@
 
   .prod-card {
     background: var(--cream);
-    border: 1px solid rgba(184,151,90,0.15);
+    border: 1px solid rgba(107,71,53,0.15);
     transition: box-shadow 0.3s, transform 0.3s;
     cursor: pointer;
   }
@@ -500,7 +501,7 @@
   }
 
   .prod-name {
-    font-family: var(--serif);
+    font-family: var(--display);
     font-size: 1.15rem;
     font-weight: 400;
     color: var(--ink);
@@ -543,7 +544,7 @@
 
   .prod-add:hover { background: var(--gold); border-color: var(--gold); }
 
-  /* ── PROMO BANNER ── */
+  /* â”€â”€ PROMO BANNER â”€â”€ */
   .promo {
     background: var(--ink);
     padding: 6rem;
@@ -565,7 +566,7 @@
   }
 
   .promo-title {
-    font-family: var(--serif);
+    font-family: var(--display);
     font-size: clamp(2.5rem, 4vw, 4rem);
     font-weight: 300;
     color: var(--white);
@@ -590,7 +591,7 @@
   }
 
   .stat-val {
-    font-family: var(--serif);
+    font-family: var(--display);
     font-size: 2.5rem;
     font-weight: 300;
     color: var(--gold);
@@ -609,7 +610,7 @@
   .promo-visual {
     aspect-ratio: 4/3;
     background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(184,151,90,0.2);
+    border: 1px solid rgba(107,71,53,0.2);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -617,7 +618,7 @@
 
   .promo-visual svg { opacity: 0.12; width: 80px; height: 80px; }
 
-  /* ── TESTIMONIALS ── */
+  /* â”€â”€ TESTIMONIALS â”€â”€ */
   .test-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -626,7 +627,7 @@
 
   .test-card {
     background: var(--white);
-    border: 1px solid rgba(184,151,90,0.15);
+    border: 1px solid rgba(107,71,53,0.15);
     padding: 2rem;
   }
 
@@ -639,7 +640,7 @@
   .star svg { width: 14px; height: 14px; fill: var(--gold); stroke: none; }
 
   .test-quote {
-    font-family: var(--serif);
+    font-family: var(--display);
     font-size: 1.05rem;
     font-weight: 300;
     line-height: 1.75;
@@ -662,7 +663,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-family: var(--serif);
+    font-family: var(--display);
     font-size: 1rem;
     color: var(--gold);
   }
@@ -679,19 +680,19 @@
     margin-top: 1px;
   }
 
-  /* ── NEWSLETTER ── */
+  /* â”€â”€ NEWSLETTER â”€â”€ */
   .newsletter {
     background: var(--gold-pale);
     padding: 5rem 6rem;
     text-align: center;
-    border-top: 1px solid rgba(184,151,90,0.2);
-    border-bottom: 1px solid rgba(184,151,90,0.2);
+    border-top: 1px solid rgba(107,71,53,0.2);
+    border-bottom: 1px solid rgba(107,71,53,0.2);
   }
 
   .newsletter .section-tag { text-align: center; margin-bottom: 0.75rem; }
 
   .newsletter-title {
-    font-family: var(--serif);
+    font-family: var(--display);
     font-size: clamp(2rem, 3vw, 2.8rem);
     font-weight: 300;
     color: var(--ink);
@@ -715,7 +716,7 @@
   .newsletter-form input {
     flex: 1;
     background: var(--white);
-    border: 1px solid rgba(184,151,90,0.3);
+    border: 1px solid rgba(107,71,53,0.3);
     border-right: none;
     padding: 1rem 1.25rem;
     font-family: var(--sans);
@@ -741,9 +742,9 @@
     transition: background 0.3s;
   }
 
-  .newsletter-form button:hover { background: #a0844c; }
+  .newsletter-form button:hover { background: #563829; }
 
-  /* ── FOOTER ── */
+  /* â”€â”€ FOOTER â”€â”€ */
   footer {
     background: var(--ink);
     padding: 5rem 6rem 2.5rem;
@@ -825,7 +826,7 @@
   .footer-socials a:hover { border-color: var(--gold); }
   .footer-socials svg { width: 15px; height: 15px; stroke: rgba(255,255,255,0.45); }
 
-  /* ── ANIMATIONS ── */
+  /* â”€â”€ ANIMATIONS â”€â”€ */
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(24px); }
     to   { opacity: 1; transform: translateY(0); }
@@ -857,7 +858,7 @@
     transform: translateY(0);
   }
 
-  /* ── RESPONSIVE ── */
+  /* â”€â”€ RESPONSIVE â”€â”€ */
   @media (max-width: 900px) {
     nav { padding: 1.25rem 2rem; }
     .nav-links { display: none; }
@@ -903,7 +904,7 @@
   <div class="hero-left">
     <p class="hero-eyebrow">New Collection 2025</p>
     <h1 class="hero-headline">Crafted for<br>the <em>Discerning</em><br>Few.</h1>
-    <p class="hero-sub">Each piece in our collection is a testament to centuries-old artisanship — where material excellence meets timeless elegance.</p>
+    <p class="hero-sub">Each piece in our collection is a testament to centuries-old artisanship - where material excellence meets timeless elegance.</p>
     <div class="hero-cta">
       <a href="#featured" class="btn-primary">
         Shop Collection
@@ -929,12 +930,12 @@
 <!-- MARQUEE -->
 <div class="marquee-strip" aria-hidden="true">
   <div class="marquee-inner">
-    <span class="marquee-item">Free shipping over $250 <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Free shipping over &#8377;250 <span class="marquee-dot"></span></span>
     <span class="marquee-item">Handcrafted in Italy <span class="marquee-dot"></span></span>
     <span class="marquee-item">Lifetime warranty <span class="marquee-dot"></span></span>
     <span class="marquee-item">30-day returns <span class="marquee-dot"></span></span>
     <span class="marquee-item">New: Spring Atelier Collection <span class="marquee-dot"></span></span>
-    <span class="marquee-item">Free shipping over $250 <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Free shipping over &#8377;250 <span class="marquee-dot"></span></span>
     <span class="marquee-item">Handcrafted in Italy <span class="marquee-dot"></span></span>
     <span class="marquee-item">Lifetime warranty <span class="marquee-dot"></span></span>
     <span class="marquee-item">30-day returns <span class="marquee-dot"></span></span>
@@ -999,45 +1000,45 @@
   <div class="product-grid">
     <div class="prod-card reveal">
       <div class="prod-img">
-        <svg viewBox="0 0 24 24" fill="none" stroke="#b8975a" stroke-width="1"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="#6b4735" stroke-width="1"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/></svg>
         <div class="prod-badge">New In</div>
         <button class="prod-wish" aria-label="Add to wishlist"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
       </div>
       <div class="prod-info">
         <p class="prod-brand">Aurum Atelier</p>
-        <h3 class="prod-name">Lumière Diamond Pendant</h3>
+        <h3 class="prod-name">LumiÃ¨re Diamond Pendant</h3>
         <div class="prod-price">
-          <span class="prod-price-main">$4,800</span>
+          <span class="prod-price-main">&#8377;4,800</span>
         </div>
         <button class="prod-add">Add to Cart</button>
       </div>
     </div>
     <div class="prod-card reveal">
       <div class="prod-img">
-        <svg viewBox="0 0 24 24" fill="none" stroke="#b8975a" stroke-width="1"><rect x="2" y="7" width="20" height="15" rx="1"/><path d="M16 3H8L6 7h12l-2-4z"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="#6b4735" stroke-width="1"><rect x="2" y="7" width="20" height="15" rx="1"/><path d="M16 3H8L6 7h12l-2-4z"/></svg>
         <div class="prod-badge">Sale</div>
         <button class="prod-wish" aria-label="Add to wishlist"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
       </div>
       <div class="prod-info">
         <p class="prod-brand">Aurum Maison</p>
-        <h3 class="prod-name">Séville Leather Tote</h3>
+        <h3 class="prod-name">SÃ©ville Leather Tote</h3>
         <div class="prod-price">
-          <span class="prod-price-main">$1,290</span>
-          <span class="prod-price-old">$1,650</span>
+          <span class="prod-price-main">&#8377;1,290</span>
+          <span class="prod-price-old">&#8377;1,650</span>
         </div>
         <button class="prod-add">Add to Cart</button>
       </div>
     </div>
     <div class="prod-card reveal">
       <div class="prod-img">
-        <svg viewBox="0 0 24 24" fill="none" stroke="#b8975a" stroke-width="1"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="#6b4735" stroke-width="1"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
         <button class="prod-wish" aria-label="Add to wishlist"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
       </div>
       <div class="prod-info">
         <p class="prod-brand">Aurum Horlogerie</p>
         <h3 class="prod-name">Prestige 38 Moonphase</h3>
         <div class="prod-price">
-          <span class="prod-price-main">$12,500</span>
+          <span class="prod-price-main">&#8377;12,500</span>
         </div>
         <button class="prod-add">Add to Cart</button>
       </div>
@@ -1048,9 +1049,9 @@
 <!-- PROMO BANNER -->
 <div class="promo">
   <div class="promo-text reveal">
-    <p class="promo-eyebrow">Limited Offer · Ends May 31</p>
+    <p class="promo-eyebrow">Limited Offer Â· Ends May 31</p>
     <h2 class="promo-title">Spring <em>Atelier</em><br>Collection.</h2>
-    <p class="promo-sub">Discover pieces born of seasonal inspiration — flowing silhouettes and botanical motifs rendered in 18-carat gold and ethically sourced gemstones.</p>
+    <p class="promo-sub">Discover pieces born of seasonal inspiration - flowing silhouettes and botanical motifs rendered in 18-carat gold and ethically sourced gemstones.</p>
     <div class="promo-stats">
       <div>
         <p class="stat-val">18K</p>
@@ -1105,7 +1106,7 @@
         <span class="star"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>
         <span class="star"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>
       </div>
-      <p class="test-quote">"A gift I purchased for my wife left her speechless. The presentation alone is worth every penny — an experience from start to finish."</p>
+      <p class="test-quote">"A gift I purchased for my wife left her speechless. The presentation alone is worth every penny - an experience from start to finish."</p>
       <div class="test-author">
         <div class="test-avatar">JL</div>
         <div>
@@ -1138,7 +1139,7 @@
 <div class="newsletter">
   <p class="section-tag">Stay Connected</p>
   <h2 class="newsletter-title">The Aurum Edit</h2>
-  <p class="newsletter-sub">Private previews, exclusive offers, and stories from our ateliers — delivered monthly.</p>
+  <p class="newsletter-sub">Private previews, exclusive offers, and stories from our ateliers - delivered monthly.</p>
   <div class="newsletter-form">
     <input type="email" placeholder="Your email address" />
     <button type="button">Subscribe</button>
@@ -1150,7 +1151,7 @@
   <div class="footer-top">
     <div>
       <p class="footer-brand">AURUM</p>
-      <p class="footer-about">Crafting luxury since 1892. Each piece is an heirloom in the making — a blend of ancestral technique and contemporary vision.</p>
+      <p class="footer-about">Crafting luxury since 1892. Each piece is an heirloom in the making - a blend of ancestral technique and contemporary vision.</p>
     </div>
     <div class="footer-col">
       <h4>Shop</h4>
@@ -1184,7 +1185,7 @@
     </div>
   </div>
   <div class="footer-bottom">
-    <span>© 2025 Aurum Maison. All rights reserved.</span>
+    <span>Â© 2025 Aurum Maison. All rights reserved.</span>
     <div class="footer-socials">
       <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
       <a href="#" aria-label="Pinterest"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M12 2C6.48 2 2 6.48 2 12c0 4.24 2.65 7.86 6.39 9.29-.09-.78-.17-1.98.04-2.83.19-.77 1.27-5.38 1.27-5.38s-.32-.65-.32-1.61c0-1.51.88-2.64 1.97-2.64.93 0 1.38.7 1.38 1.54 0 .94-.6 2.34-.91 3.64-.26 1.09.54 1.97 1.6 1.97 1.92 0 3.4-2.02 3.4-4.95 0-2.58-1.86-4.39-4.52-4.39-3.08 0-4.89 2.31-4.89 4.7 0 .93.36 1.93.8 2.47.09.11.1.2.07.31-.08.34-.27 1.09-.3 1.24-.05.2-.16.24-.37.14-1.39-.65-2.26-2.68-2.26-4.32 0-3.51 2.55-6.74 7.35-6.74 3.86 0 6.86 2.75 6.86 6.42 0 3.83-2.41 6.91-5.76 6.91-1.13 0-2.19-.59-2.55-1.28l-.69 2.59c-.25.97-.93 2.18-1.39 2.92.04.01.09.01.13.01C17.52 22 22 17.52 22 12S17.52 2 12 2z"/></svg></a>
@@ -1203,7 +1204,7 @@
   document.querySelectorAll('.prod-add').forEach(btn => {
     btn.addEventListener('click', function() {
       const orig = this.textContent;
-      this.textContent = 'Added ✓';
+      this.textContent = 'Added âœ“';
       this.style.background = '#5a8a5a';
       this.style.borderColor = '#5a8a5a';
       setTimeout(() => {

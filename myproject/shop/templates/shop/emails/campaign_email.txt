@@ -1,0 +1,11 @@
+Hello {{ user.first_name|default:user.username }},
+
+This is email {{ step }} of {{ total_steps }} in The Aurum Edit.
+We’re sharing curated pieces, private previews, and select offers picked for you.
+
+Visit Aurum: {{ site_url }}
+
+Your next email is scheduled for {{ next_send_at|date:"M d, Y h:i A" }}.
+
+Warm regards,
+Aurum

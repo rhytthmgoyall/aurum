@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<body style="margin:0;background:#f4f0e8;font-family:Arial,sans-serif;color:#241812;">
+  <div style="max-width:680px;margin:0 auto;padding:28px;">
+    <div style="background:#fffaf3;border:1px solid rgba(107,71,53,.18);padding:32px;">
+      <p style="letter-spacing:.18em;text-transform:uppercase;font-size:12px;color:#7d6f63;">
+        The Aurum Edit
+      </p>
+      <h1 style="margin:12px 0 16px;font-family:Georgia,serif;font-size:34px;font-weight:400;color:#6b4735;line-height:1.1;">
+        {{ user.first_name|default:user.username }}, your curated selection is ready.
+      </h1>
+      <p style="line-height:1.7;color:#7d6f63;font-size:15px;">
+        This is email {{ step }} of {{ total_steps }} in our 30-minute sequence.
+        We are sharing private previews, new arrivals, and refined offers chosen for your collection.
+      </p>
+      <div style="margin:24px 0;padding:18px;border-top:1px solid rgba(107,71,53,.18);border-bottom:1px solid rgba(107,71,53,.18);">
+        <p style="margin:0 0 8px;"><strong>Step:</strong> {{ step }} of {{ total_steps }}</p>
+        <p style="margin:0 0 8px;"><strong>Next mail:</strong> {{ next_send_at|date:"M d, Y h:i A" }}</p>
+        <p style="margin:0;"><strong>Visit Aurum:</strong> <a href="{{ site_url }}" style="color:#6b4735;">{{ site_url }}</a></p>
+      </div>
+      <p style="margin:0;color:#7d6f63;font-size:13px;line-height:1.6;">
+        If you did not ask for these updates, you can ignore this message.
+      </p>
+    </div>
+  </div>
+</body>
+</html>

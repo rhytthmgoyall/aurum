@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Wallet | AURUM</title>
+    <link href="https://fonts.googleapis.com/css2?family=Forum&family=Cormorant+Garamond:wght@400;500;600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --cream: #f4f0e8;
+            --paper: #fffaf3;
+            --ink: #241812;
+            --muted: #7d6f63;
+            --walnut: #6b4735;
+            --line: rgba(107, 71, 53, 0.18);
+        }
+        body {
+            min-height: 100vh;
+            background: var(--cream);
+            color: var(--ink);
+            font-family: 'Jost', sans-serif;
+        }
+        .page {
+            width: min(980px, 92vw);
+            margin: 0 auto;
+            padding: 2.2rem 0 4rem;
+        }
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        .brand {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.55rem;
+            font-weight: 600;
+            letter-spacing: 0.25em;
+            color: var(--walnut);
+            text-decoration: none;
+        }
+        .top-link {
+            color: var(--muted);
+            font-size: 0.74rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            text-decoration: none;
+        }
+        h1 {
+            font-family: 'Forum', serif;
+            font-size: clamp(3rem, 6vw, 5.6rem);
+            font-weight: 400;
+            line-height: 0.95;
+            color: #3b251d;
+            margin-bottom: 1.2rem;
+        }
+        .panel {
+            background: var(--paper);
+            border: 1px solid var(--line);
+            padding: 1.35rem;
+            margin-bottom: 1rem;
+        }
+        .balance {
+            display: flex;
+            justify-content: space-between;
+            align-items: end;
+            gap: 1rem;
+        }
+        .balance span {
+            color: var(--muted);
+            font-size: 0.74rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+        }
+        .balance strong {
+            font-family: 'Forum', serif;
+            font-size: 3rem;
+            font-weight: 400;
+            color: var(--walnut);
+        }
+        .topup-form {
+            display: grid;
+            grid-template-columns: minmax(180px, 1fr) auto;
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+        .topup-form input {
+            border: 1px solid rgba(107, 71, 53, 0.24);
+            background: #fff;
+            color: var(--ink);
+            font-family: 'Jost', sans-serif;
+            padding: 0.82rem 0.9rem;
+        }
+        .btn {
+            border: 1px solid var(--walnut);
+            background: var(--walnut);
+            color: #fff;
+            padding: 0.86rem 1rem;
+            cursor: pointer;
+            font-family: 'Jost', sans-serif;
+            font-size: 0.68rem;
+            font-weight: 500;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            text-decoration: none;
+            text-align: center;
+        }
+        .messages {
+            display: grid;
+            gap: 0.6rem;
+            margin-bottom: 1rem;
+        }
+        .message {
+            background: var(--paper);
+            border: 1px solid var(--line);
+            color: var(--walnut);
+            padding: 0.8rem 1rem;
+            font-size: 0.86rem;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th,
+        td {
+            border-bottom: 1px solid rgba(107, 71, 53, 0.12);
+            padding: 0.85rem 0.4rem;
+            text-align: left;
+            font-size: 0.86rem;
+            vertical-align: top;
+        }
+        th {
+            color: var(--walnut);
+            font-size: 0.68rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+        td {
+            color: var(--muted);
+        }
+        td strong {
+            color: var(--ink);
+            font-weight: 500;
+        }
+        .empty {
+            color: var(--muted);
+            line-height: 1.6;
+        }
+        @media (max-width: 760px) {
+            .balance,
+            .topup-form {
+                grid-template-columns: 1fr;
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            table,
+            thead,
+            tbody,
+            th,
+            td,
+            tr {
+                display: block;
+            }
+            thead {
+                display: none;
+            }
+            td {
+                display: flex;
+                justify-content: space-between;
+                gap: 1rem;
+            }
+            td::before {
+                content: attr(data-label);
+                color: var(--walnut);
+                text-transform: uppercase;
+                letter-spacing: 0.12em;
+                font-size: 0.64rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main class="page">
+        <header class="topbar">
+            <a href="{% url 'home' %}" class="brand">AURUM</a>
+            <a href="{% url 'profile' %}" class="top-link">Profile</a>
+        </header>
+
+        <h1>My Wallet</h1>
+
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <p class="message">{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <section class="panel">
+            <div class="balance">
+                <div>
+                    <span>Available Balance</span>
+                    <strong>&#8377;{{ wallet.balance }}</strong>
+                </div>
+            </div>
+            <form class="topup-form" method="post" action="{% url 'wallet_topup' %}">
+                {% csrf_token %}
+                <input
+                    type="number"
+                    name="amount"
+                    min="{{ min_topup_amount }}"
+                    max="{{ max_topup_amount }}"
+                    step="0.01"
+                    placeholder="Amount in rupees"
+                    required
+                >
+                <button type="submit" class="btn">Add Money</button>
+            </form>
+        </section>
+
+        <section class="panel">
+            {% if transactions %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Type</th>
+                            <th>Amount</th>
+                            <th>Balance After</th>
+                            <th>Status</th>
+                            <th>Related Refund</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for tx in transactions %}
+                            <tr>
+                                <td data-label="Date">{{ tx.created_at|date:"M d, Y h:i A" }}</td>
+                                <td data-label="Type">{{ tx.get_transaction_type_display }}</td>
+                                <td data-label="Amount"><strong>&#8377;{{ tx.amount }}</strong></td>
+                                <td data-label="Balance After">&#8377;{{ tx.balance_after }}</td>
+                                <td data-label="Status">{{ tx.get_status_display }}</td>
+                                <td data-label="Related Refund">
+                                    {% if tx.related_refund_request %}
+                                        <a href="{% url 'refund_status' tx.related_refund_request.id %}">#{{ tx.related_refund_request.id }}</a>
+                                    {% else %}
+                                        -
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p class="empty">No wallet transactions yet.</p>
+            {% endif %}
+        </section>
+    </main>
+</body>
+</html>

@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Refund Status | AURUM</title>
+    <link href="https://fonts.googleapis.com/css2?family=Forum&family=Cormorant+Garamond:wght@400;500;600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --cream: #f4f0e8;
+            --paper: #fffaf3;
+            --ink: #241812;
+            --muted: #7d6f63;
+            --walnut: #6b4735;
+            --line: rgba(107, 71, 53, 0.18);
+            --soft: rgba(107, 71, 53, 0.07);
+        }
+        body {
+            min-height: 100vh;
+            background: var(--cream);
+            color: var(--ink);
+            font-family: 'Jost', sans-serif;
+        }
+        .page {
+            width: min(980px, 92vw);
+            margin: 0 auto;
+            padding: 2.2rem 0 4rem;
+        }
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+        }
+        .brand {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.55rem;
+            font-weight: 600;
+            letter-spacing: 0.25em;
+            color: var(--walnut);
+            text-decoration: none;
+        }
+        .top-link {
+            color: var(--muted);
+            font-size: 0.74rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            text-decoration: none;
+        }
+        h1 {
+            font-family: 'Forum', serif;
+            font-size: clamp(3rem, 6vw, 5.6rem);
+            font-weight: 400;
+            line-height: 0.95;
+            color: #3b251d;
+            margin-bottom: 1.3rem;
+        }
+        .panel {
+            background: var(--paper);
+            border: 1px solid var(--line);
+            padding: 1.35rem;
+            margin-bottom: 1rem;
+        }
+        .status-line {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            color: var(--muted);
+            margin-bottom: 1.2rem;
+        }
+        .status-line strong {
+            color: var(--walnut);
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            font-size: 0.76rem;
+        }
+        .stepper {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 0.6rem;
+        }
+        .step {
+            border-top: 3px solid rgba(107, 71, 53, 0.18);
+            color: var(--muted);
+            padding-top: 0.7rem;
+            font-size: 0.72rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+        }
+        .step.is-complete {
+            border-color: var(--walnut);
+            color: var(--walnut);
+        }
+        .step.is-current {
+            font-weight: 600;
+        }
+        .rejected {
+            border: 1px solid #8b2f24;
+            color: #8b2f24;
+            background: rgba(139, 47, 36, 0.06);
+            padding: 0.9rem 1rem;
+            margin-top: 1rem;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 300px;
+            gap: 1rem;
+        }
+        .panel-title {
+            font-family: 'Forum', serif;
+            font-size: 1.8rem;
+            font-weight: 400;
+            margin-bottom: 0.8rem;
+        }
+        .item {
+            display: grid;
+            gap: 0.25rem;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid rgba(107, 71, 53, 0.1);
+        }
+        .item:last-child {
+            border-bottom: 0;
+        }
+        .item h3 {
+            font-family: 'Forum', serif;
+            font-size: 1.18rem;
+            font-weight: 400;
+        }
+        .muted {
+            color: var(--muted);
+            font-size: 0.84rem;
+            line-height: 1.55;
+        }
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            color: var(--muted);
+            font-size: 0.84rem;
+            margin-bottom: 0.75rem;
+        }
+        .summary-row strong {
+            color: var(--ink);
+            font-weight: 500;
+            text-align: right;
+        }
+        .grand {
+            padding-top: 0.8rem;
+            border-top: 1px solid var(--line);
+        }
+        .grand strong {
+            font-family: 'Forum', serif;
+            font-size: 1.55rem;
+            font-weight: 400;
+            color: var(--walnut);
+        }
+        .images {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            margin-top: 0.8rem;
+        }
+        .images img {
+            width: 86px;
+            height: 86px;
+            object-fit: cover;
+            border: 1px solid rgba(107, 71, 53, 0.18);
+            background: var(--cream);
+        }
+        @media (max-width: 820px) {
+            .grid,
+            .stepper {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main class="page">
+        <header class="topbar">
+            <a href="{% url 'home' %}" class="brand">AURUM</a>
+            <a href="{% url 'order_history' %}" class="top-link">Orders</a>
+        </header>
+
+        <h1>Refund Status</h1>
+
+        <section class="panel">
+            <div class="status-line">
+                <strong>{{ refund_request.get_status_display }}</strong>
+            </div>
+            {% if is_pending %}
+                <p class="muted">Your refund request is under review. You'll hear back within 24 hours.</p>
+            {% elif is_rejected %}
+                <p class="rejected">
+                    Your refund request was rejected.
+                    {% if refund_request.rejection_reason %}
+                        {{ refund_request.rejection_reason }}
+                    {% endif %}
+                </p>
+            {% elif is_qc_failed %}
+                <p class="rejected">
+                    Your returned item did not pass quality check.
+                    {% if refund_request.rejection_reason %}
+                        {{ refund_request.rejection_reason }}
+                    {% endif %}
+                </p>
+            {% elif is_approved_or_later %}
+                <div class="stepper">
+                    {% for step in steps %}
+                        <div class="step {% if step.is_complete %}is-complete{% endif %} {% if step.is_current %}is-current{% endif %}">
+                            {{ step.label }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </section>
+
+        <div class="grid">
+            <section class="panel">
+                <h2 class="panel-title">Items</h2>
+                {% for refund_item in refund_request.items.all %}
+                    <div class="item">
+                        <h3>{{ refund_item.order_item.product_name }}</h3>
+                        <p class="muted">Quantity returned: {{ refund_item.quantity_returned }}</p>
+                        {% if refund_item.item_condition_notes %}
+                            <p class="muted">{{ refund_item.item_condition_notes }}</p>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+
+                {% if refund_request.images.all %}
+                    <div class="images">
+                        {% for image in refund_request.images.all %}
+                            <img src="{{ image.image.url }}" alt="Refund proof image">
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </section>
+
+            <aside class="panel">
+                <h2 class="panel-title">Summary</h2>
+                <div class="summary-row">
+                    <span>Reason</span>
+                    <strong>{{ refund_request.get_reason_display }}</strong>
+                </div>
+                <div class="summary-row">
+                    <span>Refund method</span>
+                    <strong>{{ refund_request.get_refund_mode_display }}</strong>
+                </div>
+                <div class="summary-row">
+                    <span>Shipping refunded</span>
+                    <strong>{% if refund_request.shipping_refunded %}Yes{% else %}No{% endif %}</strong>
+                </div>
+                {% if is_approved_or_later %}
+                    <div class="summary-row grand">
+                        <span>Total</span>
+                        <strong>&#8377;{{ refund_request.refund_amount }}</strong>
+                    </div>
+                    <p class="muted">
+                        Estimated timeline: pickup after approval, refund after quality check.
+                    </p>
+                {% elif is_pending %}
+                    <p class="muted">Refund amount and next steps will be confirmed after staff review.</p>
+                {% endif %}
+            </aside>
+        </div>
+    </main>
+</body>
+</html>

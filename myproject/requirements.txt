@@ -7,3 +7,11 @@ python-dotenv==1.2.2
 django-allauth[socialaccount]
 google-auth
 requests
+razorpay
+celery
+redis
+django-celery-beat
+agora-token-builder
+qdrant-client
+groq
+sentence-transformers

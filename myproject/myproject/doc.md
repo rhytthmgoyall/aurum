@@ -33,4 +33,3 @@ b) when we click login button
    backend returns a new access token
 
 9. Frontend retries the failed API request with the new access token
-

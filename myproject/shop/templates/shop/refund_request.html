@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Request Refund | AURUM</title>
+    <link href="https://fonts.googleapis.com/css2?family=Forum&family=Cormorant+Garamond:wght@400;500;600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --cream: #f4f0e8;
+            --paper: #fffaf3;
+            --ink: #241812;
+            --muted: #7d6f63;
+            --walnut: #6b4735;
+            --line: rgba(107, 71, 53, 0.18);
+            --soft: rgba(107, 71, 53, 0.07);
+        }
+        body {
+            min-height: 100vh;
+            background: var(--cream);
+            color: var(--ink);
+            font-family: 'Jost', sans-serif;
+        }
+        .page {
+            width: min(1080px, 92vw);
+            margin: 0 auto;
+            padding: 2.2rem 0 4rem;
+        }
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+        }
+        .brand {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.55rem;
+            font-weight: 600;
+            letter-spacing: 0.25em;
+            color: var(--walnut);
+            text-decoration: none;
+        }
+        .top-link {
+            color: var(--muted);
+            font-size: 0.74rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            text-decoration: none;
+        }
+        h1 {
+            font-family: 'Forum', serif;
+            font-size: clamp(3rem, 6vw, 5.6rem);
+            font-weight: 400;
+            line-height: 0.95;
+            color: #3b251d;
+            margin-bottom: 0.8rem;
+        }
+        .intro {
+            color: var(--muted);
+            max-width: 620px;
+            line-height: 1.65;
+            margin-bottom: 1.5rem;
+        }
+        .messages {
+            display: grid;
+            gap: 0.6rem;
+            margin-bottom: 1rem;
+        }
+        .message {
+            background: var(--paper);
+            border: 1px solid var(--line);
+            color: var(--walnut);
+            padding: 0.8rem 1rem;
+            font-size: 0.86rem;
+        }
+        .layout {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 320px;
+            gap: 1.2rem;
+            align-items: start;
+        }
+        .panel {
+            background: var(--paper);
+            border: 1px solid var(--line);
+            padding: 1.35rem;
+        }
+        .panel-title {
+            font-family: 'Forum', serif;
+            font-size: 1.8rem;
+            font-weight: 400;
+            margin-bottom: 0.8rem;
+        }
+        .items {
+            display: grid;
+            gap: 0.8rem;
+        }
+        .item {
+            display: grid;
+            grid-template-columns: auto 58px minmax(0, 1fr) 92px;
+            gap: 0.85rem;
+            align-items: center;
+            padding-bottom: 0.8rem;
+            border-bottom: 1px solid rgba(107, 71, 53, 0.1);
+        }
+        .item:last-child {
+            border-bottom: 0;
+            padding-bottom: 0;
+        }
+        .item input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--walnut);
+        }
+        .item img,
+        .item-fallback {
+            width: 58px;
+            height: 58px;
+            object-fit: cover;
+            background: var(--cream);
+            border: 1px solid rgba(107, 71, 53, 0.14);
+        }
+        .item-fallback {
+            display: grid;
+            place-items: center;
+            color: var(--walnut);
+            font-family: 'Forum', serif;
+            font-size: 1.2rem;
+        }
+        .item-name {
+            font-family: 'Forum', serif;
+            font-size: 1.18rem;
+            font-weight: 400;
+            color: var(--ink);
+        }
+        .item-meta,
+        .item-note {
+            color: var(--muted);
+            font-size: 0.74rem;
+            line-height: 1.45;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+        .quantity {
+            width: 92px;
+            border: 1px solid rgba(107, 71, 53, 0.24);
+            background: #fff;
+            padding: 0.62rem;
+            color: var(--ink);
+            font-family: 'Jost', sans-serif;
+        }
+        .condition {
+            grid-column: 3 / -1;
+            width: 100%;
+            border: 1px solid rgba(107, 71, 53, 0.18);
+            background: #fff;
+            padding: 0.7rem;
+            font-family: 'Jost', sans-serif;
+            resize: vertical;
+        }
+        .field {
+            display: grid;
+            gap: 0.35rem;
+            margin-top: 1rem;
+        }
+        .field label {
+            color: var(--walnut);
+            font-size: 0.68rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+        }
+        .field select,
+        .field textarea,
+        .field input[type="file"] {
+            width: 100%;
+            border: 1px solid rgba(107, 71, 53, 0.24);
+            background: #fff;
+            color: var(--ink);
+            font-family: 'Jost', sans-serif;
+            padding: 0.78rem 0.85rem;
+        }
+        .field textarea {
+            min-height: 110px;
+            resize: vertical;
+        }
+        [hidden] {
+            display: none !important;
+        }
+        .help {
+            color: var(--muted);
+            font-size: 0.78rem;
+            line-height: 1.5;
+        }
+        .summary {
+            display: grid;
+            gap: 0.8rem;
+        }
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            color: var(--muted);
+            font-size: 0.84rem;
+        }
+        .summary-row strong {
+            color: var(--ink);
+            font-weight: 500;
+            text-align: right;
+        }
+        .grand {
+            padding-top: 0.8rem;
+            border-top: 1px solid var(--line);
+        }
+        .grand strong {
+            font-family: 'Forum', serif;
+            font-size: 1.55rem;
+            font-weight: 400;
+            color: var(--walnut);
+        }
+        .actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+            margin-top: 1.3rem;
+        }
+        .btn {
+            border: 1px solid var(--walnut);
+            padding: 0.86rem 1rem;
+            text-align: center;
+            cursor: pointer;
+            font-family: 'Jost', sans-serif;
+            font-size: 0.68rem;
+            font-weight: 500;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            text-decoration: none;
+        }
+        .btn-primary {
+            background: var(--walnut);
+            color: #fff;
+        }
+        .btn-secondary {
+            background: transparent;
+            color: var(--walnut);
+        }
+        .errorlist {
+            color: #8b2f24;
+            font-size: 0.78rem;
+            list-style: none;
+        }
+        @media (max-width: 820px) {
+            .layout {
+                grid-template-columns: 1fr;
+            }
+            .item {
+                grid-template-columns: auto 52px minmax(0, 1fr);
+            }
+            .quantity,
+            .condition {
+                grid-column: 3;
+            }
+            .actions {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main class="page">
+        <header class="topbar">
+            <a href="{% url 'home' %}" class="brand">AURUM</a>
+            <a href="{% url 'order_history' %}" class="top-link">Orders</a>
+        </header>
+
+        <h1>Request Refund</h1>
+        <p class="intro">
+            Eligible requests must be submitted within {{ return_window_days }} days, by {{ return_deadline|date:"M d, Y" }}.
+        </p>
+
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <p class="message">{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="layout">
+                <section class="panel">
+                    <h2 class="panel-title">Items</h2>
+                    <div class="items">
+                        {% for item in order.items.all %}
+                            <div class="item">
+                                <input
+                                    type="checkbox"
+                                    name="items"
+                                    value="{{ item.id }}"
+                                    {% if selected_item_id == item.id|stringformat:"s" %}checked{% endif %}
+                                    {% if not item.can_request_refund %}disabled{% endif %}
+                                >
+                                {% if item.product_image %}
+                                    <img src="{{ item.product_image.url }}" alt="{{ item.product_name }}">
+                                {% else %}
+                                    <div class="item-fallback">A</div>
+                                {% endif %}
+                                <div>
+                                    <h3 class="item-name">{{ item.product_name }}</h3>
+                                    <p class="item-meta">Qty {{ item.quantity }} | &#8377;{{ item.product_price }} each</p>
+                                    <p class="item-note">
+                                        {% if item.can_request_refund %}
+                                            {{ item.remaining_refund_quantity }} refundable
+                                        {% elif not item.return_window_open %}
+                                            Return window closed
+                                        {% else %}
+                                            Already requested or refunded
+                                        {% endif %}
+                                    </p>
+                                </div>
+                                <input
+                                    class="quantity"
+                                    type="number"
+                                    name="quantity_{{ item.id }}"
+                                    min="1"
+                                    max="{{ item.remaining_refund_quantity }}"
+                                    value="{% if item.can_request_refund %}1{% else %}0{% endif %}"
+                                    {% if not item.can_request_refund %}disabled{% endif %}
+                                >
+                                <textarea
+                                    class="condition"
+                                    name="condition_{{ item.id }}"
+                                    placeholder="Item condition notes"
+                                    {% if not item.can_request_refund %}disabled{% endif %}
+                                ></textarea>
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="field">
+                        {{ form.reason.label_tag }}
+                        {{ form.reason }}
+                        {{ form.reason.errors }}
+                    </div>
+                    <div class="field">
+                        {{ form.reason_detail.label_tag }}
+                        {{ form.reason_detail }}
+                        {{ form.reason_detail.errors }}
+                    </div>
+                    <div class="field">
+                        {{ form.refund_mode.label_tag }}
+                        {{ form.refund_mode }}
+                        {{ form.refund_mode.errors }}
+                    </div>
+                    <div class="field" id="proofImagesField" hidden>
+                        {{ form.images.label_tag }}
+                        {{ form.images }}
+                        <p class="help">{{ form.images.help_text }}</p>
+                        {{ form.images.errors }}
+                    </div>
+                    {{ form.non_field_errors }}
+                </section>
+
+                <aside class="panel summary">
+                    <h2 class="panel-title">Refund Summary</h2>
+                    <p class="help">Final refund amount is calculated after you submit selected item quantities.</p>
+                    {% for item in order.items.all %}
+                        {% if item.can_request_refund %}
+                            <div class="summary-row">
+                                <span>{{ item.product_name }}</span>
+                                <strong>&#8377;{{ item.item_total }}</strong>
+                            </div>
+                            <div class="summary-row">
+                                <span>Estimated tax</span>
+                                <strong>&#8377;{{ item.estimated_tax }}</strong>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                    <div class="summary-row">
+                        <span>Shipping refund</span>
+                        <strong>Based on reason</strong>
+                    </div>
+                    <div class="summary-row grand">
+                        <span>Refund method</span>
+                        <strong>Selected mode</strong>
+                    </div>
+                    <div class="actions">
+                        <a href="{% url 'order_history' %}" class="btn btn-secondary">Cancel</a>
+                        <button type="submit" class="btn btn-primary">Request Refund</button>
+                    </div>
+                </aside>
+            </div>
+        </form>
+    </main>
+
+    <script>
+    const reasonSelect = document.getElementById("id_reason");
+    const proofImagesField = document.getElementById("proofImagesField");
+    const proofImagesInput = document.getElementById("id_images");
+
+    function toggleProofImages() {
+        const proofRequiredReasons = ["defective", "wrong_item"];
+        const shouldShow = proofRequiredReasons.includes(reasonSelect.value);
+
+        proofImagesField.hidden = !shouldShow;
+
+        if (!shouldShow && proofImagesInput) {
+            proofImagesInput.value = "";
+        }
+    }
+
+    if (reasonSelect && proofImagesField) {
+        reasonSelect.addEventListener("change", toggleProofImages);
+        toggleProofImages();
+    }
+</script>
+</body>
+</html>
