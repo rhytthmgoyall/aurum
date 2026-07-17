@@ -64,7 +64,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from .tasks import send_order_confirmation_email
 from .rag import generate_support_reply
 
-from .models import Cart, CartItem, Category, MembershipPlan, Product, ProductInteraction, ProductStockVariant, ShippingAddress, Subcategory, UserMembership, UserProfile
+from .models import Cart, CartItem, Category, MembershipPlan, MetalRate, Product, ProductInteraction, ProductStockVariant, ShippingAddress, Subcategory, UserMembership, UserProfile
 from .forms import RefundRequestForm, RETURN_WINDOW_DAYS
 from .recommender import get_product_recommendations, record_product_interaction
 from decimal import Decimal
@@ -250,7 +250,6 @@ class HomeView(AnyMethodAsGetMixin, View):
         categories = list(
             Category.objects.filter(is_active=True).prefetch_related("subcategories")
         )
-
         # Products still use the original detailed categories. Map those records
         # into the eight customer-facing umbrella categories used by this page.
         category_groups = {
@@ -318,6 +317,50 @@ class HomeView(AnyMethodAsGetMixin, View):
             request,
             "shop/products/e-commerce.html",
             {"products": products, "categories": categories, "profile_picture_url": profile_picture_url, "new_products": new_products}
+        )
+
+
+class GoldRateTodayView(AnyMethodAsGetMixin, View):
+    template_name = "shop/gold_rate_today.html"
+
+    def get(self, request):
+        groups = (
+            {
+                "name": "Gold",
+                "rates": [
+                    MetalRate.objects.get_latest(MetalRate.GOLD, purity)
+                    for purity in ("24K", "22K", "18K")
+                ],
+            },
+            {
+                "name": "Silver",
+                "rates": [
+                    MetalRate.objects.get_latest(MetalRate.SILVER, "925")
+                ],
+            },
+            {
+                "name": "Platinum",
+                "rates": [
+                    MetalRate.objects.get_latest(MetalRate.PLATINUM, "950")
+                ],
+            },
+        )
+        for group in groups:
+            group["rates"] = [rate for rate in group["rates"] if rate is not None]
+
+        rate_rows = [rate for group in groups for rate in group["rates"]]
+
+        return render(
+            request,
+            self.template_name,
+            {
+                "metal_rate_groups": groups,
+                "metal_rate_rows": rate_rows,
+                "rates_updated_at": max(
+                    (rate.fetched_at for rate in rate_rows),
+                    default=None,
+                ),
+            },
         )
 
 
@@ -2984,6 +3027,7 @@ def support_chat_dashboard(request):
     })
 
 home = HomeView.as_view()
+gold_rate_today = GoldRateTodayView.as_view()
 product_detail = ProductDetailView.as_view()
 product_variant_stock_api = ProductVariantStockApiView.as_view()
 search_view = SearchView.as_view()

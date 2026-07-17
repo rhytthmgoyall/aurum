@@ -10,6 +10,15 @@
 html{scroll-behavior:smooth;}
 body{font-family:var(--sans);background:var(--cream);color:var(--ink);overflow-x:hidden;}
 
+.rate-ticker{position:fixed;top:0;left:0;right:0;z-index:220;min-height:31px;background:#e7ded4;border-bottom:1px solid rgba(107,71,53,.14);color:#5f5147;}
+.rate-ticker-inner{min-height:31px;display:flex;align-items:center;justify-content:center;gap:1.25rem;padding:.35rem 4rem;font-family:var(--serif);font-size:.72rem;letter-spacing:.045em;line-height:1.2;}
+.rate-ticker-values{display:flex;align-items:center;justify-content:center;gap:.55rem;white-space:nowrap;}
+.rate-ticker-values strong{font-weight:600;text-transform:uppercase;letter-spacing:.08em;}
+.rate-ticker-divider{color:rgba(107,71,53,.38);}
+.rate-ticker-updated{color:#817368;text-decoration:none;font-family:var(--sans);font-size:.58rem;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;}
+.rate-ticker + .site-nav{top:31px;}
+.rate-ticker ~ .mobile-category-menu{top:100px;max-height:calc(100vh - 100px);}
+
 .page{display:none;}
 .page.active{display:block;}
 
@@ -1154,6 +1163,9 @@ footer{background:var(--ink);padding:5rem 6rem 2.5rem;color:rgba(255,255,255,0.4
 }
 
 @media (max-width: 520px) {
+  .rate-ticker{overflow-x:auto;}
+  .rate-ticker-inner{width:max-content;min-width:100%;justify-content:flex-start;padding:.42rem 1rem;font-size:.66rem;}
+  .rate-ticker + .site-nav{top:31px;}
   .support-chat-widget {
     right: 1rem;
     bottom: 1rem;

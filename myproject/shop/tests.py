@@ -12,12 +12,72 @@ from .models import (
     Cart,
     CartItem,
     MembershipPlan,
+    MetalRate,
     Order,
     Product,
     UserMembership,
     WalletTransaction,
 )
 from .wallet_services import credit_wallet
+
+
+class MetalRateDisplayTests(TestCase):
+    @staticmethod
+    def create_display_rates():
+        for metal, purity, rate in (
+            (MetalRate.GOLD, "24K", "7450.00"),
+            (MetalRate.GOLD, "22K", "6825.00"),
+            (MetalRate.GOLD, "18K", "5587.50"),
+            (MetalRate.SILVER, "925", "89.25"),
+            (MetalRate.PLATINUM, "950", "3210.75"),
+        ):
+            MetalRate.objects.create(
+                metal=metal,
+                purity=purity,
+                rate_per_gram=Decimal(rate),
+            )
+
+    def test_ticker_is_hidden_when_rates_do_not_exist(self):
+        response = self.client.get("/")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertNotContains(response, 'class="rate-ticker"')
+
+    def test_ticker_shows_latest_display_rates(self):
+        self.create_display_rates()
+
+        response = self.client.get("/")
+
+        self.assertContains(response, "Gold 24K:")
+        self.assertContains(response, "₹7450.00/g")
+        self.assertContains(response, "Silver:")
+        self.assertContains(response, "Platinum:")
+        self.assertContains(response, "Updated:")
+
+    def test_gold_rate_page_groups_stored_rates(self):
+        self.create_display_rates()
+
+        response = self.client.get("/gold-rate-today/")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Today's Gold, Silver &amp; Platinum Rate", html=False)
+        self.assertContains(response, "24K")
+        self.assertContains(response, "22K")
+        self.assertContains(response, "18K")
+        self.assertContains(response, "925")
+        self.assertContains(response, "950")
+        self.assertContains(response, "24 Karat")
+        self.assertContains(response, "925 Purity")
+        self.assertContains(response, 'class="metal-card metal-card--gold"')
+        self.assertContains(response, "Rates reflect today's national average")
+        self.assertContains(response, "Updated:")
+        self.assertNotContains(response, "Rates will appear here after the next scheduled update.")
+
+    def test_gold_rate_page_handles_empty_database(self):
+        response = self.client.get("/gold-rate-today/")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Rates will appear here after the next scheduled update.")
 
 
 class SignupApiTests(TestCase):

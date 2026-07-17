@@ -1,0 +1,14 @@
+{% if metal_rate_ticker %}
+<aside class="rate-ticker" aria-label="Latest gold, silver, and platinum rates">
+  <div class="rate-ticker-inner">
+    <div class="rate-ticker-values">
+      {% for item in metal_rate_ticker %}
+        <span><strong>{{ item.label }}:</strong> ₹{{ item.rate.rate_per_gram|floatformat:2 }}/g</span>{% if not forloop.last %}<span class="rate-ticker-divider" aria-hidden="true">|</span>{% endif %}
+      {% endfor %}
+    </div>
+    <a class="rate-ticker-updated" href="{% url 'gold_rate_today' %}">
+      Updated: {{ metal_rate_ticker_updated_at|date:"j M Y, g:i A" }}
+    </a>
+  </div>
+</aside>
+{% endif %}

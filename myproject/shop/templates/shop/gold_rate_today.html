@@ -1,0 +1,78 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Today's Gold, Silver &amp; Platinum Rate | AURUM</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Forum&family=Cormorant+Garamond:wght@300;400;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'shop/css/e-commerce.css' %}">
+  <style>
+    .rates-page { min-height:72vh; padding:12rem 6vw 7rem; background:#f7f3ec; }
+    .rates-wrap { width:min(1180px,100%); margin:0 auto; }
+    .rates-eyebrow { margin-bottom:1rem; color:var(--gold); font-size:.65rem; font-weight:500; letter-spacing:.28em; text-transform:uppercase; }
+    .rates-title { max-width:780px; font-family:var(--display); font-size:clamp(3rem,7vw,5.8rem); font-weight:400; line-height:.95; }
+    .rates-updated { margin-top:1.35rem; color:var(--ink-muted); font-size:.62rem; font-weight:500; letter-spacing:.16em; text-transform:uppercase; }
+    .rates-note { max-width:760px; margin:2.6rem 0 2rem; color:var(--ink-mid); font-family:var(--serif); font-size:1.2rem; line-height:1.65; }
+    .metal-cards { display:grid; grid-template-columns:1.35fr 1fr 1fr; gap:1.4rem; align-items:stretch; }
+    .metal-card { min-width:0; padding:2.4rem 2.2rem 2.7rem; background:rgba(255,255,255,.58); border:1px solid rgba(92,77,66,.14); border-top-width:2px; box-shadow:0 20px 48px rgba(59,42,33,.055); }
+    .metal-card--gold { border-top-color:#a67c3d; }
+    .metal-card--silver { border-top-color:#8b8680; }
+    .metal-card--platinum { border-top-color:#5c5c5c; }
+    .metal-card-title { padding-bottom:1.4rem; border-bottom:1px solid rgba(107,71,53,.11); font-family:var(--display); font-size:2.25rem; font-weight:400; color:var(--ink); }
+    .metal-card-rates { display:grid; gap:0; }
+    .metal-rate { padding:1.65rem 0 .2rem; }
+    .metal-rate + .metal-rate { margin-top:.65rem; border-top:1px solid rgba(107,71,53,.09); }
+    .metal-purity { margin-bottom:.45rem; color:var(--ink-muted); font-size:.62rem; font-weight:500; letter-spacing:.2em; text-transform:uppercase; }
+    .metal-price { color:var(--ink); font-family:var(--serif); font-size:clamp(1.8rem,3vw,2.65rem); font-weight:300; line-height:1.08; white-space:nowrap; }
+    .metal-price-unit { font-size:.52em; color:var(--ink-mid); }
+    .rates-empty { padding:3rem; border:1px solid rgba(107,71,53,.15); color:var(--ink-muted); text-align:center; font-family:var(--serif); font-size:1.1rem; }
+    @media (max-width:850px) { .metal-cards{grid-template-columns:1fr}.metal-card{padding:2rem}.metal-card-rates{grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1.2rem}.metal-rate + .metal-rate{margin-top:0;border-top:0;border-left:1px solid rgba(107,71,53,.09);padding-left:1.2rem} }
+    @media (max-width:520px) { .rates-page{padding:10rem 1rem 4rem}.rates-note{margin-top:2rem}.metal-card-rates{grid-template-columns:1fr}.metal-rate + .metal-rate{margin-top:.65rem;border-top:1px solid rgba(107,71,53,.09);border-left:0;padding-left:0}.metal-price{font-size:2.15rem} }
+  </style>
+</head>
+<body>
+  {% include "shop/partials/navbar.html" %}
+  <main class="rates-page">
+    <div class="rates-wrap">
+      <p class="rates-eyebrow">Daily precious metal prices</p>
+      <h1 class="rates-title">Today's Gold, Silver &amp; Platinum Rate</h1>
+      {% if rates_updated_at %}<p class="rates-updated">Updated: {{ rates_updated_at|date:"j M Y, g:i A" }}</p>{% endif %}
+      <p class="rates-note">Rates reflect today's national average and directly inform pricing across our collections.</p>
+
+      {% if metal_rate_rows %}
+        <section class="metal-cards" aria-label="Today's precious metal rates">
+          {% for group in metal_rate_groups %}
+            {% if group.rates %}
+              <article class="metal-card metal-card--{{ group.name|lower }}">
+                <h2 class="metal-card-title">{{ group.name }}</h2>
+                <div class="metal-card-rates">
+                  {% for rate in group.rates %}
+                    <div class="metal-rate">
+                      <p class="metal-purity">{% if rate.purity|last == "K" %}{{ rate.purity|slice:":-1" }} Karat{% else %}{{ rate.purity }} Purity{% endif %}</p>
+                      <p class="metal-price">₹{{ rate.rate_per_gram|floatformat:2 }}<span class="metal-price-unit">/g</span></p>
+                    </div>
+                  {% endfor %}
+                </div>
+              </article>
+            {% endif %}
+          {% endfor %}
+        </section>
+      {% else %}
+        <p class="rates-empty">Rates will appear here after the next scheduled update.</p>
+      {% endif %}
+    </div>
+  </main>
+  <footer>
+    <div class="footer-top">
+      <div><p class="footer-brand">AURUM</p><p class="footer-about">Crafting luxury since 1892. Each piece is an heirloom in the making.</p></div>
+      <div class="footer-col"><h4>Shop</h4><ul><li><a href="/">Jewellery</a></li><li><a href="{% url 'gold_rate_today' %}">Today's Metal Rates</a></li></ul></div>
+      <div class="footer-col"><h4>Company</h4><ul><li><a href="#">Our Story</a></li><li><a href="#">Sustainability</a></li></ul></div>
+      <div class="footer-col"><h4>Support</h4><ul><li><a href="/orders/">Track Order</a></li><li><a href="#">Client Care</a></li></ul></div>
+    </div>
+    <div class="footer-bottom"><span>© 2026 Aurum Maison. All rights reserved.</span></div>
+  </footer>
+</body>
+</html>
