@@ -1,6 +1,5 @@
 from pathlib import Path
 import os
-import dj_database_url
 
 from dotenv import load_dotenv
 
@@ -17,6 +16,17 @@ ALLOWED_HOSTS = [
     if host.strip()
 ]
 
+RAILWAY_PUBLIC_DOMAIN = os.getenv("RAILWAY_PUBLIC_DOMAIN", "").strip()
+
+if RAILWAY_PUBLIC_DOMAIN and RAILWAY_PUBLIC_DOMAIN not in ALLOWED_HOSTS:
+    ALLOWED_HOSTS.append(RAILWAY_PUBLIC_DOMAIN)
+
+CSRF_TRUSTED_ORIGINS = [
+    origin.strip()
+    for origin in os.getenv("CSRF_TRUSTED_ORIGINS", "").split(",")
+    if origin.strip()
+]
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -30,7 +40,6 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -64,14 +73,16 @@ TEMPLATES = [
 WSGI_APPLICATION = 'myproject.wsgi.application'
 
 DATABASES = {
-    "default": dj_database_url.config(
-        default=os.getenv(
-            "DATABASE_URL",
-            "postgresql://postgres:postgres@localhost:5432/mydb",
-        ),
-        conn_max_age=600,
-        conn_health_checks=True,
-    )
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.getenv("PGDATABASE", os.getenv("DB_NAME", "mydb")),
+        "USER": os.getenv("PGUSER", os.getenv("DB_USER", "postgres")),
+        "PASSWORD": os.getenv("PGPASSWORD", os.getenv("DB_PASSWORD", "")),
+        "HOST": os.getenv("PGHOST", os.getenv("DB_HOST", "localhost")),
+        "PORT": os.getenv("PGPORT", os.getenv("DB_PORT", "5432")),
+        "CONN_MAX_AGE": 600,
+        "CONN_HEALTH_CHECKS": True,
+    }
 }
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -117,6 +128,10 @@ USE_TZ = True
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
+STATICFILES_DIRS = [
+    BASE_DIR / "shop" / "static",
+]
+
 STORAGES = {
     "default": {
         "BACKEND": "django.core.files.storage.FileSystemStorage",
@@ -128,7 +143,11 @@ STORAGES = {
 
 # ── MEDIA FILES (for product images) ──
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = Path(
+    os.getenv("MEDIA_ROOT")
+    or os.getenv("RAILWAY_VOLUME_MOUNT_PATH")
+    or BASE_DIR / "media"
+)
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
@@ -171,17 +190,14 @@ CELERY_RESULT_SERIALIZER = "json"
 CELERY_TIMEZONE = "Asia/Kolkata"
 CELERY_ENABLE_UTC = False
 
-RENDER_EXTERNAL_HOSTNAME = os.getenv("RENDER_EXTERNAL_HOSTNAME")
-if RENDER_EXTERNAL_HOSTNAME:
-    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
+SITE_URL = os.getenv("SITE_URL", "http://localhost:8000").rstrip("/")
 
-SITE_URL = os.getenv("SITE_URL", "http://localhost:8000")
-
-CSRF_TRUSTED_ORIGINS = [
-    origin.strip()
-    for origin in os.getenv("CSRF_TRUSTED_ORIGINS", "").split(",")
-    if origin.strip()
-]
+if not DEBUG:
+    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+    SECURE_SSL_REDIRECT = True
+    SECURE_HSTS_SECONDS = 3600
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
 
 AGORA_APP_ID = os.environ["AGORA_APP_ID"]
 AGORA_APP_CERTIFICATE = os.environ["AGORA_APP_CERTIFICATE"]

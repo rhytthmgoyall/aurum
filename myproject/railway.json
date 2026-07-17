@@ -1,0 +1,15 @@
+{
+  "$schema": "https://railway.com/railway.schema.json",
+  "build": {
+    "builder": "RAILPACK",
+    "buildCommand": "python manage.py collectstatic --noinput"
+  },
+  "deploy": {
+    "preDeployCommand": [
+      "python manage.py migrate --noinput"
+    ],
+    "startCommand": "gunicorn myproject.wsgi:application --bind 0.0.0.0:$PORT --access-logfile -",
+    "restartPolicyType": "ON_FAILURE",
+    "restartPolicyMaxRetries": 5
+  }
+}
