@@ -15,3 +15,6 @@ agora-token-builder
 qdrant-client
 groq
 sentence-transformers
+gunicorn
+whitenoise[brotli]
+dj-database-url
